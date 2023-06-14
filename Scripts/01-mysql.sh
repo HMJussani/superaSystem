@@ -151,7 +151,7 @@ echo -e "Removendo todos os software desnecessários, aguarde..."
 	apt -y autoclean &>> $LOG
 echo -e "Software removidos com sucesso!!!, continuando com o script...\n"
 sleep 5
-#
+sudo apt update && sudo apt install mysql-server mysql-client mysql-common
 echo -e "Iniciando a Configuração do OpenSSL TLS/SSL no MySQL, aguarde...\n"
 sleep 5
 #
@@ -209,7 +209,7 @@ sleep 5
 echo -e "Editando o arquivo de configuração do Certificado do MySQL mysql.conf, pressione <Enter> para continuar."
 	# opção do comando read: -s (Do not echo keystrokes)
 	read -s
-	vim /etc/ssl/mysql.conf
+	nano /etc/ssl/mysql.conf
 echo -e "Arquivo editado com sucesso!!!, continuando com o script...\n"
 sleep 5
 #
@@ -310,14 +310,14 @@ sleep 5
 echo -e "Editando o arquivo de configuração mysqld.cnf, pressione <Enter> para continuar."
 	# opção do comando read: -s (Do not echo keystrokes)
 	read -s
-	vim /etc/mysql/mysql.conf.d/mysqld.cnf
+	nano /etc/mysql/mysql.conf.d/mysqld.cnf
 echo -e "Arquivo editado com sucesso!!!, continuando com o script...\n"
 sleep 5
 #
 echo -e "Editando o arquivo de configuração mysql.cnf, pressione <Enter> para continuar."
 	# opção do comando read: -s (Do not echo keystrokes)
 	read -s
-	vim /etc/mysql/mysql.conf.d/mysql.cnf
+	nano /etc/mysql/mysql.conf.d/mysql.cnf
 echo -e "Arquivo editado com sucesso!!!, continuando com o script...\n"
 sleep 5
 #
