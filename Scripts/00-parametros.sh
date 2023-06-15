@@ -158,6 +158,15 @@ GRANTALL="GRANT ALL ON *.* TO '$USERMYSQL'@'localhost';"
 FLUSH="FLUSH PRIVILEGES;"
 SELECTUSER="SELECT user,host FROM user;"
 #
+# Variável do Endereço IPv4 acesso remoto Mysql
+IPV4DEV="192.168.100.126"
+# Variáveis de configuração e liberação da conexão remota para o usuário Root do MySQL
+CREATEUSER="CREATE USER '$USERMYSQL'@'%' IDENTIFIED BY '$SENHAMYSQL';"
+ALTERUSER="ALTER USER '$USERMYSQL'@'$IPV4DEV' IDENTIFIED WITH mysql_native_password BY '$SENHAMYSQL';"
+GRANTALL="GRANT ALL ON *.* TO '$USERMYSQL'@'$IPV4DEV';"
+FLUSH="FLUSH PRIVILEGES;"
+SELECTUSER="SELECT user,host FROM user;"
+#
 # Variável de configuração do usuário padrão de administração do PhpMyAdmin (Root do MySQL)
 ADMINUSER=$USERMYSQL
 #
