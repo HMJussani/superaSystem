@@ -57,7 +57,8 @@ DOMINIONETBIOS="$(echo $DOMINIOSERVER | cut -d'.' -f1)"
 FQDNSERVER="$NOMESERVER.$DOMINIOSERVER"
 #
 # Variável do Endereço IPv4 principal (padrão) do Servidor Ubuntu 
-IPV4SERVER="192.168.100.126"
+IPV4SERVER="192.168.100.126" #Rede Corporativa
+#IPV4SERVER="192.168.10.119" #Rede RMA
 #
 # Variável do Nome da Interface Lógica do Servidor Ubuntu Server 
 # CUIDADO!!! o nome da interface de rede pode mudar dependendo da instalação do Ubuntu Server,

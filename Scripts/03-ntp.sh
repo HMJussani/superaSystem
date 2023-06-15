@@ -117,7 +117,7 @@ if [ -f $LOG ]
 		echo -e "na instalação e configuração do serviço de rede utilizando esse script..."
 		echo -e "Todos os scripts foram projetados para serem executados apenas 1 (uma) vez."
 		sleep 5
-		exit 1
+		#exit 1
 	else
 		echo -e "Primeira vez que você está executando esse script, tudo OK, agora só aguardar..."
 		sleep 5
@@ -205,33 +205,33 @@ echo -e "Atualizando os arquivos de configuração do NTP Server, aguarde..."
 echo -e "Arquivos do NTP Server atualizados com sucesso!!!, continuando com o script...\n"
 sleep 5
 #
-echo -e "Editando o arquivo de configuração ntp.conf, pressione <Enter> para continuar"
+#echo -e "Editando o arquivo de configuração ntp.conf, pressione <Enter> para continuar"
 	# opção do comando read: -s (Do not echo keystrokes)
-	read -s
-	vim /etc/ntp.conf
-echo -e "Arquivo editado com sucesso!!!, continuando com o script...\n"
-sleep 5
+#	read -s
+#	vim /etc/ntp.conf
+#echo -e "Arquivo editado com sucesso!!!, continuando com o script...\n"
+#sleep 5
 #
-echo -e "Editando o arquivo de configuração ntp, pressione <Enter> para continuar"
+#echo -e "Editando o arquivo de configuração ntp, pressione <Enter> para continuar"
 	# opção do comando read: -s (Do not echo keystrokes)
-	read -s
-	vim /etc/default/ntp
-echo -e "Arquivo editado com sucesso!!!, continuando com o script...\n"
-sleep 5
+#	read -s
+#	vim /etc/default/ntp
+#echo -e "Arquivo editado com sucesso!!!, continuando com o script...\n"
+#sleep 5
 #
-echo -e "Editando o arquivo de configuração ntpdate, pressione <Enter> para continuar"
+#echo -e "Editando o arquivo de configuração ntpdate, pressione <Enter> para continuar"
 	# opção do comando read: -s (Do not echo keystrokes)
-	read -s
-	vim /etc/default/ntpdate
-echo -e "Arquivo editado com sucesso!!!, continuando com o script...\n"
-sleep 5
+#	read -s
+#	vim /etc/default/ntpdate
+#echo -e "Arquivo editado com sucesso!!!, continuando com o script...\n"
+#sleep 5
 #
-echo -e "Editando o arquivo de configuração dhcpd.conf, pressione <Enter> para continuar"
+#echo -e "Editando o arquivo de configuração dhcpd.conf, pressione <Enter> para continuar"
 	# opção do comando read: -s (Do not echo keystrokes)
-	read -s
-	vim /etc/dhcp/dhcpd.conf
-echo -e "Arquivo editado com sucesso!!!, continuando com o script...\n"
-sleep 5
+#	read -s
+#	vim /etc/dhcp/dhcpd.conf
+#echo -e "Arquivo editado com sucesso!!!, continuando com o script...\n"
+#sleep 5
 #
 echo -e "Atualizando o Timezone e Locale do Servidor, aguarde..."
 	# opção do comando: &>> (redirecionar a saída padrão)
