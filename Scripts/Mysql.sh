@@ -92,110 +92,194 @@ GRANT USAGE ON *.* TO 'vaamonde' IDENTIFIED BY 'vaamonde';
 GRANT ALL PRIVILEGES ON vaamonde.* TO 'vaamonde';
 FLUSH PRIVILEGES;
 EXIT
+
+
+
+
+echo -e "Atualizando o arquivo de configuração do Certificado do MySQL, aguarde..."
+	# opção do comando: &>> (redirecionar a saída padrão adicionando)
+	# opção do comando cp: -v (verbose)
+	# opção do bloco e agrupamentos {}: (Agrupa comandos em um bloco)
+	cp -v conf/ssl/mysql.conf /etc/ssl/ &>> $LOG
+echo -e "Arquivo atualizado com sucesso!!!, continuando com o script...\n"
+sleep 5
 #
-# Acessando o SGBD do MySQL ou MariaDB com o usuário Vaamonde
-# (opções do comando mysql: -u user | -p password)
-mysql -u vaamonde -p
+echo -e "Criando o Chave Privada de: $BITS do MySQL, senha padrão: $PASSPHRASE, aguarde..." 
+	# opção do comando: &>> (redirecionar a saída padrão)
+	# opções do comando openssl: 
+	# genrsa (command generates an RSA private key),
+	# -criptokey (Encrypt the private key with the AES, CAMELLIA, DES, triple DES or the IDEA ciphers)
+	# -out (The output file to write to, or standard output if not specified), 
+	# -passout (The output file password source), 
+	# pass: (The actual password is password), 
+	# bits (The size of the private key to generate in bits)
+	#
+	openssl genrsa -$CRIPTOKEY -out /etc/ssl/private/mysql.key.old -passout pass:$PASSPHRASE $BITS &>> $LOG
+echo -e "Chave Privada do MySQL criada com sucesso!!!, continuando com o script...\n"
+sleep 5
 #
-# Utilizando o Banco e Dados Vaamonde no SGBD do MySQL ou MariaDB
-SHOW DATABASES;
-USE vaamonde;
+echo -e "Removendo a senha da Chave Privada do MySQL, senha padrão: $PASSPHRASE, aguarde..."
+	# opção do comando: &>> (redirecionar a saída padrão)
+	# opções do comando openssl: 
+	# rsa (command processes RSA keys),
+	# -in (The input file to read from, or standard input if not specified),
+	# -out (The output file to write to, or standard output if not specified),
+	# -passin (The key password source),
+	# pass: (The actual password is password)
+	# opção do comando rm: -v (verbose)
+	#
+	openssl rsa -in /etc/ssl/private/mysql.key.old -out /etc/ssl/private/mysql.key \
+	-passin pass:$PASSPHRASE &>> $LOG
+	rm -v /etc/ssl/private/mysql.key.old &>> $LOG
+echo -e "Senha da Chave Privada do MySQL removida com sucesso!!!, continuando com o script...\n"
+sleep 5
 #
-# Criando a Tabela Alunos e Verificando suas Informações no SGBD do MySQL ou MariaDB
-CREATE TABLE alunos(
-	matricula VARCHAR(6) NOT NULL,
-	nome VARCHAR(30) NOT NULL,
-	cidade VARCHAR(30) NULL,
-	PRIMARY KEY(matricula));
-DESC alunos;
-SELECT * FROM alunos;
+echo -e "Verificando o arquivo de Chave Privada do MySQL, aguarde..."
+	# opção do comando: &>> (redirecionar a saída padrão)
+	# opções do comando openssl: 
+	# rsa (command processes RSA keys), 
+	# -noout (Do not output the encoded version of the key), 
+	# -modulus (Print the value of the modulus of the key), 
+	# -in (The input file to read from, or standard input if not specified), 
+	# md5 (The message digest to use MD5 checksums)
+	#
+	openssl rsa -noout -modulus -in /etc/ssl/private/mysql.key | openssl md5 &>> $LOG
+echo -e "Arquivo de Chave Privada do MySQL verificada com sucesso!!!, continuando com o script...\n"
+sleep 5
 #
-# Criando a Tabela Cursos e Verificando suas Informações no SGBD do MySQL ou MariaDB
-CREATE TABLE cursos(
-	codcurso VARCHAR(6) NOT NULL,
-	nomecurso VARCHAR(30) NOT NULL,
-	PRIMARY KEY(codcurso));
-DESC cursos;
-SELECT * FROM cursos;
+echo -e "Editando o arquivo de configuração do Certificado do MySQL mysql.conf, pressione <Enter> para continuar."
+	# opção do comando read: -s (Do not echo keystrokes)
+	read -s
+	nano /etc/ssl/mysql.conf
+echo -e "Arquivo editado com sucesso!!!, continuando com o script...\n"
+sleep 5
 #
-# Criando a Tabela Matriculas e Verificando suas Informações no SGBD do MySQL ou MariaDB
-CREATE TABLE matriculas(
-	matricula VARCHAR(6) NOT NULL,
-	codcurso VARCHAR(6) NOT NULL);
-DESC matriculas;
-SELECT * FROM matriculas;
+echo -e "Criando o arquivo CSR (Certificate Signing Request), confirme as mensagens do arquivo: mysql.conf, aguarde...\n"
+	# opções do comando openssl: 
+	# req (command primarily creates and processes certificate requests in PKCS#10 format), 
+	# -new (Generate a new certificate request),
+	# -criptocert (The message digest to sign the request with)
+	# -nodes (Do not encrypt the private key),
+	# -key (The file to read the private key from), 
+	# -out (The output file to write to, or standard output if not specified),
+	# -extensions (Specify alternative sections to include certificate extensions), 
+	# -config (Specify an alternative configuration file)
+	#
+	# Criando o arquivo CSR, mensagens que serão solicitadas na criação do CSR
+	# 	Country Name (2 letter code): BR <-- pressione <Enter>
+	# 	State or Province Name (full name): Brasil <-- pressione <Enter>
+	# 	Locality Name (eg, city): Sao Paulo <-- pressione <Enter>
+	# 	Organization Name (eg, company): Bora para Pratica <-- pressione <Enter>
+	# 	Organization Unit Name (eg, section): Procedimentos em TI <-- pressione <Enter>
+	# 	Common Name (eg, server FQDN or YOUR name): pti.intra <-- pressione <Enter>
+	# 	Email Address: pti@pti.intra <-- pressione <Enter>
+	#
+	openssl req -new -$CRIPTOCERT -nodes -key /etc/ssl/private/mysql.key -out \
+	/etc/ssl/requests/mysql.csr -extensions v3_req -config /etc/ssl/mysql.conf
+	echo
+echo -e "Criação do arquivo CSR feito com sucesso!!!, continuando com o script...\n"
+sleep 5
 #
-# Visualizando as Tabelas Criadas no SGBD do MySQL ou MariaDB
-SHOW TABLES;
+echo -e "Verificando o arquivo CSR (Certificate Signing Request) do MySQL, aguarde..."
+	# opção do comando: &>> (redirecionar a saída padrão)
+	# opções do comando openssl: 
+	# req (command primarily creates and processes certificate requests in PKCS#10 format), 
+	# -noout (Do not output the encoded version of the request), 
+	# -text (Print the certificate request in plain text), 
+	# -in (The input file to read a request from, or standard input if not specified)
+	#
+	openssl req -noout -text -in /etc/ssl/requests/mysql.csr &>> $LOG
+echo -e "Arquivo CSR verificado com sucesso!!!, continuando com o script...\n"
+sleep 5
 #
-# Utilizando o conceito do CRUD (Create INSERT, Read SELECT, Update UPDATE and Delete DELETE) no SGBD MySQL ou MariaDB
+echo -e "Criando o certificado assinado CRT (Certificate Request Trust), do MySQL, aguarde...\n"
+	# opção do comando: &>> (redirecionar a saída padrão
+	# opções do comando openssl: 
+	# x509 (command is a multi-purpose certificate utility),
+	# ca (command is a minimal certificate authority (CA) application)
+	# -req (Expect a certificate request on input instead of a certificate),
+	# -days (The number of days to make a certificate valid for),
+	# -criptocert (The message digest to sign the request with),							
+	# -in (The input file to read from, or standard input if not specified),
+	# -CA (The CA certificate to be used for signing),
+	# -CAkey (Set the CA private key to sign a certificate with),
+	# -CAcreateserial (Create the CA serial number file if it does not exist instead of generating an error),
+	# -out (The output file to write to, or standard output if none is specified)
+	# -config (Specify an alternative configuration file)
+	# -extensions (The section to add certificate extensions from),
+	# -extfile (File containing certificate extensions to use).
+	#
+	# Sign the certificate? [y/n]: y <Enter>
+	# 1 out of 1 certificate request certified, commit? [y/n]: y <Enter>
+	#
+	# OPÇÃO DE ASSINATURA DO ARQUIVO CRT SEM UTILIZAR O WIZARD DO CA, CÓDIGO APENAS DE DEMONSTRAÇÃO
+	# openssl x509 -req -days 3650 -$CRIPTOCERT -in /etc/ssl/requests/mysql.csr -CA \
+	# /etc/ssl/newcerts/ca.crt -CAkey /etc/ssl/private/ca.key -CAcreateserial \
+	# -out /etc/ssl/newcerts/mysql.crt -extensions v3_req -extfile /etc/ssl/mysql.conf &>> $LOG
+	#
+	openssl ca -in /etc/ssl/requests/mysql.csr -out /etc/ssl/newcerts/mysql.crt \
+	-config /etc/ssl/ca.conf -extensions v3_req -extfile /etc/ssl/mysql.conf
+	echo
+echo -e "Criação do certificado assinado CRT do MySQL feito com sucesso!!!, continuando com o script...\n"
+sleep 5
 #
-# Inserindo dados dentro da Tabela Alunos no SGBD do MySQL ou MariaDB
-INSERT INTO alunos VALUES ('000001', 'Robson Vaamonde', 'Guarulhos');
-INSERT INTO alunos VALUES ('000002', 'Leandro Ramos', 'São Paulo');
-INSERT INTO alunos VALUES ('000003', 'José de Assis', 'São Paulo');
-SELECT * FROM alunos;
+echo -e "Verificando o arquivo CRT (Certificate Request Trust) do MySQL, aguarde..."
+	# opção do comando: &>> (redirecionar a saída padrão)
+	# opções do comando openssl: 
+	# x509 (command is a multi-purpose certificate utility), 
+	# -noout (Do not output the encoded version of the request),
+	# -text (Print the full certificate in text form), 
+	# -modulus (Print the value of the modulus of the public key contained in the certificate), 
+	# -in (he input file to read from, or standard input if not specified), 
+	# md5 (The message digest to use MD5 checksums)
+	#
+	openssl x509 -noout -modulus -in /etc/ssl/newcerts/mysql.crt | openssl md5 &>> $LOG
+	openssl x509 -noout -text -in /etc/ssl/newcerts/mysql.crt &>> $LOG
+	cat /etc/ssl/index.txt &>> $LOG
+	cat /etc/ssl/index.txt.attr &>> $LOG
+	cat /etc/ssl/serial &>> $LOG
+echo -e "Arquivo CRT do MySQL verificado com sucesso!!!, continuando com o script...\n"
+sleep 5
 #
-# Inserindo dados dentro da Tabela Cursos no SGBD do MySQL ou MariaDB
-INSERT INTO cursos VALUES ('000001', 'Debian Linux');
-INSERT INTO cursos VALUES ('000002', 'Ubuntu Linux');
-INSERT INTO cursos VALUES ('000003', 'CentOS Linux');
-SELECT * FROM cursos;
+echo -e "Verificando as configurações do TLS/SSL do MySQL, aguarde..."
+	# opção do comando: &>> (redirecionar a saída padrão)
+	# opção do comando mysql: -u (user), -p (password) -e (execute), mysql (database) 
+	mysql -u $USERMYSQL -p$SENHAMYSQL -e "SHOW VARIABLES LIKE '%ssl_%';" mysql &>> $LOG
+echo -e "Verificação do TLS/SSL do MySQL feita com sucesso!!!, continuando com o script...\n"
+sleep 5
 #
-# Inserindo dados dentro da Tabela Matriculas no SGBD do MySQL ou MariaDB
-INSERT INTO matriculas VALUES ('000001', '000001');
-INSERT INTO matriculas VALUES ('000001', '000002');
-INSERT INTO matriculas VALUES ('000002', '000003');
-INSERT INTO matriculas VALUES ('000003', '000001');
-SELECT * FROM matriculas;
+echo -e "Editando o arquivo de configuração mysqld.cnf, pressione <Enter> para continuar."
+	# opção do comando read: -s (Do not echo keystrokes)
+	read -s
+	nano /etc/mysql/mysql.conf.d/mysqld.cnf
+echo -e "Arquivo editado com sucesso!!!, continuando com o script...\n"
+sleep 5
 #
-# Verificando informações mais detalhadas das Tabelas no SGBD do MySQL ou MariaDB
-SELECT matricula, nome FROM alunos;
-SELECT * FROM matriculas WHERE codcurso = '000001';
-SELECT * FROM alunos WHERE cidade LIKE 'S%';
-SELECT * FROM alunos WHERE nome LIKE '%m%' AND cidade = 'São Paulo';
-SELECT COUNT(*) FROM alunos;
+echo -e "Editando o arquivo de configuração mysql.cnf, pressione <Enter> para continuar."
+	# opção do comando read: -s (Do not echo keystrokes)
+	read -s
+	nano /etc/mysql/mysql.conf.d/mysql.cnf
+echo -e "Arquivo editado com sucesso!!!, continuando com o script...\n"
+sleep 5
 #
-# Ordenando as informações das Tabelas no SGBD do MySQL ou MariaDB
-SELECT * FROM cursos ORDER BY codcurso DESC;
-SELECT * FROM cursos ORDER BY nomecurso DESC;
 #
-# Agrupando os valores das Tabelas no SGBD do MySQL ou MariaDB
-SELECT codcurso FROM matriculas GROUP BY codcurso;
-SELECT codcurso, COUNT(*) FROM matriculas GROUP BY codcurso;
+echo -e "Verificando as novas configurações do TLS/SSL do MySQL, aguarde..."
+	# opção do comando: &>> (redirecionar a saída padrão)
+	# opção do comando mysql: -u (user), -p (password) -e (execute), mysql (database) 
+	mysql -u $USERMYSQL -p$SENHAMYSQL -e "SHOW VARIABLES LIKE '%ssl_%';" mysql &>> $LOG
+echo -e "Verificação do TLS/SSL do MySQL feita com sucesso!!!, continuando com o script...\n"
+sleep 5
 #
-# Juntando Tabelas para consultas integradas no SGBD do MySQL ou MariaDB
-SELECT * FROM cursos JOIN matriculas;
-SELECT * FROM cursos JOIN matriculas ON cursos.codcurso = matriculas.codcurso;
-SELECT cursos.nomecurso, matriculas.matricula FROM cursos JOIN matriculas ON cursos.codcurso = matriculas.codcurso;
-SELECT nomecurso, COUNT(*) FROM cursos JOIN matriculas ON cursos.codcurso = matriculas.codcurso GROUP BY nomecurso;
+echo -e "Testando o Certificado TLS/SSL do MySQL, aguarde..."
+	# opção do comando: &>> (redirecionar a saída padrão)
+	# opção do comando echo: | (piper, faz a função de Enter no comando)
+	# opções do comando openssl: 
+	# s_client (command implements a generic SSL/TLS client which connects to a remote host using SSL/TLS)
+	# -connect (The host and port to connect to)
+	# -servername (Include the TLS Server Name Indication (SNI) extension in the ClientHello message)
+	# -showcerts (Display the whole server certificate chain: normally only the server certificate itself is displayed)
+	#
+	echo | openssl s_client -connect $IPV4SERVER:3306 -servername mysql.$DOMINIOSERVER -showcerts &>> $LOG
+echo -e "Certificado do Apache2 testado sucesso!!!, continuando com o script...\n"
+sleep 5
 #
-# Alterando uma Tabela e adicionando uma nova Coluna no SGBD do MySQL ou MariaDB
-ALTER TABLE matriculas ADD COLUMN codmatricula VARCHAR(6) NOT NULL FIRST;
-DESC matriculas;
-SELECT * FROM matriculas;
-#
-# Atualizando a Tabela com novos valores em uma Coluna no SGBD do MySQL ou MariaDB
-UPDATE matriculas SET codmatricula='000001' WHERE matricula='000001' AND codcurso='000001';
-UPDATE matriculas SET codmatricula='000002' WHERE matricula='000001' AND codcurso='000002';
-UPDATE matriculas SET codmatricula='000003' WHERE matricula='000002';				
-UPDATE matriculas SET codmatricula='000004' WHERE matricula='000003';
-SELECT * FROM matriculas;
-UPDATE matriculas SET codcurso='000003' WHERE codmatricula='000001';
-#
-# Deletando registros em uma Tabela no SGBD do MySQL ou MariaDB
-SELECT * FROM matriculas;
-DELETE FROM matriculas WHERE matricula='000001';
-SELECT * FROM matriculas;
-#				
-# Deletando uma Tabela no SGBD do MySQL ou MariaDB
-SHOW TABLES;
-DROP TABLE matriculas;
-SHOW TABLES;
-DROP TABLE cursos, alunos;
-SHOW TABLES;
-#
-# Deletando um Banco de Dados no SGBD do MySQL ou MariaDB
-SHOW DATABASES;
-DROP DATABASE vaamonde;
-SHOW DATABASES;
