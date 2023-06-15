@@ -32,44 +32,40 @@ export DEBIAN_FRONTEND="noninteractive"
 #
 # Declarando as variáveis utilizadas nas configurações de Rede do Servidor Ubuntu 
 #
-# Variável do Usuário padrão utilizado no Servidor Ubuntu desse curso
+# Variável do Usuário padrão utilizado no Servidor Ubuntu 
 USUARIODEFAULT="hmjussani"
 #
-# Variável da Senha padrão utilizado no Servidor Ubuntu desse curso
-# OBSERVAÇÃO IMPORTANTE: essa variável será utilizada em outras variáveis desse curso
+# Variável da Senha padrão utilizado no Servidor Ubuntu 
+# OBSERVAÇÃO IMPORTANTE: essa variável será utilizada em outras variáveis 
 SENHADEFAULT="hmjussani"
 #
-# Variável do Nome (Hostname) do Servidor Ubuntu desse curso
-NOMESERVER="mysqlServer"
+# Variável do Nome (Hostname) do Servidor Ubuntu 
+NOMESERVER="$(uname -a | cut -d' ' -f2)"
 #
-# Variável do Nome de Domínio do Servidor Ubuntu desse curso
-# OBSERVAÇÃO IMPORTANTE: essa variável será utilizada em outras variáveis desse curso
+# Variável do Nome de Domínio do Servidor Ubuntu 
+# OBSERVAÇÃO IMPORTANTE: essa variável será utilizada em outras variáveis 
 DOMINIOSERVER="server.intra"
 #
-# Variável do Nome de Domínio NetBIOS do Servidor Ubuntu desse curso
-# OBSERVAÇÃO IMPORTANTE: essa variável será utilizada em outras variáveis desse curso
+# Variável do Nome de Domínio NetBIOS do Servidor Ubuntu 
+# OBSERVAÇÃO IMPORTANTE: essa variável será utilizada em outras variáveis 
 # opção do redirecionador | (piper): Conecta a saída padrão com a entrada padrão de outro comando
 # opções do comando cut: -d (delimiter), -f (fields)
 DOMINIONETBIOS="$(echo $DOMINIOSERVER | cut -d'.' -f1)"
 #
-# Variável do Nome (Hostname) FQDN (Fully Qualified Domain Name) do Servidor Ubuntu desse curso
-# OBSERVAÇÃO IMPORTANTE: essa variável será utilizada em outras variáveis desse curso
+# Variável do Nome (Hostname) FQDN (Fully Qualified Domain Name) do Servidor Ubuntu 
+# OBSERVAÇÃO IMPORTANTE: essa variável será utilizada em outras variáveis 
 FQDNSERVER="$NOMESERVER.$DOMINIOSERVER"
 #
-# Variável do Endereço IPv4 principal (padrão) do Servidor Ubuntu desse curso
+# Variável do Endereço IPv4 principal (padrão) do Servidor Ubuntu 
 IPV4SERVER="192.168.100.126"
 #
-# Variável do Nome da Interface Lógica do Servidor Ubuntu Server desse curso
+# Variável do Nome da Interface Lógica do Servidor Ubuntu Server 
 # CUIDADO!!! o nome da interface de rede pode mudar dependendo da instalação do Ubuntu Server,
 # verificar o nome da interface com o comando: ip address show e mudar a variável INTERFACE com
 # o nome correspondente.
 INTERFACE="enp0s3"
 #INTERFACE="enp3s0"
 #
-# Variável do arquivo de configuração da Placa de Rede do Netplan do Servidor Ubuntu
-# CUIDADO!!! o nome do arquivo de configuração da placa de rede pode mudar dependendo da 
-# versão do Ubuntu Server, verificar o conteúdo do diretório: /etc/netplan para saber o nome 
-# do arquivo de configuração do Netplan e mudar a variável NETPLAN com o nome correspondente.
 NETPLAN="/etc/netplan/00-installer-config.yaml"
 #
 #=============================================================================================
@@ -115,22 +111,6 @@ PORTSHELLINABOX="4200"
 #=============================================================================================
 #                       VARIÁVEIS UTILIZADAS NO SCRIPT: 05-ntp.sh                            #
 #=============================================================================================
-#
-# Arquivos de configuração (conf) do Serviço de Rede NTP Server utilizados nesse script
-# 01. /etc/ntp.conf = arquivo de configuração do serviço de rede NTP Server
-# 02. /etc/default/ntp = arquivo de configuração do Daemon do NTP Server
-# 03. /var/lib/ntp/ntp.drift = arquivo de configuração do escorregamento de memória do NTP
-# 04. /etc/systemd/timesyncd.conf = arquivo de configuração do sincronismo de Data e Hora
-# 05. /etc/dhcp/dhcpd.conf = arquivo de configuração do Servidor ISC DHCP Server
-#
-# Arquivos de monitoramento (log) do Serviço de Rede NTP Server utilizados nesse script
-# 01. sudo systemctl status ntp = status do serviço do NTP Server
-# 02. sudo journalctl -t ntpd = todas as mensagens referente ao serviço do NTP Server
-# 03. tail -f /var/log/syslog | grep ntpd = vários arquivos de Log's dos serviços do NTP Server
-# 04. tail -f /var/log/ntpstats/* = vários arquivos de monitoramento de tempo do NTP Server
-#
-# Declarando as variáveis utilizadas nas configurações do Serviço do NTP Server e Client
-#
 # Variável de sincronização do NTP Server com o Site ntp.br
 NTPSERVER="a.st1.ntp.br"
 #
@@ -152,34 +132,11 @@ PORTNTP="123"
 #=============================================================================================
 #                        VARIÁVEIS UTILIZADAS NO SCRIPT: 01-mysql.sh                          #
 #=============================================================================================
-# 
-# Arquivos de configuração (conf) do Serviço de Rede LAMP Server utilizados nesse script
-# 01. /etc/apache2/apache2.conf = arquivo de configuração do Servidor Apache2
-# 02. /etc/apache2/ports.conf = arquivo de configuração das portas do Servidor Apache2
-# 03. /etc/apache2/envvars = arquivo de configuração das variáveis do Servidor Apache2
-# 04. /etc/apache2/sites-available/000-default.conf = arquivo de configuração do site padrão HTTP
-# 05. /etc/apache2/conf-available/charset.conf = arquivo de configuração do UTF-8 do Apache2
-# 06. /etc/php/7.4/apache2/php.ini = arquivo de configuração do PHP
-# 07. /etc/mysql/mysql.conf.d/mysqld.cnf = arquivo de configuração do Servidor MySQL
-# 08. /etc/hosts.allow = arquivo de configuração de liberação de hosts por serviço
-# 09. /var/www/html/phpinfo.php = arquivo de geração da documentação do PHP
-# 10. /var/www/html/teste.html = arquivo de teste de páginas HTML
-# 11. /etc/awstats/awstats.pti.intra.conf = arquivo de configuração do serviço AWStats
-# 12. /etc/cron.d/awstatsupdate-cron = arquivo de atualização das estatísticas do AWStats
-#
-# Arquivos de monitoramento (log) do Serviço de Rede LAMP Server utilizados nesse script
-# 01. sudo systemctl status apache2 = status do serviço do Apache2
-# 02. sudo journalctl -t apache2.postinst = todas as mensagens referente ao serviço do Apache2
-# 03. tail -f /var/log/apache2/* = vários arquivos de Log's do serviço do Apache2
-# 04. sudo systemctl status mysql = status do serviço do Oracle MySQL
-# 05. tail -f /var/log/mysql/* = vários arquivos de Log's do serviço do MySQL
-# 06. tail -f /var/log/tcpwrappers-allow-mysql.log = filtrando as conexões permitidas do MySQL
-# 07. tail -f /var/log/tcpwrappers-deny.log = filtrando as conexões negadas do MySQL
-# 08. sudo journalctl -t phpmyadmin = todas as mensagens referente ao serviço do PhpMyAdmin
-# 09. tail -f /var/log/cron.log = filtrando as mensagens do serviço do CRON
-#
-# Declarando as variáveis utilizadas nas configurações dos Serviços do LAMP-Server
-#
+# 01. /etc/mysql/mysql.conf.d/mysqld.cnf = arquivo de configuração do Servidor MySQL
+# 02. sudo systemctl status mysql = status do serviço do Oracle MySQL
+# 03. tail -f /var/log/mysql/* = vários arquivos de Log's do serviço do MySQL
+# 04. tail -f /var/log/tcpwrappers-allow-mysql.log = filtrando as conexões permitidas do MySQL
+# 05. tail -f /var/log/tcpwrappers-deny.log = filtrando as conexões negadas do MySQL
 # Variável do usuário padrão do MySQL (Root do Mysql, diferente do Root do GNU/Linux)
 USERMYSQL="root"
 #
