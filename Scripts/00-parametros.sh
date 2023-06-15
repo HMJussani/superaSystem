@@ -142,7 +142,7 @@ PORTNTP="123"
 USERMYSQL="root"
 #
 # Variáveis da senha e confirmação da senha do usuário Root do Mysql 
-SENHAMYSQL=$SENHADEFAULT
+SENHAMYSQL="Mysql@2023"
 AGAINMYSQL=$SENHAMYSQL
 #
 # Variáveis de configuração e liberação da conexão remota para o usuário Root do MySQL
