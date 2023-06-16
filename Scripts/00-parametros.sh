@@ -183,9 +183,9 @@ PORTMYSQL="3306"
 #=============================================================================================
 
 CREATE_DATABASE_SUPERA="CREATE DATABASE dbSupera CHARACTER SET utf8mb4 collate utf8mb4_bin;"
-CREATE_USER_DATABASE_SUPERA="CREATE USER 'supera'@'localhost' IDENTIFIED BY 'supera';"
-GRANT_DATABASE_SUPERA="GRANT USAGE ON *.* TO 'supera'@'localhost';"
-GRANT_ALL_DATABASE_SUPERA="GRANT ALL PRIVILEGES ON supera.* TO 'supera'@'localhost';"
+CREATE_USER_DATABASE_SUPERA="CREATE USER 'desenvolvimento'@'localhost' IDENTIFIED BY 'Desenvolvimento@1';"
+GRANT_DATABASE_SUPERA="GRANT USAGE ON *.* TO 'desenvolvimento'@'localhost';"
+GRANT_ALL_DATABASE_SUPERA="GRANT ALL PRIVILEGES ON dbSupera.* TO 'desenvolvimento'@'localhost';"
 SET_GLOBAL_SUPERA="SET GLOBAL log_bin_trust_function_creators = 1;"
 FLUSH_SUPERA="FLUSH PRIVILEGES;"
 
