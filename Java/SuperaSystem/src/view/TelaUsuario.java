@@ -46,6 +46,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
      * Creates new form TelaUsuario
      */
     public TelaUsuario() {
+        
         initComponents();
         RestrictedTextField validarId;
         validarId = new RestrictedTextField(txtUsuId);

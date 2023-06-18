@@ -35,11 +35,11 @@ import javax.management.JMRuntimeException;
 /**
  * Tela principal do sistema
  *
- * @author Professor José de Assis
+ * @author Rick
  */
 public class TelaPrincipal extends javax.swing.JFrame {
 
-    Connection conexao;
+    Connection conexao = null;
 
     /**
      * Creates new form TelaPrincipal

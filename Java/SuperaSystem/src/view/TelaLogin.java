@@ -5,7 +5,6 @@
  */
 package view;
 
-import view.TelaPrincipal;
 import conectaBancoDados.ConexaoDb;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -29,24 +28,22 @@ public class TelaLogin extends javax.swing.JFrame {
 
     private boolean conectado() {
         boolean sucesso = false;
-        conexao = ConexaoDb.getConection();
-        String conectou = conexao.toString();
+        JOptionPane.showMessageDialog(null,"Conectando ao Banco de dados...");
+       
         try {
-            if (!conectou.isEmpty()) {
-                sucesso = true;
+            conexao = ConexaoDb.getConection();
+            
+            if (conexao ==null) {
+               return sucesso;
+            }else{
+                 sucesso = true;
+                conexao.close();
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-
-            }
-        }
+            JOptionPane.showMessageDialog(null, e); }
+        
         return sucesso;
-
     }
 
     private void conecta() {
@@ -54,9 +51,7 @@ public class TelaLogin extends javax.swing.JFrame {
         usuariosDao userDao = new usuariosDao();
         String pass = new String(txtSenha.getPassword());
         String user = txtUser.getText();
-
         try {
-            
             if (userDao.checaUser(user, pass)) {
                 lblConectou.setText("Conectado!!");
                 lblConectou.setForeground(Color.green);
@@ -72,7 +67,6 @@ public class TelaLogin extends javax.swing.JFrame {
                     this.dispose();
                 }
             } else {
-
                 lblConectou.setText("Não Conectado!!");
                 lblConectou.setForeground(Color.black);
                 JOptionPane.showMessageDialog(null, "Usuário ou senha inválidos!");
@@ -90,7 +84,10 @@ public class TelaLogin extends javax.swing.JFrame {
             lblBanco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/dbConectou.png")));
  
         } else {
-            JOptionPane.showMessageDialog(null, "Não conectado com o Banco de Dados.");
+           // JOptionPane.showMessageDialog(null, "Não conectado com o Banco de Dados.");
+           btnLogin.setEnabled(false);
+           txtSenha.setEnabled(false);
+           txtUser.setEnabled(false);
         }
 
     }
