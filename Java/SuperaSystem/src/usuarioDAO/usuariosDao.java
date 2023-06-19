@@ -24,7 +24,7 @@ public class usuariosDao {
 
     public boolean checaUser(String login, String pass) throws SQLException {
         boolean sucesso = false;
-        String sql = "select * from tbusuarios where usuario =? and senha=?";
+        String sql = "select * from tbusuarios where login =? and senha=?";
 
         try {
             stmt = conexao.prepareStatement(sql);
