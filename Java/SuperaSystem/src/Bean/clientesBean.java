@@ -3,23 +3,41 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package usuarioBean;
+package Bean;
 
 /**
  *
  * @author Rick
  */
-public class usuariosBean {
+public class clientesBean {
     
     private static String user = null;
     private static String pass = null;
+    private static String perfil = null;
+    private static String nome = null;
+    
+     public static String getPerfil() {
+        return perfil;
+    }
 
+    public static void setPerfil(String perfil) {
+        clientesBean.perfil = perfil;
+    }
+    
+     public static String getNome() {
+        return nome;
+    }
+
+    public static void setNome(String nome) {
+        clientesBean.nome = nome;
+    }
+    
     public static String getUser() {
         return user;
     }
 
     public static void setUser(String user) {
-        usuariosBean.user = user;
+        clientesBean.user = user;
     }
 
     public static String getPass() {
@@ -27,10 +45,7 @@ public class usuariosBean {
     }
 
     public static void setPass(String pass) {
-        usuariosBean.pass = pass;
+        clientesBean.pass = pass;
     }
-    
-    
-    
     
 }

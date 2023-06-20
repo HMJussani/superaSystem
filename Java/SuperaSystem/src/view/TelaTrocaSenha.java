@@ -11,8 +11,8 @@ import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import usuarioBean.usuariosBean;
-import usuarioDAO.usuariosDao;
+import Bean.usuariosBean;
+import DAO.usuariosDao;
 
 /**
  *

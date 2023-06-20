@@ -15,14 +15,14 @@ insert into tbusuarios (iduser ,usuario ,login ,senha ,perfil)values(2,'Administ
 insert into tbusuarios (iduser ,usuario ,login ,senha ,perfil)values(2,'Henrique Marega Jussani', 'hmjussani', '123', 'user');
 
 create table tbclientes(
-idcli VARCHAR(100) primary key,
+idcli VARCHAR(20) primary key,
 nomecli varchar(100) not null,
 contatocli varchar(50) not null,
 endcli varchar(100) not null,
 telcli varchar(20),
-email varchar(50)not null default 'contato@contato.com',
-cidade varchar(50)not null default 'Maringá',
-estado varchar(2)not null default 'PR'
+emailCli varchar(50)not null default 'contato@contato.com',
+cidadeCli varchar(50)not null default 'Maringá',
+estadoCli varchar(2)not null default 'PR'
 );
 
 create table tbpedido(
