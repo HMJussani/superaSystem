@@ -9,8 +9,9 @@ import conectaBancoDados.ConexaoDb;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import usuarioBean.usuariosBean;
 import usuarioDAO.usuariosDao;
@@ -25,6 +26,9 @@ public class TelaLogin extends javax.swing.JFrame {
      * Creates new form TelaLogin
      */
     Connection conexao = null;
+    PreparedStatement pst;
+    ResultSet rs;
+    
 
     private boolean conectado() {
         boolean sucesso = false;
@@ -46,8 +50,7 @@ public class TelaLogin extends javax.swing.JFrame {
         return sucesso;
     }
 
-    private void conecta() {
-
+    private void conecta() { 
         usuariosDao userDao = new usuariosDao();
         String pass = new String(txtSenha.getPassword());
         String user = txtUser.getText();
@@ -62,9 +65,7 @@ public class TelaLogin extends javax.swing.JFrame {
                     TelaTrocaSenha trocaSenha = new TelaTrocaSenha(this, true);
                     trocaSenha.setVisible(true);
                 } else {
-                    TelaPrincipal telaprincipal = new TelaPrincipal();
-                    telaprincipal.setVisible(true);
-                    this.dispose();
+                checaPerfil(user);
                 }
             } else {
                 lblConectou.setText("Não Conectado!!");
@@ -77,9 +78,39 @@ public class TelaLogin extends javax.swing.JFrame {
 
     }
 
+    private void checaPerfil(String login){
+     String sql = "select * from tbusuarios where login =?";
+        try {
+            conexao = ConexaoDb.getConection();
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, login); 
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                String perfil = rs.getString(3);
+                if (perfil.equals("admin")) {
+                    TelaPrincipal principal = new TelaPrincipal();
+                    principal.setVisible(true);
+                    TelaPrincipal.menRel.setEnabled(true);
+                    TelaPrincipal.menCadUsu.setEnabled(true);
+                    TelaPrincipal.lblUsuario.setText(rs.getString(2));
+                    TelaPrincipal.lblUsuario.setForeground(Color.red);
+                    this.dispose();
+                } else {                    
+                    TelaPrincipal principal = new TelaPrincipal();
+                    principal.setVisible(true);
+                    TelaPrincipal.lblUsuario.setText(rs.getString(2));
+                    this.dispose();
+                }
+                }
+        } catch (SQLException ex) {
+              JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+    
+    
     public TelaLogin() {
         initComponents();
-        this.setIconImage(new ImageIcon(getClass().getResource("/imagem/Duke.png")).getImage()); //muda o icone padrao
+       // this.setIconImage(new ImageIcon(getClass().getResource("/imagem/Duke.png")).getImage()); //muda o icone padrao
         if (conectado()) {
             lblBanco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/dbConectou.png")));
  
@@ -112,16 +143,21 @@ public class TelaLogin extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("SuperaCoamo");
         setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Usuário:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 11, -1, -1));
 
         jLabel2.setText("Senha:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 61, -1, -1));
+        getContentPane().add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 30, 238, -1));
 
         txtSenha.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtSenhaKeyReleased(evt);
             }
         });
+        getContentPane().add(txtSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 81, 238, -1));
 
         btnLogin.setText("Login");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -134,58 +170,15 @@ public class TelaLogin extends javax.swing.JFrame {
                 btnLoginKeyReleased(evt);
             }
         });
+        getContentPane().add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(116, 119, 80, -1));
 
         lblBanco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/bderro.png"))); // NOI18N
+        getContentPane().add(lblBanco, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 10, -1, 89));
 
-        lblConectou.setText("Não conectado");
+        lblConectou.setText("Não conectado.");
+        getContentPane().add(lblConectou, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel2)
-                                .addComponent(txtSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(94, 94, 94)
-                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblConectou)
-                    .addComponent(lblBanco))
-                .addGap(27, 27, 27))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(lblBanco, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addGap(5, 5, 5)
-                        .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLogin)
-                    .addComponent(lblConectou))
-                .addContainerGap(23, Short.MAX_VALUE))
-        );
-
-        setSize(new java.awt.Dimension(411, 211));
+        setSize(new java.awt.Dimension(394, 192));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 

@@ -46,8 +46,8 @@ public class usuariosDao {
   
     public boolean excluiUser(String login) throws SQLException {
         boolean sucesso = false;
-        String user = null;
-        String sql = "delete from tbusuarios where usuario =?;";
+        //String user = null;
+        String sql = "delete from tbusuarios where login =?;";
 
         try {
             stmt = conexao.prepareStatement(sql);
@@ -66,12 +66,13 @@ public class usuariosDao {
         return sucesso;
     }
 
-    public String retornaUser() throws SQLException {
+    public String retornaUser(String login) throws SQLException {
         String user = null;
-        String sql = "select * from tbusuarios;";
+        String sql = "select * from tbusuarios where login=?;";
         try {
 
             stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, login);
             rs = stmt.executeQuery();
             while (rs.next()) {
                 user += rs.getString("iduser") + "," + rs.getString("usuario") + "," + rs.getString("login") + "," + rs.getString("perfil"); 
@@ -85,9 +86,29 @@ public class usuariosDao {
         }
         return user;
     }
+ public String retornaPerfil(String login) throws SQLException {
+        String user = null;
+        String sql = "select * from tbusuarios where login=?;";
+        try {
 
+            stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, login);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                user = rs.getString("perfil"); 
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro SQL usuários: " + e);
+        } finally {
+            conexao.close();
+
+        }
+        return user;
+    }
+    
     public boolean editaUser(String user, String pass) throws SQLException {
-        String sql = "update usuarios set pass=? where login =?;";
+        String sql = "update tbusuarios set senha=? where login =?;";
         boolean sucesso = false;
         try {
             stmt = conexao.prepareStatement(sql);
