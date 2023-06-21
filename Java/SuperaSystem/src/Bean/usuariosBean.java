@@ -15,6 +15,10 @@ public class usuariosBean {
     private static String pass = null;
     private static String perfil = null;
     private static String nome = null;
+
+    public usuariosBean() {
+    }
+    
     
      public static String getPerfil() {
         return perfil;

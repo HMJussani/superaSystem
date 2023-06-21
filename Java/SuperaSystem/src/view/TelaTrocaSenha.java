@@ -12,7 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import Bean.usuariosBean;
-import DAO.usuariosDao;
+import DAO.UsuariosDao;
 
 /**
  *
@@ -25,7 +25,7 @@ public class TelaTrocaSenha extends javax.swing.JDialog {
      */
     private boolean trocaSenha() throws SQLException {
         boolean sucesso =false;
-        usuariosDao userDao = new usuariosDao();
+        UsuariosDao userDao = new UsuariosDao();
         String pass = new String(txtAntigaSenha.getPassword());
         String newPass = new String(txtNovaSenha.getPassword());
         String user = txtUser.getText();

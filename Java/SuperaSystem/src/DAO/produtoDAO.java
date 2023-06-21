@@ -17,9 +17,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import javax.swing.JOptionPane;
+import Bean.ProdutosBean;
 
-public class produtoDAO {
-    
+public class ProdutoDAO {
+ ProdutosBean produto; 
  PreparedStatement pst = null;
  ResultSet rs = null;
  Connection  conexao = ConexaoDb.getConection();
@@ -36,8 +37,7 @@ public class produtoDAO {
             pst.setString(4, descricaoProd);
             pst.setString(5, patProd);           
             int adicionado = pst.executeUpdate();
-            if (adicionado > 0) {
-                    JOptionPane.showMessageDialog(null, "Produto adicionado com sucesso");
+            if (adicionado > 0) {                   
                     sucesso = true;
                     conexao.close();
                 }       
@@ -47,22 +47,25 @@ public class produtoDAO {
        return sucesso;
     }
  
-  public void pesquisarProduto(String nserieProd)throws SQLException {        
-        String sql = "select * from tbproduto where nserieProd=?";
+  public ProdutosBean pesquisarProduto(String nserieProd)throws SQLException {        
+       String sql = "select * from tbproduto where nserieProd=?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1,nserieProd);
-            rs = pst.executeQuery();            
+            rs = pst.executeQuery();
+           while (rs.next()) {
+            ProdutosBean.setNserieProd(rs.getString("nserieProd"));
+            ProdutosBean.setTipoProd(rs.getString("tipoProd"));
+            ProdutosBean.setModeloProd(rs.getString("modeloProd"));
+            ProdutosBean.setDescricaoProd(rs.getString("descricaoProd"));
+            ProdutosBean.setPatProd(rs.getString("patProd"));
+            }
+           conexao.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
-        } finally {
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
+        }         
+        return produto;
     }
   
    public void pesquisarProduto()throws SQLException {        
@@ -86,7 +89,7 @@ public class produtoDAO {
       boolean sucesso = false; 
       int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            String sql = "update tbclientes set nomecli=?,endcli=?,fonecli=?,emailcli=? where nserieProd=?";
+            String sql = "update tbproduto set nserieProd=?,tipoProd=?,modeloProd=?,descricaoProd=?, patProd=? where nserie=?";
             try {
                 conexao = ConexaoDb.getConection();
                 pst = conexao.prepareStatement(sql);               
@@ -96,7 +99,7 @@ public class produtoDAO {
                 pst.setString(4, patProd);                       
                 int adicionado = pst.executeUpdate();
                     if (adicionado > 0) {
-                        JOptionPane.showMessageDialog(null, "Dados do produto alterados com sucesso");
+                        JOptionPane.showMessageDialog(null, "Dados do produto alterados com sucesso");                        
                         sucesso = true; 
                         conexao.close();
                     }
@@ -117,8 +120,7 @@ public class produtoDAO {
                 pst = conexao.prepareStatement(sql);
                 pst.setString(1, nserieProd);
                 int apagado = pst.executeUpdate();
-                if (apagado > 0) {                   
-                    JOptionPane.showMessageDialog(null, "Produto removido com sucesso");
+                if (apagado > 0) {
                     sucesso = true;
                     conexao.close();
                 }

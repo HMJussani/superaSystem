@@ -18,7 +18,7 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import javax.swing.JOptionPane;
 
-public class clienteDAO {
+public class ClienteDAO {
 
     PreparedStatement pst = null;
     ResultSet rs = null;

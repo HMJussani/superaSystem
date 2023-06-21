@@ -14,7 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import Bean.usuariosBean;
-import DAO.usuariosDao;
+import DAO.UsuariosDao;
 
 /**
  *
@@ -51,7 +51,7 @@ public class TelaLogin extends javax.swing.JFrame {
     }
 
     private void conecta() { 
-        usuariosDao userDao = new usuariosDao();
+        UsuariosDao userDao = new UsuariosDao();
         String pass = new String(txtSenha.getPassword());
         String user = txtUser.getText();
         try {

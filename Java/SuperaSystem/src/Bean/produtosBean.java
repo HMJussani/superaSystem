@@ -9,7 +9,7 @@ package Bean;
  *
  * @author Rick
  */
-public class produtosBean {
+public class ProdutosBean {
     
     private static String nserieProd = null;
     private static String tipoProd = null;
@@ -17,7 +17,7 @@ public class produtosBean {
     private static String descricaoProd = null;
     private static String patProd = null;
     
-    public produtosBean() {
+    public ProdutosBean() {
     }
     
      public static String getNserieProd() {
@@ -25,7 +25,7 @@ public class produtosBean {
     }
 
     public static void setNserieProd(String nserieProd) {
-        produtosBean.nserieProd = nserieProd;
+        ProdutosBean.nserieProd = nserieProd;
     }
     
      public static String getTipoProd() {
@@ -33,7 +33,7 @@ public class produtosBean {
     }
 
     public static void setTipoProd(String tipoProd) {
-        produtosBean.tipoProd = tipoProd;
+        ProdutosBean.tipoProd = tipoProd;
     }
     
     public static String getModeloProd() {
@@ -41,7 +41,7 @@ public class produtosBean {
     }
 
     public static void setModeloProd(String modeloProd) {
-        produtosBean.modeloProd = modeloProd;
+        ProdutosBean.modeloProd = modeloProd;
     }
 
     public static String getDescricaoProd() {
@@ -49,7 +49,7 @@ public class produtosBean {
     }
 
     public static void setDescricaoProd(String descricaoProd) {
-        produtosBean.descricaoProd = descricaoProd;
+        ProdutosBean.descricaoProd = descricaoProd;
     }
 
     public static String getPatProd() {
@@ -57,6 +57,6 @@ public class produtosBean {
     }
 
     public static void setPatProd(String patProd) {
-        produtosBean.patProd = patProd;
+        ProdutosBean.patProd = patProd;
     }
 }

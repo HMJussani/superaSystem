@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  *
  * @author Rick
  */
-public class usuariosDao {
+public class UsuariosDao {
 
     PreparedStatement stmt = null;
     ResultSet rs = null;
