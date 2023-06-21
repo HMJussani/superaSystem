@@ -42,10 +42,11 @@ foreign key (compTipo) references tbcomponente(tipo),
 );
 
 
-CREATE table tbcomponentes(
-tipo VARCHAR(100) primary key not null,
-modelo varchar(100) not null,
+create table tbcomponentes(
 nserie varchar(20) primary key not null ,
+cod VARCHAR(10) unique not null,
+tipo VARCHAR(100)  not null,
+modelo varchar(100) not null,
 fabricante varchar(50) not null,
 descricao varchar(200) not null,
 custo decimal(10,2),
@@ -53,13 +54,13 @@ datavenda TIMESTAMP default current_timestamp
 
 );
 
-insert into tbcomponentes (tipo ,modelo ,nserie ,fabricante ,descricao ,custo)values('Armazenamento', 'SSD', 'xyz123456', 'Samsung', 'SSD SATA', '190,00');
+insert into tbcomponentes (nserie ,cod, tipo ,modelo ,fabricante ,descricao ,custo)values('xyz123456','001','Armazenamento', 'SSD',  'Samsung', 'SSD SATA', '190.00');
 
 CREATE table tbproduto(
-tipoProd VARCHAR(100) primary key not null,
-modeloProd varchar(100) not null,
 nserieProd varchar(20) primary key not null ,
-descricaoProd varchar(200) not null,
+tipoProd VARCHAR(100) not null,
+modeloProd varchar(100) not null,
+descricaoProd varchar(200) 
 
 );
 

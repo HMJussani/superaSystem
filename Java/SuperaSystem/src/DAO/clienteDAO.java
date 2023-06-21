@@ -82,7 +82,7 @@ public class clienteDAO {
     /**
      * Método responsável pela edição dos dados do cliente
      */
-    public void ediitarCliente(String nome, String endereco, String fone, String contato)throws SQLException {
+    public void editarCliente(String nome, String endereco, String fone, String contato)throws SQLException {
         int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste cliente?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
             String sql = "update tbclientes set nomecli=?,endcli=?,fonecli=?,emailcli=? where idcli=?";

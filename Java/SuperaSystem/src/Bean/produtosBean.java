@@ -11,41 +11,52 @@ package Bean;
  */
 public class produtosBean {
     
-    private static String user = null;
-    private static String pass = null;
-    private static String perfil = null;
-    private static String nome = null;
+    private static String nserieProd = null;
+    private static String tipoProd = null;
+    private static String modeloProd = null;
+    private static String descricaoProd = null;
+    private static String patProd = null;
     
-     public static String getPerfil() {
-        return perfil;
-    }
-
-    public static void setPerfil(String perfil) {
-        produtosBean.perfil = perfil;
+    public produtosBean() {
     }
     
-     public static String getNome() {
-        return nome;
+     public static String getNserieProd() {
+        return nserieProd;
     }
 
-    public static void setNome(String nome) {
-        produtosBean.nome = nome;
+    public static void setNserieProd(String nserieProd) {
+        produtosBean.nserieProd = nserieProd;
     }
     
-    public static String getUser() {
-        return user;
+     public static String getTipoProd() {
+        return tipoProd;
     }
 
-    public static void setUser(String user) {
-        produtosBean.user = user;
-    }
-
-    public static String getPass() {
-        return pass;
-    }
-
-    public static void setPass(String pass) {
-        produtosBean.pass = pass;
+    public static void setTipoProd(String tipoProd) {
+        produtosBean.tipoProd = tipoProd;
     }
     
+    public static String getModeloProd() {
+        return modeloProd;
+    }
+
+    public static void setModeloProd(String modeloProd) {
+        produtosBean.modeloProd = modeloProd;
+    }
+
+    public static String getDescricaoProd() {
+        return descricaoProd;
+    }
+
+    public static void setDescricaoProd(String descricaoProd) {
+        produtosBean.descricaoProd = descricaoProd;
+    }
+
+    public static String getPatProd() {
+        return patProd;
+    }
+
+    public static void setPatProd(String patProd) {
+        produtosBean.patProd = patProd;
+    }
 }
