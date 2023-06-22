@@ -5,6 +5,7 @@
 package DAO;
 
 import Bean.ComponenteBean;
+import Bean.ProdutosBean;
 import conectaBancoDados.ConexaoDb;
 import java.awt.HeadlessException;
 import java.sql.Connection;
@@ -12,33 +13,38 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author RMA
  */
-public class ComponenteDao {
- ComponenteBean componente; 
+public class ProdutoDao {
+ ProdutosBean produto = null; 
  PreparedStatement pst = null;
  ResultSet rs = null;
  Connection  conexao = ConexaoDb.getConection();
  
- public boolean adicionarComponente(String nserie, String cod, String tipo, String modelo, String fabricante, String descricao, String custo, String datavenda)throws SQLException {
+ public boolean adicionarProduto(String nserie,String memoria, String modelo, String motherBoard, String patProd, String armazenamento,String alimentacao, String saidaParalela, String saidaSerial,
+ String redeLan, String wifi,String lote)throws SQLException {
      boolean sucesso = false;   
-     String sql = "insert into tbpcomponente(nserie, cod, tipo, modelo, fabricante, decricao, custo, datavenda) values(?,?,?,?,?)";
+     String sql = "insert into tbproduto(String nserie,String memoria, String modelo, String motherBoard, String patProd, String armazenamento,String alimentacao, String saidaParalela, String saidaSerial," +
+"String redeLan, String wifi,String lote) values(?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1, nserie);
-            pst.setString(2, cod);
-            pst.setString(3, tipo);
-            pst.setString(4, modelo);
-            pst.setString(5,  fabricante); 
-            pst.setString(6, descricao);
-            pst.setString(7, custo);
-            pst.setString(8,  datavenda);
+            pst.setString(2, memoria);
+            pst.setString(3, modelo);
+            pst.setString(4, motherBoard);
+            pst.setString(5, patProd); 
+            pst.setString(6, armazenamento);
+            pst.setString(7, alimentacao);
+            pst.setString(8, saidaParalela);
+             pst.setString(9, saidaSerial); 
+            pst.setString(10, redeLan);
+            pst.setString(11, wifi);
+            pst.setString(12, lote);
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {                   
                     sucesso = true;
@@ -50,69 +56,54 @@ public class ComponenteDao {
        return sucesso;
     }
  
-  public ComponenteBean pesquisarProduto(String nserie)throws SQLException {        
-       String sql = "select * from tbcomponente where nserie=?";
+  public ProdutosBean pesquisarProduto(String nserie)throws SQLException {        
+       String sql = "select * from tbproduto where nserie=?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1,nserie);
             rs = pst.executeQuery();
            while (rs.next()) {
-            componente.setNserie(rs.getString("nserie"));
-            componente.setCod(rs.getString("cod"));
-            componente.setTipo(rs.getString("tipo"));
-            componente.setModelo(rs.getString("modelo"));
-            componente.setFabricante(rs.getString("fabricante"));
-            componente.setDescricao(rs.getString("descricao"));
-            componente.setCusto(rs.getString("custo"));
-            componente.setDatavenda(rs.getString("datavenda"));            
+            produto.setNserie(rs.getString( "nserie"));
+            produto.setMemoria(rs.getString(" memoria"));
+            produto.setModelo(rs.getString( "modelo"));
+            produto.setMotherBoard(rs.getString( "motherBoard"));
+            produto.setPatProd(rs.getString( "patProd")); 
+            produto.setArmazenamento(rs.getString(" armazenamento"));
+            produto.setAlimentacao(rs.getString( "alimentacao"));
+            produto.setSaidaParalela(rs.getString( "saidaParalela"));
+             produto.setSaidaSerial(rs.getString( "saidaSerial")); 
+            produto.setRedeLan(rs.getString(  "redeLan"));
+            produto.setWifi(rs.getString(" wifi"));
+            produto.setLote(rs.getString(  "lote"));         
             }
            conexao.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }         
-        return componente;
+        return produto;
     }
   
-  public ComponenteBean pesquisarProduto()throws SQLException {        
-       String sql = "select * from tbcomponente";
-        try {
-            conexao = ConexaoDb.getConection();
-            pst = conexao.prepareStatement(sql);           
-            rs = pst.executeQuery();
-            while (rs.next()) {
-            componente.setNserie(rs.getString("nserie"));
-            componente.setCod(rs.getString("cod"));
-            componente.setTipo(rs.getString("tipo"));
-            componente.setModelo(rs.getString("modelo"));
-            componente.setFabricante(rs.getString("fabricante"));
-            componente.setDescricao(rs.getString("descricao"));
-            componente.setCusto(rs.getString("custo"));
-            componente.setDatavenda(rs.getString("datavenda"));            
-            }
-           conexao.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        }         
-        return componente;
-    }
   
-  public boolean editarComponente(String nserie, String cod, String tipo, String modelo, String fabricante, String descricao, Double custo, Date datavenda)throws SQLException {
+  public boolean editarProduto(String nserie,String memoria, String modelo, String motherBoard, String patProd, String armazenamento,String alimentacao, String saidaParalela, String saidaSerial,
+ String redeLan, String wifi,String lote)throws SQLException {
       boolean sucesso = false; 
       int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
       if (confirma == JOptionPane.YES_OPTION) {             
-        String sql = "update tbpcomponente set nserie=?, cod=?, tipo=?, modelo=?, fabricante=?, decricao=?, custo=?, datavenda=? where nserie=?";
+        String sql = "update tbpcomponente set  memoria=?, modelo=?, motherBoard=?, armazenamento=?, alimentacao=?, saidaParalela=?, saidaSerial=?,redeLan=?,wifi=?, lote=? where nserie=?";
         try {
             conexao = ConexaoDb.getConection();
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, nserie);
-            pst.setString(2, cod);
-            pst.setString(3, tipo);
-            pst.setString(4, modelo);
-            pst.setString(5,  fabricante); 
-            pst.setString(6, descricao);
-            pst.setDouble(7, custo);
-            pst.setDate(8, (java.sql.Date) datavenda);
+            pst = conexao.prepareStatement(sql);            
+            pst.setString(1, memoria);
+            pst.setString(2, modelo);
+            pst.setString(3, motherBoard);           
+            pst.setString(4, armazenamento);
+            pst.setString(5, alimentacao);
+            pst.setString(6, saidaParalela);
+             pst.setString(7, saidaSerial); 
+            pst.setString(8, redeLan);
+            pst.setString(9, wifi);
+            pst.setString(10, lote);
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {                   
                     sucesso = true;

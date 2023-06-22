@@ -56,11 +56,19 @@ datavenda TIMESTAMP default current_timestamp
 
 insert into tbcomponentes (nserie ,cod, tipo ,modelo ,fabricante ,descricao ,custo)values('xyz123456','001','Armazenamento', 'SSD',  'Samsung', 'SSD SATA', '190.00');
 
-CREATE table tbproduto(
-nserieProd varchar(20) primary key not null ,
-tipoProd VARCHAR(100) not null,
-modeloProd varchar(100) not null,
-descricaoProd varchar(200) 
+create table tbproduto(
+nserie varchar(20) primary key not null ,
+modelo varchar(50)  unique not null,
+motherBoard VARCHAR(100) not null,
+patrimonio VARCHAR(20) unique not null,
+memoria VARCHAR(100) not null,
+armazenamento VARCHAR(100)  not null,
+redeLan varchar(50) not null,
+wifi varchar(50) not null,
+expansaoSerial varchar(5) not null,
+expansaoParalela boolean default false,
+lote varchar(10) not null,
+alimentacao varchar(50) not null
 
 );
 
