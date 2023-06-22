@@ -28,12 +28,10 @@ public class TelaLogin extends javax.swing.JFrame {
     Connection conexao = null;
     PreparedStatement pst;
     ResultSet rs;
-    
+     boolean sucesso = false;
 
     private boolean conectado() {
-        boolean sucesso = false;
         JOptionPane.showMessageDialog(null,"Conectando ao Banco de dados...");
-       
         try {
             conexao = ConexaoDb.getConection();
             
@@ -50,7 +48,8 @@ public class TelaLogin extends javax.swing.JFrame {
         return sucesso;
     }
 
-    private void conecta() { 
+    private void conecta(boolean sucesso) { 
+       if(sucesso){
         UsuariosDao userDao = new UsuariosDao();
         String pass = new String(txtSenha.getPassword());
         String user = txtUser.getText();
@@ -75,7 +74,15 @@ public class TelaLogin extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
-
+       }else{
+       TelaPrincipal principal = new TelaPrincipal();
+       principal.setVisible(true);
+       TelaPrincipal.menRel.setEnabled(true);
+       TelaPrincipal.menCadUsu.setEnabled(true);
+       TelaPrincipal.lblUsuario.setText("Sem DB");
+       TelaPrincipal.lblUsuario.setForeground(Color.red);
+       this.dispose();
+       }
     }
 
     private void checaPerfil(String login){
@@ -116,7 +123,7 @@ public class TelaLogin extends javax.swing.JFrame {
  
         } else {
            // JOptionPane.showMessageDialog(null, "Não conectado com o Banco de Dados.");
-           btnLogin.setEnabled(false);
+          // btnLogin.setEnabled(false);
            txtSenha.setEnabled(false);
            txtUser.setEnabled(false);
         }
@@ -183,13 +190,13 @@ public class TelaLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        conecta();
+        conecta(sucesso);
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void txtSenhaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSenhaKeyReleased
         int tecla = evt.getKeyCode();
         if (tecla == KeyEvent.VK_ENTER) {
-            conecta();
+            conecta(sucesso);
         }
 
 
@@ -198,7 +205,7 @@ public class TelaLogin extends javax.swing.JFrame {
     private void btnLoginKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnLoginKeyReleased
         int tecla = evt.getKeyCode();
         if (tecla == KeyEvent.VK_ENTER) {
-            conecta();
+            conecta(sucesso);
         }
     }//GEN-LAST:event_btnLoginKeyReleased
 

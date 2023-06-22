@@ -5,6 +5,7 @@
  */
 package conectaBancoDados;
 
+import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -26,10 +27,14 @@ public class ConexaoDb {
         try {
             Class.forName(DRIVER);
             conexao = DriverManager.getConnection(URL, USER, PASS);
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch(CommunicationsException ex){
+         JOptionPane.showMessageDialog(null, "Erro de conexão com Banco de Dados.Execute em modo Somente Leitura.");
+        
+        }catch (ClassNotFoundException | SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro de conexão: " + ex);
-            return null;
-        }
+            System.out.println(ex);
+            }
+        
         return conexao;
     }
    

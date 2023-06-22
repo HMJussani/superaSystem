@@ -1,6 +1,6 @@
 package view;
 
-import java.sql.*;
+import DAO.InfoProdutoDao;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -15,19 +15,12 @@ public class TelaProduto extends javax.swing.JInternalFrame {
     String loteProd = null;
     String modelo= null;  
     String patProd = null;
-    
+     InfoProdutoDao infoProduto = new InfoProdutoDao();
     
     public TelaProduto() {
         initComponents();
     }
 
-    private void pesquisarProduto(String nserieProd) {
-       
-    }
-
-    /**
-     * método usado para setar os campos de texto com o conteúdo da tabela
-     */
     private void setarCampos() {
         int setar = tbProd.getSelectedRow();
         txtModel.setText(tbProd.getModel().getValueAt(setar, 0).toString());
@@ -36,18 +29,9 @@ public class TelaProduto extends javax.swing.JInternalFrame {
         btnAdicionar.setEnabled(false);
         btnAlterar.setEnabled(true);
         btnRemover.setEnabled(true);
-    }
-
-    /**
-     * Método responsável pela edição dos dados do cliente
-     */
-    private void editarProduto(String nserieProd) {
-       
-    }
+    } 
     
-    /**
-     * Método responsável por limpar os campos e gerenciar os componentes
-     */
+    
     private void limpar() {
         txtSerialPesquisa.setText(null);
         txtModel.setText(null);
@@ -262,23 +246,34 @@ public class TelaProduto extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-       getDados();
+       getDados();      
+       if(infoProduto.adicionarInfo(nserie, loteProd, modelo, patProd)){
+           JOptionPane.showMessageDialog(null, "Produto adicionando com sucesso");
+       }
+       
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void txtSerialPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSerialPesquisaKeyReleased
-      //  pesquisarCliente();
+      
+     
     }//GEN-LAST:event_txtSerialPesquisaKeyReleased
 
     private void tbProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProdMouseClicked
-       // setarCampos();
+       setarCampos();
     }//GEN-LAST:event_tbProdMouseClicked
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        //ediitarCliente();
+         getDados();
+       if(infoProduto.editarProduto(nserie, loteProd, modelo, patProd)){
+         JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso");  
+       }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-             
+          getDados();
+          if(infoProduto.excluirProduto(nserie)){
+               JOptionPane.showMessageDialog(null, "Produto removido com sucesso");
+          }
     }//GEN-LAST:event_btnRemoverActionPerformed
 
 
