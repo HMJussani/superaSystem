@@ -160,7 +160,7 @@ FLUSH="FLUSH PRIVILEGES;"
 SELECTUSER="SELECT user,host FROM user;"
 #
 # Variável do Endereço IPv4 acesso remoto Mysql
-IPV4DEV="192.168.100.126"
+IPV4DEV="192.168.100.101" #IP maquina virtual Supera
 # Variáveis de configuração e liberação da conexão remota para o usuário Root do MySQL
 CREATEUSER="CREATE USER '$USERMYSQL'@'%' IDENTIFIED BY '$SENHAMYSQL';"
 ALTERUSER="ALTER USER '$USERMYSQL'@'$IPV4DEV' IDENTIFIED WITH mysql_native_password BY '$SENHAMYSQL';"
@@ -187,6 +187,9 @@ CREATE_DATABASE_SUPERA="CREATE DATABASE dbSupera CHARACTER SET utf8mb4 collate u
 CREATE_USER_DATABASE_SUPERA="CREATE USER 'desenvolvimento'@'localhost' IDENTIFIED BY 'Desenvolvimento@1';"
 GRANT_DATABASE_SUPERA="GRANT USAGE ON *.* TO 'desenvolvimento'@'localhost';"
 GRANT_ALL_DATABASE_SUPERA="GRANT ALL PRIVILEGES ON dbSupera.* TO 'desenvolvimento'@'localhost';"
+CREATE_USER_DATABASE_SUPERA="CREATE USER 'desenvolvimento'@'$IPV4DEV' IDENTIFIED BY 'Desenvolvimento@1';"
+GRANT_DATABASE_SUPERA="GRANT USAGE ON *.* TO 'desenvolvimento'@'$IPV4DEV';"
+GRANT_ALL_DATABASE_SUPERA="GRANT ALL PRIVILEGES ON dbSupera.* TO 'desenvolvimento'@'$IPV4DEV';"
 SET_GLOBAL_SUPERA="SET GLOBAL log_bin_trust_function_creators = 1;"
 FLUSH_SUPERA="FLUSH PRIVILEGES;"
 

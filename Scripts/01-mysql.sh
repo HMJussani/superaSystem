@@ -141,11 +141,8 @@ echo -e "Software removidos com sucesso!!!, continuando com o script...\n"
 sleep 5
 #
 echo -e "Inicializando instalacao MySql, continuando com o script...\n"
-sudo apt update && sudo apt install mysql-server mysql-client mysql-common
-#echo -e "Iniciando a Configuração do OpenSSL TLS/SSL no MySQL, aguarde...\n"
-sleep 5
+sudo apt update && sudo apt install mysql-server mysql-client mysql-common y
 #
-
 echo -e "Reinicializando o serviço do MySQL, aguarde..."
 	# opção do comando: &>> (redirecionar a saída padrão)
 	systemctl restart mysql &>> $LOG

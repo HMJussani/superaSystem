@@ -7,7 +7,7 @@ iduser int primary key auto_increment,
 usuario varchar(50) not null,
 login varchar(20) not null unique,
 senha varchar(20) not null,
-perfil varchar(20) not null
+perfil varchar(20) default 'Tecnico'
 
 );
 
@@ -43,20 +43,20 @@ foreign key (compTipo) references tbcomponente(tipo),
 
 
 create table tbInfoProd(
-nserie varchar(20) not null ,
+nserie varchar(20) primary key not null,
 loteProd VARCHAR(10) unique not null,
-modelo varchar(20) not null,
-patProd varchar(20) not null,
-foreign key (nserie) references tbproduto(nserie)
+model varchar(20) unique not null,
+patProd varchar(20) unique not null
+
 );
 
-insert into tbcomponentes (nserie ,cod, tipo ,modelo ,fabricante ,descricao ,custo)values('xyz123456','001','Armazenamento', 'SSD',  'Samsung', 'SSD SATA', '190.00');
+insert into tbInfoProd (nserie, loteProd, model, patProd)values("12345","lote","modelo","patrimonio");
 
 create table tbproduto(
-nserie varchar(20) primary key not null ,
-loteCompra varchar(10) unique not null,
-patProd VARCHAR(20) unique not null,
-model varchar(50)  unique not null,
+nserie varchar(20) not null ,
+loteProd varchar(10)  not null,
+patProd VARCHAR(20)  not null,
+model varchar(50)   not null,
 mem VARCHAR(50) not null,
 mBoard VARCHAR(50) not null,
 source varchar(50) not null,
@@ -64,12 +64,16 @@ storage VARCHAR(50)  not null,
 sParalela varchar(5) default "0",
 sSerial varchar(5) default "1",
 redeLan varchar(50) default "onBoard",
-wifi varchar(50) default "off"
+wifi varchar(50) default "off",
+foreign key (nserie) references tbInfoProd(nserie),
+foreign key (loteProd) references tbInfoProd(loteProd),
+foreign key (model) references tbInfoProd(model),
+foreign key (patProd) references tbInfoProd(patProd)
 
 
 );
 
-insert into tbproduto(nserie, loteCompra, patProd, model, mem, mBoard, storage, source, sParalela,sSerial,redeLan, wifi) values("12345","lote","patrimonio","modelo","memoria","placaMae","fonteAlimenta","armazenamento","D25","DB9","lan","wifi");
+insert into tbproduto(nserie, loteProd, patProd, model, mem, mBoard, storage, source, sParalela,sSerial,redeLan, wifi) values("12345","lote","patrimonio","modelo","memoria","placaMae","fonteAlimenta","armazenamento","D25","DB9","lan","wifi");
 
 describe tbpedido;
 describe tbusuarios;
