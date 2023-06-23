@@ -24,26 +24,24 @@ public class ProdutoDao {
  ResultSet rs = null;
  Connection  conexao = ConexaoDb.getConection();
  
- public boolean adicionarProduto(String nserie,String memoria, String modelo, String motherBoard, String patProd, String armazenamento,String alimentacao, String saidaParalela, String saidaSerial,
- String redeLan, String wifi,String lote)throws SQLException {
+ public boolean adicionarProduto(String nserie, String loteCompra, String patProd, String model, String mem, String mBoard,String storage, String power, String sParalela, String sSerial, String redeLan, String wifi){
      boolean sucesso = false;   
-     String sql = "insert into tbproduto(String nserie,String memoria, String modelo, String motherBoard, String patProd, String armazenamento,String alimentacao, String saidaParalela, String saidaSerial," +
-"String redeLan, String wifi,String lote) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+     String sql = "insert into tbproduto(nserie, loteCompra, patProd, model, mem, mBoard, storage, source, sParalela,sSerial,redeLan, wifi) values(?,?,?,?,?,?,?,?,?,?,?,?);";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1, nserie);
-            pst.setString(2, memoria);
-            pst.setString(3, modelo);
-            pst.setString(4, motherBoard);
-            pst.setString(5, patProd); 
-            pst.setString(6, armazenamento);
-            pst.setString(7, alimentacao);
-            pst.setString(8, saidaParalela);
-             pst.setString(9, saidaSerial); 
-            pst.setString(10, redeLan);
-            pst.setString(11, wifi);
-            pst.setString(12, lote);
+            pst.setString(2, loteCompra);
+            pst.setString(3, patProd);
+            pst.setString(4, model);
+            pst.setString(5, mem); 
+            pst.setString(6, mBoard);
+            pst.setString(7, power);
+            pst.setString(8, storage);            
+            pst.setString(9, sParalela);
+            pst.setString(10, sSerial); 
+            pst.setString(11, redeLan);
+            pst.setString(12, wifi);
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {                   
                     sucesso = true;
@@ -55,7 +53,7 @@ public class ProdutoDao {
        return sucesso;
     }
  
-  public ProdutosBean pesquisarProduto(String nserie)throws SQLException {        
+  public ProdutosBean pesquisarProduto(String nserie) {        
        String sql = "select * from tbproduto where nserie=?";
         try {
             conexao = ConexaoDb.getConection();
@@ -64,17 +62,17 @@ public class ProdutoDao {
             rs = pst.executeQuery();
            while (rs.next()) {
             produto.setNserie(rs.getString( "nserie"));
-            produto.setMemoria(rs.getString(" memoria"));
-            produto.setModelo(rs.getString( "modelo"));
-            produto.setMotherBoard(rs.getString( "motherBoard"));
-            produto.setPatProd(rs.getString( "patProd")); 
-            produto.setArmazenamento(rs.getString(" armazenamento"));
-            produto.setAlimentacao(rs.getString( "alimentacao"));
-            produto.setSaidaParalela(rs.getString( "saidaParalela"));
-             produto.setSaidaSerial(rs.getString( "saidaSerial")); 
-            produto.setRedeLan(rs.getString(  "redeLan"));
-            produto.setWifi(rs.getString(" wifi"));
-            produto.setLote(rs.getString(  "lote"));         
+            produto.setLoteCompra(rs.getString(" loteCompra"));
+            produto.setPatProd(rs.getString( "patProd"));
+            produto.setModel(rs.getString( "model"));
+            produto.setMem(rs.getString( "mem")); 
+            produto.setmBoard(rs.getString(" mBoard"));
+            produto.setPower(rs.getString( "source"));
+            produto.setStorage(rs.getString( "storage"));
+            produto.setsParalela(rs.getString( "sParalela")); 
+            produto.setsSerial(rs.getString(  "sSerial"));
+            produto.setRedeLan(rs.getString(" redeLan"));
+            produto.setWifi(rs.getString(  "wifi"));         
             }
            conexao.close();
         } catch (SQLException e) {
@@ -84,55 +82,53 @@ public class ProdutoDao {
     }
   
   
-  public boolean editarProduto(String nserie,String memoria, String modelo, String motherBoard, String patProd, String armazenamento,String alimentacao, String saidaParalela, String saidaSerial,
- String redeLan, String wifi,String lote)throws SQLException {
+  public boolean editarProduto(String nserie, String loteCompra, String patProd, String model, String mem, String mBoard,String storage, String power, String sParalela, String sSerial, String redeLan, String wifi){
       boolean sucesso = false; 
       int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
       if (confirma == JOptionPane.YES_OPTION) {             
-        String sql = "update tbpcomponente set  memoria=?, modelo=?, motherBoard=?, armazenamento=?, alimentacao=?, saidaParalela=?, saidaSerial=?,redeLan=?,wifi=?, lote=? where nserie=?";
+        String sql = "update tbpproduto set  loteCompra=?, patProd=?, model=?, mem=?, mBoard=?, storage=?, source=?, sParalela=? ,sSerial=?,redeLan=?, wifi=? where nserie=?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);            
-            pst.setString(1, memoria);
-            pst.setString(2, modelo);
-            pst.setString(3, motherBoard);           
-            pst.setString(4, armazenamento);
-            pst.setString(5, alimentacao);
-            pst.setString(6, saidaParalela);
-             pst.setString(7, saidaSerial); 
-            pst.setString(8, redeLan);
-            pst.setString(9, wifi);
-            pst.setString(10, lote);
-            int adicionado = pst.executeUpdate();
-            if (adicionado > 0) {                   
+            pst.setString(1, loteCompra);
+            pst.setString(2, patProd);
+            pst.setString(3, model);           
+            pst.setString(4, mem);
+            pst.setString(5, mBoard);
+            pst.setString(6, storage);
+             pst.setString(7, power); 
+            pst.setString(8, sParalela);
+            pst.setString(9, sSerial);
+            pst.setString(10, redeLan);
+            pst.setString(11, wifi);
+            int editado = pst.executeUpdate();
+            if (editado > 0) {                   
                     sucesso = true;
                     conexao.close();
                 }       
         } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
-        }        
-       
+             }  
         }
         return sucesso;
     }
 
-    public boolean excluirProduto(String nserie)throws SQLException {
+    public boolean excluirProduto(String nserie){
         boolean sucesso = false;
-        int confirma = JOptionPane.showConfirmDialog(null, "Confima a exclusão deste Componente?", "Atenção!", JOptionPane.YES_NO_OPTION);
+        int confirma = JOptionPane.showConfirmDialog(null, "Confima a exclusão deste Produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            String sql = "delete from tbcomponente where nserie=?";
+            String sql = "delete from tbproduto where nserie=?";
             try {
                 conexao = ConexaoDb.getConection();
                 pst = conexao.prepareStatement(sql);
                 pst.setString(1, nserie);
                 int apagado = pst.executeUpdate();
-                if (apagado > 0) {                   
-                    JOptionPane.showMessageDialog(null, "Componente removido com sucesso");
+                if (apagado > 0) {   
                     sucesso = true;
                     conexao.close();
                 }
             } catch (SQLIntegrityConstraintViolationException e1) {
-                JOptionPane.showMessageDialog(null, "Exclusão não realizada.\nComponente possui O.S. pendente.");
+                JOptionPane.showMessageDialog(null, "Exclusão não realizada.\nProduto possui O.S. pendente.");
             } catch (HeadlessException | SQLException e2) {
                 JOptionPane.showMessageDialog(null, e2);
 

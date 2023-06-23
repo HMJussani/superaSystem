@@ -27,7 +27,7 @@ public class InfoProdutoDao {
  
  public boolean adicionarInfo(String nserie,String loteProd, String modelo, String patProd){
      boolean sucesso = false; 
-     String sql = "insert into tbproduto(String nserie,String loteProd, String modelo, String patProd) values(?,?,?,?)";
+     String sql = "insert into tbInfoProd(nserie, loteProd, modelo, patProd) values(?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -47,7 +47,7 @@ public class InfoProdutoDao {
     }
  
   public InfoProdutoBean pesquisarProduto(String nserie)throws SQLException {        
-       String sql = "select * from tbproduto where nserie=?";
+       String sql = "select * from tbInfoProd where nserie=?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -71,7 +71,7 @@ public class InfoProdutoDao {
       boolean sucesso = false; 
       int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
       if (confirma == JOptionPane.YES_OPTION) {             
-        String sql = "update tbproduto set loteProd=?, modelo=?,  patProd=? where nserie=?";
+        String sql = "update tbInfoProd set loteProd=?, modelo=?,  patProd=? where nserie=?";
         try {
              conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);            
@@ -95,7 +95,7 @@ public class InfoProdutoDao {
         boolean sucesso = false;
         int confirma = JOptionPane.showConfirmDialog(null, "Confima a exclusão deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            String sql = "delete from tbproduto where nserie=?";
+            String sql = "delete from tbInfoProd where nserie=?";
             try {
                 conexao = ConexaoDb.getConection();
                 pst = conexao.prepareStatement(sql);

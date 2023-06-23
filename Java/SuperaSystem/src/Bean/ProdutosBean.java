@@ -11,19 +11,33 @@ package Bean;
  */
 public class ProdutosBean {
     
-   
-    private String nserie = null;
-    private String memoria = null;
-    private String modelo= null;
-    private String motherBoard = null;
-    private String patProd = null;
-    private String armazenamento = null;
-    private String alimentacao = null;
-    private String saidaParalela= null;
-    private String saidaSerial = null;
-    private String redeLan = null;
-    private String wifi = null;
-    private String lote = null;
+    private String nserie;
+    private String loteCompra;
+    private String patProd;
+    private String model;
+    private String mem; 
+    private String mBoard;
+    private String power;
+    private String storage;            
+    private String sParalela;
+    private String sSerial; 
+    private String redeLan;
+    private String wifi; 
+
+    public ProdutosBean(String nserie, String loteCompra, String patProd, String model, String mem, String mBoard, String power, String storage, String sParalela, String sSerial, String redeLan, String wifi) {
+        this.nserie = nserie;
+        this.loteCompra = loteCompra;
+        this.patProd = patProd;
+        this.model = model;
+        this.mem = mem;
+        this.mBoard = mBoard;
+        this.power = power;
+        this.storage = storage;
+        this.sParalela = sParalela;
+        this.sSerial = sSerial;
+        this.redeLan = redeLan;
+        this.wifi = wifi;
+    }
 
     public String getNserie() {
         return nserie;
@@ -33,28 +47,12 @@ public class ProdutosBean {
         this.nserie = nserie;
     }
 
-    public String getMemoria() {
-        return memoria;
+    public String getLoteCompra() {
+        return loteCompra;
     }
 
-    public void setMemoria(String memoria) {
-        this.memoria = memoria;
-    }
-
-    public String getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
-
-    public String getMotherBoard() {
-        return motherBoard;
-    }
-
-    public void setMotherBoard(String motherBoard) {
-        this.motherBoard = motherBoard;
+    public void setLoteCompra(String loteCompra) {
+        this.loteCompra = loteCompra;
     }
 
     public String getPatProd() {
@@ -65,36 +63,60 @@ public class ProdutosBean {
         this.patProd = patProd;
     }
 
-    public String getArmazenamento() {
-        return armazenamento;
+    public String getModel() {
+        return model;
     }
 
-    public void setArmazenamento(String armazenamento) {
-        this.armazenamento = armazenamento;
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    public String getAlimentacao() {
-        return alimentacao;
+    public String getMem() {
+        return mem;
     }
 
-    public void setAlimentacao(String alimentacao) {
-        this.alimentacao = alimentacao;
+    public void setMem(String mem) {
+        this.mem = mem;
     }
 
-    public String getSaidaParalela() {
-        return saidaParalela;
+    public String getmBoard() {
+        return mBoard;
     }
 
-    public void setSaidaParalela(String saidaParalela) {
-        this.saidaParalela = saidaParalela;
+    public void setmBoard(String mBoard) {
+        this.mBoard = mBoard;
     }
 
-    public String getSaidaSerial() {
-        return saidaSerial;
+    public String getPower() {
+        return power;
     }
 
-    public void setSaidaSerial(String saidaSerial) {
-        this.saidaSerial = saidaSerial;
+    public void setPower(String power) {
+        this.power = power;
+    }
+
+    public String getStorage() {
+        return storage;
+    }
+
+    public void setStorage(String storage) {
+        this.storage = storage;
+    }
+
+    public String getsParalela() {
+        return sParalela;
+    }
+
+    public void setsParalela(String sParalela) {
+        this.sParalela = sParalela;
+    }
+
+    public String getsSerial() {
+        return sSerial;
+    }
+
+    public void setsSerial(String sSerial) {
+        this.sSerial = sSerial;
     }
 
     public String getRedeLan() {
@@ -112,13 +134,6 @@ public class ProdutosBean {
     public void setWifi(String wifi) {
         this.wifi = wifi;
     }
-
-    public String getLote() {
-        return lote;
-    }
-
-    public void setLote(String lote) {
-        this.lote = lote;
-    }
-
+  
+    
 }

@@ -42,36 +42,34 @@ foreign key (compTipo) references tbcomponente(tipo),
 );
 
 
-create table tbcomponentes(
-nserie varchar(20) primary key not null ,
-cod VARCHAR(10) unique not null,
-tipo VARCHAR(100)  not null,
-modelo varchar(100) not null,
-fabricante varchar(50) not null,
-descricao varchar(200) not null,
-custo decimal(10,2),
-datavenda TIMESTAMP default current_timestamp
-
+create table tbInfoProd(
+nserie varchar(20) not null ,
+loteProd VARCHAR(10) unique not null,
+modelo varchar(20) not null,
+patProd varchar(20) not null,
+foreign key (nserie) references tbproduto(nserie)
 );
 
 insert into tbcomponentes (nserie ,cod, tipo ,modelo ,fabricante ,descricao ,custo)values('xyz123456','001','Armazenamento', 'SSD',  'Samsung', 'SSD SATA', '190.00');
 
 create table tbproduto(
 nserie varchar(20) primary key not null ,
-modelo varchar(50)  unique not null,
-motherBoard VARCHAR(100) not null,
-patrimonio VARCHAR(20) unique not null,
-memoria VARCHAR(100) not null,
-armazenamento VARCHAR(100)  not null,
-redeLan varchar(50) not null,
-wifi varchar(50) not null,
-expansaoSerial varchar(5) not null,
-expansaoParalela boolean default false,
-lote varchar(10) not null,
-alimentacao varchar(50) not null
+loteCompra varchar(10) unique not null,
+patProd VARCHAR(20) unique not null,
+model varchar(50)  unique not null,
+mem VARCHAR(50) not null,
+mBoard VARCHAR(50) not null,
+source varchar(50) not null,
+storage VARCHAR(50)  not null,
+sParalela varchar(5) default "0",
+sSerial varchar(5) default "1",
+redeLan varchar(50) default "onBoard",
+wifi varchar(50) default "off"
+
 
 );
 
+insert into tbproduto(nserie, loteCompra, patProd, model, mem, mBoard, storage, source, sParalela,sSerial,redeLan, wifi) values("12345","lote","patrimonio","modelo","memoria","placaMae","fonteAlimenta","armazenamento","D25","DB9","lan","wifi");
 
 describe tbpedido;
 describe tbusuarios;
