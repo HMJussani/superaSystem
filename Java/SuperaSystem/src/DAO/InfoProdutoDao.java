@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,7 +28,7 @@ public class InfoProdutoDao {
  
  public boolean adicionarInfo(String nserie,String loteProd, String modelo, String patProd){
      boolean sucesso = false; 
-     String sql = "insert into tbInfoProd(nserie, loteProd, modelo, patProd) values(?,?,?,?)";
+     String sql = "insert into tbInfoProd(nserie, loteProd, model, patProd) values(?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -46,32 +47,51 @@ public class InfoProdutoDao {
        return sucesso;
     }
  
-  public InfoProdutoBean pesquisarProduto(String nserie)throws SQLException {        
-       String sql = "select * from tbInfoProd where nserie=?";
+  public ArrayList<String> pesquisarProduto(String nserie){        
+      ArrayList<String> infoProd = new ArrayList<String>(); 
+      String sql = "select * from tbInfoProd where nserie=?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1,nserie);
             rs = pst.executeQuery();
            while (rs.next()) {
-            infoProduto.setNserie(rs.getString( "nserie"));
-            infoProduto.setLoteProd(rs.getString(" loteProd"));
-            infoProduto.setModelo(rs.getString( "modelo"));           
-            infoProduto.setPatProd(rs.getString( "patProd"));                      
+            infoProd.add(rs.getString( "nserie"));
+            infoProd.add(rs.getString("loteProd"));
+            infoProd.add(rs.getString( "model"));           
+            infoProd.add(rs.getString( "patProd"));                      
             }
            conexao.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }         
-        return infoProduto;
+        return infoProd;
     }
-  
+    public ArrayList<String> pesquisarProduto(){        
+      ArrayList<String> infoProd = new ArrayList<String>(); 
+      String sql = "select * from tbInfoProd";
+        try {
+            conexao = ConexaoDb.getConection();
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+           while (rs.next()) {
+            infoProd.add(rs.getString( "nserie"));
+            infoProd.add(rs.getString("loteProd"));
+            infoProd.add(rs.getString( "model"));           
+            infoProd.add(rs.getString( "patProd"));                      
+            }
+           conexao.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }         
+        return infoProd;
+    }
   
   public boolean editarProduto(String nserie,String loteProd, String modelo, String patProd){
       boolean sucesso = false; 
       int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
       if (confirma == JOptionPane.YES_OPTION) {             
-        String sql = "update tbInfoProd set loteProd=?, modelo=?,  patProd=? where nserie=?";
+        String sql = "update tbInfoProd set loteProd=?, model=?,  patProd=? where nserie=?";
         try {
              conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);            

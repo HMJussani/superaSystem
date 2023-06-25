@@ -12,7 +12,7 @@ package Bean;
 public class ProdutosBean {
     
     private String nserie;
-    private String loteCompra;
+    private String loteProd;
     private String patProd;
     private String model;
     private String mem; 
@@ -24,9 +24,9 @@ public class ProdutosBean {
     private String redeLan;
     private String wifi; 
 
-    public ProdutosBean(String nserie, String loteCompra, String patProd, String model, String mem, String mBoard, String power, String storage, String sParalela, String sSerial, String redeLan, String wifi) {
+    public ProdutosBean(String nserie, String loteProd, String patProd, String model, String mem, String mBoard, String power, String storage, String sParalela, String sSerial, String redeLan, String wifi) {
         this.nserie = nserie;
-        this.loteCompra = loteCompra;
+        this.loteProd = loteProd;
         this.patProd = patProd;
         this.model = model;
         this.mem = mem;
@@ -47,12 +47,12 @@ public class ProdutosBean {
         this.nserie = nserie;
     }
 
-    public String getLoteCompra() {
-        return loteCompra;
+    public String getLoteProd() {
+        return loteProd;
     }
 
-    public void setLoteCompra(String loteCompra) {
-        this.loteCompra = loteCompra;
+    public void setLoteProd(String loteProd) {
+        this.loteProd = loteProd;
     }
 
     public String getPatProd() {

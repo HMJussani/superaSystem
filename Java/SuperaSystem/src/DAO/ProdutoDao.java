@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,19 +20,19 @@ import javax.swing.JOptionPane;
  * @author RMA
  */
 public class ProdutoDao {
- ProdutosBean produto = null; 
  PreparedStatement pst = null;
  ResultSet rs = null;
  Connection  conexao = ConexaoDb.getConection();
  
- public boolean adicionarProduto(String nserie, String loteCompra, String patProd, String model, String mem, String mBoard,String storage, String power, String sParalela, String sSerial, String redeLan, String wifi){
+ public boolean adicionarProduto(String nserie, String loteProd, String patProd, String model, String mem, String mBoard,String storage, String power, String sParalela, String sSerial, String redeLan, String wifi){
      boolean sucesso = false;   
-     String sql = "insert into tbproduto(nserie, loteCompra, patProd, model, mem, mBoard, storage, source, sParalela,sSerial,redeLan, wifi) values(?,?,?,?,?,?,?,?,?,?,?,?);";
+     String sql = "insert into tbproduto(nserie, loteProd, patProd, model, mem, mBoard, storage, source, sParalela,sSerial,redeLan, wifi) values(?,?,?,?,?,?,?,?,?,?,?,?);";
+     
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1, nserie);
-            pst.setString(2, loteCompra);
+            pst.setString(2, loteProd);
             pst.setString(3, patProd);
             pst.setString(4, model);
             pst.setString(5, mem); 
@@ -53,7 +54,8 @@ public class ProdutoDao {
        return sucesso;
     }
  
-  public ProdutosBean pesquisarProduto(String nserie) {        
+  public  ArrayList<String> pesquisarProduto(String nserie) { 
+       ArrayList<String> produto = new ArrayList<>(); 
        String sql = "select * from tbproduto where nserie=?";
         try {
             conexao = ConexaoDb.getConection();
@@ -61,18 +63,45 @@ public class ProdutoDao {
             pst.setString(1,nserie);
             rs = pst.executeQuery();
            while (rs.next()) {
-            produto.setNserie(rs.getString( "nserie"));
-            produto.setLoteCompra(rs.getString(" loteCompra"));
-            produto.setPatProd(rs.getString( "patProd"));
-            produto.setModel(rs.getString( "model"));
-            produto.setMem(rs.getString( "mem")); 
-            produto.setmBoard(rs.getString(" mBoard"));
-            produto.setPower(rs.getString( "source"));
-            produto.setStorage(rs.getString( "storage"));
-            produto.setsParalela(rs.getString( "sParalela")); 
-            produto.setsSerial(rs.getString(  "sSerial"));
-            produto.setRedeLan(rs.getString(" redeLan"));
-            produto.setWifi(rs.getString(  "wifi"));         
+            produto.add(rs.getString( "nserie"));
+            produto.add(rs.getString( "loteProd"));
+            produto.add(rs.getString( "patProd"));
+            produto.add(rs.getString( "model"));
+            produto.add(rs.getString( "mem")); 
+            produto.add(rs.getString( "mBoard"));
+            produto.add(rs.getString( "source"));
+            produto.add(rs.getString( "storage"));
+            produto.add(rs.getString( "sParalela")); 
+            produto.add(rs.getString(  "sSerial"));
+            produto.add(rs.getString( "redeLan"));
+            produto.add(rs.getString(  "wifi"));         
+            }
+           conexao.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }         
+        return produto;
+    }
+  public  ArrayList<String> pesquisarProduto() { 
+       ArrayList<String> produto = new ArrayList<>(); 
+       String sql = "select * from tbproduto";
+        try {
+            conexao = ConexaoDb.getConection();
+            pst = conexao.prepareStatement(sql);           
+            rs = pst.executeQuery();
+           while (rs.next()) {
+            produto.add(rs.getString( "nserie"));
+            produto.add(rs.getString(" loteProd"));
+            produto.add(rs.getString( "patProd"));
+            produto.add(rs.getString( "model"));
+            produto.add(rs.getString( "mem")); 
+            produto.add(rs.getString(" mBoard"));
+            produto.add(rs.getString( "source"));
+            produto.add(rs.getString( "storage"));
+            produto.add(rs.getString( "sParalela")); 
+            produto.add(rs.getString(  "sSerial"));
+            produto.add(rs.getString(" redeLan"));
+            produto.add(rs.getString(  "wifi"));         
             }
            conexao.close();
         } catch (SQLException e) {
@@ -82,25 +111,23 @@ public class ProdutoDao {
     }
   
   
-  public boolean editarProduto(String nserie, String loteCompra, String patProd, String model, String mem, String mBoard,String storage, String power, String sParalela, String sSerial, String redeLan, String wifi){
+  public boolean editarProduto(String nserie, String mem, String mBoard,String storage, String power, String sParalela, String sSerial, String redeLan, String wifi){
       boolean sucesso = false; 
       int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
       if (confirma == JOptionPane.YES_OPTION) {             
-        String sql = "update tbpproduto set  loteCompra=?, patProd=?, model=?, mem=?, mBoard=?, storage=?, source=?, sParalela=? ,sSerial=?,redeLan=?, wifi=? where nserie=?";
+        String sql = "update tbproduto set mem=?, mBoard=?, storage=?, source=?, sParalela=? ,sSerial=?,redeLan=?, wifi=? where nserie=?";
         try {
             conexao = ConexaoDb.getConection();
-            pst = conexao.prepareStatement(sql);            
-            pst.setString(1, loteCompra);
-            pst.setString(2, patProd);
-            pst.setString(3, model);           
-            pst.setString(4, mem);
-            pst.setString(5, mBoard);
-            pst.setString(6, storage);
-             pst.setString(7, power); 
-            pst.setString(8, sParalela);
-            pst.setString(9, sSerial);
-            pst.setString(10, redeLan);
-            pst.setString(11, wifi);
+            pst = conexao.prepareStatement(sql); 
+            pst.setString(1, mem);
+            pst.setString(2, mBoard);
+            pst.setString(3, storage);
+             pst.setString(4, power); 
+            pst.setString(5, sParalela);
+            pst.setString(6, sSerial);
+            pst.setString(7, redeLan);
+            pst.setString(8, wifi);
+            pst.setString(9, nserie);
             int editado = pst.executeUpdate();
             if (editado > 0) {                   
                     sucesso = true;

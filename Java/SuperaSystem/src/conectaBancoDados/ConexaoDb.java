@@ -18,8 +18,8 @@ import javax.swing.JOptionPane;
 public class ConexaoDb {
 
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    //private static  String URL ="jdbc:mysql://192.168.1.15:3306/dbSupera";
-    private static  String URL ="jdbc:mysql://192.168.100.101:3306/dbSupera";
+    private static  String URL ="jdbc:mysql://192.168.1.15:3306/dbSupera";
+    //private static  String URL ="jdbc:mysql://192.168.100.101:3306/dbSupera";
     private static  String USER = "desenvolvimento"; 
     private static  String PASS = "Desenvolvimento@1";
 

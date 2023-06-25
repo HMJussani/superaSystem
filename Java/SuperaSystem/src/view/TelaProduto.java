@@ -1,6 +1,7 @@
 package view;
 
 import DAO.InfoProdutoDao;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -16,9 +17,12 @@ public class TelaProduto extends javax.swing.JInternalFrame {
     String modelo= null;  
     String patProd = null;
     InfoProdutoDao infoProduto = new InfoProdutoDao();
+    int conta =0;
     
     public TelaProduto() {
         initComponents();
+              
+        
     }
 
     private void setarCampos() {
@@ -82,6 +86,23 @@ public class TelaProduto extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setTitle("Produtos");
         setPreferredSize(new java.awt.Dimension(645, 495));
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         jLabel1.setText("Pesquisa Número de Série:");
         jLabel1.setToolTipText("");
@@ -140,7 +161,7 @@ public class TelaProduto extends javax.swing.JInternalFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Modelo", "Serie", "Patrimonio", "Lote"
+                "Título 1", "Título 2", "Título 3", "Título 4"
             }
         ));
         tbProd.setFocusable(false);
@@ -237,9 +258,6 @@ public class TelaProduto extends javax.swing.JInternalFrame {
         );
 
         jLabel1.getAccessibleContext().setAccessibleName("");
-        jLabel7.getAccessibleContext().setAccessibleName("Modelo");
-        jLabel11.getAccessibleContext().setAccessibleName("Número de Serie");
-        jLabel12.getAccessibleContext().setAccessibleName("Patrimônio");
 
         setBounds(0, 0, 650, 500);
     }// </editor-fold>//GEN-END:initComponents
@@ -253,7 +271,16 @@ public class TelaProduto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void txtSerialPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSerialPesquisaKeyReleased
-      
+      conta++;
+      if(conta >=3){
+           ArrayList<String> infoProd = infoProduto.pesquisarProduto(txtSerialPesquisa.getText());
+           if(!infoProd.isEmpty()){
+               txtModel.setText(infoProd.get(2));
+               txtPat.setText(infoProd.get(3));        
+               txtLote.setText(infoProd.get(1));
+               txtSerialNumber.setText(infoProd.get(0));
+           }
+      }
      
     }//GEN-LAST:event_txtSerialPesquisaKeyReleased
 
@@ -274,6 +301,12 @@ public class TelaProduto extends javax.swing.JInternalFrame {
                JOptionPane.showMessageDialog(null, "Produto removido com sucesso");
           }
     }//GEN-LAST:event_btnRemoverActionPerformed
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+      
+        ArrayList<String> infoProd = infoProduto.pesquisarProduto();
+        System.out.println(infoProd);
+    }//GEN-LAST:event_formInternalFrameOpened
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
