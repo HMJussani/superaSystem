@@ -21,10 +21,10 @@ import javax.swing.JOptionPane;
  * @author RMA
  */
 public class InfoProdutoDao {
- InfoProdutoBean infoProduto; 
  PreparedStatement pst = null;
  ResultSet rs = null;
  Connection  conexao = ConexaoDb.getConection();
+ ArrayList<InfoProdutoBean> infoProd = new ArrayList<>();
  
  public boolean adicionarInfo(String nserie,String loteProd, String modelo, String patProd){
      boolean sucesso = false; 
@@ -47,8 +47,7 @@ public class InfoProdutoDao {
        return sucesso;
     }
  
-  public ArrayList<String> pesquisarProduto(String nserie){        
-      ArrayList<String> infoProd = new ArrayList<String>(); 
+  public ArrayList<InfoProdutoBean> pesquisarProduto(String nserie){ 
       String sql = "select * from tbInfoProd where nserie=?";
         try {
             conexao = ConexaoDb.getConection();
@@ -56,10 +55,12 @@ public class InfoProdutoDao {
             pst.setString(1,nserie);
             rs = pst.executeQuery();
            while (rs.next()) {
-            infoProd.add(rs.getString( "nserie"));
-            infoProd.add(rs.getString("loteProd"));
-            infoProd.add(rs.getString( "model"));           
-            infoProd.add(rs.getString( "patProd"));                      
+            InfoProdutoBean infoProduto = new InfoProdutoBean();
+            infoProduto.setNserie(rs.getString( "nserie"));
+            infoProduto.setLoteProd(rs.getString("loteProd"));
+            infoProduto.setModelo(rs.getString( "model"));           
+            infoProduto.setPatProd(rs.getString( "patProd"));
+            infoProd.add(infoProduto);                     
             }
            conexao.close();
         } catch (SQLException e) {
@@ -67,18 +68,19 @@ public class InfoProdutoDao {
         }         
         return infoProd;
     }
-    public ArrayList<String> pesquisarProduto(){        
-      ArrayList<String> infoProd = new ArrayList<String>(); 
+    public ArrayList<InfoProdutoBean> pesquisarProduto(){ 
       String sql = "select * from tbInfoProd";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             rs = pst.executeQuery();
            while (rs.next()) {
-            infoProd.add(rs.getString( "nserie"));
-            infoProd.add(rs.getString("loteProd"));
-            infoProd.add(rs.getString( "model"));           
-            infoProd.add(rs.getString( "patProd"));                      
+            InfoProdutoBean infoProduto = new InfoProdutoBean();
+            infoProduto.setNserie(rs.getString( "nserie"));
+            infoProduto.setLoteProd(rs.getString("loteProd"));
+            infoProduto.setModelo(rs.getString( "model"));           
+            infoProduto.setPatProd(rs.getString( "patProd"));
+            infoProd.add(infoProduto);
             }
            conexao.close();
         } catch (SQLException e) {

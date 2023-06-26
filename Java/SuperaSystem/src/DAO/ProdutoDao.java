@@ -4,7 +4,6 @@
  */
 package DAO;
 
-import Bean.ProdutosBean;
 import conectaBancoDados.ConexaoDb;
 import java.awt.HeadlessException;
 import java.sql.Connection;

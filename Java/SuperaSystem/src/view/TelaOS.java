@@ -1,8 +1,11 @@
 package view;
 
+import Bean.InfoProdutoBean;
+import DAO.InfoProdutoDao;
 import conectaBancoDados.ConexaoDb;
 import java.sql.*;
 import java.awt.HeadlessException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -14,14 +17,27 @@ public class TelaOS extends javax.swing.JInternalFrame {
     Connection conexao;
     PreparedStatement pst;
     ResultSet rs;
-
+    InfoProdutoDao infoProduto = new InfoProdutoDao();
     private String tipo;
+    
+    private void setaTabelaEquipamento(){
+        DefaultTableModel model = (DefaultTableModel) tblEquipamentos.getModel();
+        model.setRowCount(0);
+        ArrayList<InfoProdutoBean> infoProd = infoProduto.pesquisarProduto();
+        
+        for(int i=0; i< infoProd.size(); i++){
+            model.addRow(new Object[]{
+                infoProd.get(i).getNserie(),
+                infoProd.get(i).getPatProd(),                
+                infoProd.get(i).getModelo()
+            });
+        }
+    }
 
-    /**
-     * Creates new form TelaOS
-     */
+    
     public TelaOS() {
         initComponents();
+        setaTabelaEquipamento();
     }
 
     /**
@@ -34,7 +50,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
             pst = conexao.prepareStatement(sql);
             pst.setString(1, txtCliPesquisar.getText() + "%");
             rs = pst.executeQuery();
-            tblClientes.setModel(DbUtils.resultSetToTableModel(rs));
+            tblEquipamentos.setModel(DbUtils.resultSetToTableModel(rs));
         } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         } finally {
@@ -50,7 +66,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
      * Método responsável por setar o ID do cliente na OS
      */
     private void setarIdCli() {
-        int setar = tblClientes.getSelectedRow();       
+        int setar = tblEquipamentos.getSelectedRow();       
     }
 
     /**
@@ -110,7 +126,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
                 btnOsAdicionar.setEnabled(false);
                 btnOsPesquisar.setEnabled(false);
                 txtCliPesquisar.setEnabled(false);
-                tblClientes.setVisible(false);
+                tblEquipamentos.setVisible(false);
                 btnOsAlterar.setEnabled(true);
                 btnOsExcluir.setEnabled(true);
                 btnOsImprimir.setEnabled(true);
@@ -244,7 +260,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
         txtOs.setText(null);
         txtData.setText(null);
         txtCliPesquisar.setText(null);
-        ((DefaultTableModel) tblClientes.getModel()).setRowCount(0);
+        ((DefaultTableModel) tblEquipamentos.getModel()).setRowCount(0);
         cboOsSit.setSelectedItem(0);
         txtOsEquip.setText(null);
         txtOsDef.setText(null);
@@ -254,7 +270,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
         btnOsAdicionar.setEnabled(true);
         btnOsPesquisar.setEnabled(true);
         txtCliPesquisar.setEnabled(true);
-        tblClientes.setVisible(true);
+        tblEquipamentos.setVisible(true);
         btnOsAlterar.setEnabled(false);
         btnOsExcluir.setEnabled(false);
         btnOsImprimir.setEnabled(false);
@@ -281,7 +297,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
         cboOsSit = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblClientes = new javax.swing.JTable();
+        tblEquipamentos = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         txtOsEquip = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -392,7 +408,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Equipamento"));
 
-        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
+        tblEquipamentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -403,13 +419,13 @@ public class TelaOS extends javax.swing.JInternalFrame {
                 "Serial", "Patrimonio", "Modelo"
             }
         ));
-        tblClientes.getTableHeader().setReorderingAllowed(false);
-        tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblEquipamentos.getTableHeader().setReorderingAllowed(false);
+        tblEquipamentos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblClientesMouseClicked(evt);
+                tblEquipamentosMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tblClientes);
+        jScrollPane1.setViewportView(tblEquipamentos);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -503,7 +519,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
         });
 
         btnInsertProd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/pc.png"))); // NOI18N
-        btnInsertProd.setToolTipText("InserirProduto");
+        btnInsertProd.setToolTipText("Inserir Equipamento");
         btnInsertProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnInsertProd.setPreferredSize(new java.awt.Dimension(80, 80));
         btnInsertProd.addActionListener(new java.awt.event.ActionListener() {
@@ -623,9 +639,9 @@ public class TelaOS extends javax.swing.JInternalFrame {
         pesquisarCliente();
     }//GEN-LAST:event_txtCliPesquisarKeyReleased
 
-    private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
+    private void tblEquipamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEquipamentosMouseClicked
         setarIdCli();
-    }//GEN-LAST:event_tblClientesMouseClicked
+    }//GEN-LAST:event_tblEquipamentosMouseClicked
 
     private void btnOsAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAdicionarActionPerformed
         emitirOs();
@@ -686,7 +702,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblClientes;
+    private javax.swing.JTable tblEquipamentos;
     private javax.swing.JTextField txtCliPesquisar;
     private javax.swing.JTextField txtData;
     private javax.swing.JTextField txtOs;

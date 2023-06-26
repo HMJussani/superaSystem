@@ -9,43 +9,93 @@ package Bean;
  *
  * @author Rick
  */
-public class clientesBean {
-    
-    private static String user = null;
-    private static String pass = null;
-    private static String perfil = null;
-    private static String nome = null;
-    
-     public static String getPerfil() {
-        return perfil;
+public class ClientesBean {
+
+    private String idcli = null;
+    private String nomecli = null;
+    private String contatocli = null;
+    private String endcli = null;
+    private String telcli = null;
+    private String emailcli = null;
+    private String cidadecli = null;
+    private String estadocli = null;
+
+    public ClientesBean(String idcli, String nomecli, String contatocli, String endcli, String telcli, String emailcli, String cidadecli, String estadocli) {
+        this.idcli = idcli;
+        this.nomecli = nomecli;
+        this.contatocli = contatocli;
+        this.endcli = endcli;
+        this.telcli = telcli;
+        this.emailcli = emailcli;
+        this.cidadecli = cidadecli;
+        this.estadocli = estadocli;
     }
 
-    public static void setPerfil(String perfil) {
-        clientesBean.perfil = perfil;
+    public ClientesBean() {
     }
-    
-     public static String getNome() {
-        return nome;
-    }
-
-    public static void setNome(String nome) {
-        clientesBean.nome = nome;
-    }
-    
-    public static String getUser() {
-        return user;
+   
+    public String getIdcli() {
+        return idcli;
     }
 
-    public static void setUser(String user) {
-        clientesBean.user = user;
+    public void setIdcli(String idcli) {
+        this.idcli = idcli;
     }
 
-    public static String getPass() {
-        return pass;
+    public String getNomecli() {
+        return nomecli;
     }
 
-    public static void setPass(String pass) {
-        clientesBean.pass = pass;
+    public void setNomecli(String nomecli) {
+        this.nomecli = nomecli;
     }
-    
+
+    public String getContatocli() {
+        return contatocli;
+    }
+
+    public void setContatocli(String contatocli) {
+        this.contatocli = contatocli;
+    }
+
+    public String getEndcli() {
+        return endcli;
+    }
+
+    public void setEndcli(String endcli) {
+        this.endcli = endcli;
+    }
+
+    public String getTelcli() {
+        return telcli;
+    }
+
+    public void setTelcli(String telcli) {
+        this.telcli = telcli;
+    }
+
+    public String getEmailcli() {
+        return emailcli;
+    }
+
+    public void setEmailcli(String emailcli) {
+        this.emailcli = emailcli;
+    }
+
+    public String getCidadecli() {
+        return cidadecli;
+    }
+
+    public void setCidadecli(String cidadecli) {
+        this.cidadecli = cidadecli;
+    }
+
+    public String getEstadocli() {
+        return estadocli;
+    }
+
+    public void setEstadocli(String estadocli) {
+        this.estadocli = estadocli;
+    }
+
 }

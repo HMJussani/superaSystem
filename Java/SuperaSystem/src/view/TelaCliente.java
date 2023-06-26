@@ -1,52 +1,73 @@
 package view;
 
-import Atxy2k.CustomTextField.RestrictedTextField;
-import java.sql.*;
+import Bean.ClientesBean;
+import DAO.ClienteDAO;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
  * Tela de gestão de clientes
  *
- * @author Professor José de Assis
+ * @author HMJussani
  */
 public class TelaCliente extends javax.swing.JInternalFrame {
+    
+    private String idcli = null;
+    private String nomecli = null;
+    private String contatocli = null;
+    private String endcli = null;
+    private String telcli = null;
+    private String emailcli = null;
+    private String cidadecli = null;
+    private String estadocli = null;
+    ClienteDAO clientes = new ClienteDAO();
 
-    Connection conexao;
-    PreparedStatement pst;
-    ResultSet rs;
+    private void setarTabela() {
+        DefaultTableModel model = (DefaultTableModel) tblClientes.getModel();
+        model.setRowCount(0);
+        ArrayList<ClientesBean> listaCliente = clientes.pesquisarCliente();
+        
+        for(int i=0; i>listaCliente.size(); i++){
+            model.addRow(new Object[]{
+                listaCliente.get(i).getIdcli(),
+                listaCliente.get(i).getNomecli(),
+                listaCliente.get(i).getContatocli(),
+               listaCliente.get(i).getTelcli(),
+            });
+        }
+    }
+    
+    private void getDados(){
+        idcli = txtCliId.getText();
+        nomecli = txtCliNome.getText();
+        contatocli = txtCliContato.getText();
+        endcli = txtCliEndereco.getText();
+        telcli = txtCliFone.getText();
+        emailcli = txtCliEmail.getText();
+        cidadecli = txtCliCidade.getText();
+        estadocli = txtCliEstado.getText();
+    }
 
-    /**
-     * Creates new form TelaCliente
-     */
     public TelaCliente() {
         initComponents();
-        RestrictedTextField validarCliente;
-        validarCliente = new RestrictedTextField(txtCliNome);
-        validarCliente.setLimit(50);
-        RestrictedTextField validarEndereco;
-        validarEndereco = new RestrictedTextField(txtCliEndereco);
-        validarEndereco.setLimit(100);
-        RestrictedTextField validarFone;
-        validarFone = new RestrictedTextField(txtCliFone);
-        validarFone.setLimit(15);
-        RestrictedTextField validarEmail;
-        validarEmail = new RestrictedTextField(txtCliEmail);
-        validarEmail.setLimit(50);
+        setarTabela();
     }
 
     /**
      * Método responsável por adicionar um novo cliente
      */
-    private void adicionarCliente(String nome, String endereco, String fone, String contato) {
-       
+    private void adicionarCliente(String idcli, String nomecli, String contatocli, String endcli, String telcli, String emailcli, String cidadecli, String estadocli) {
+        if(clientes.adicionarCliente(nomecli, contatocli, endcli, telcli, emailcli, cidadecli, estadocli)){
+            JOptionPane.showMessageDialog(null, "Cliente adicionado com sucesso");
+        }
     }
 
     /**
      * Método responsável pela pesquisa de clientes pelo nome com filtro
      */
     private void pesquisarCliente(String login) {
-       
+
     }
 
     /**
@@ -58,11 +79,11 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         txtCliNome.setText(tblClientes.getModel().getValueAt(setar, 1).toString());
         txtCliEndereco.setText(tblClientes.getModel().getValueAt(setar, 2).toString());
         txtCliFone.setText(tblClientes.getModel().getValueAt(setar, 3).toString());
-        if (tblClientes.getModel().getValueAt(setar, 4) == null){
+        if (tblClientes.getModel().getValueAt(setar, 4) == null) {
             txtCliEmail.setText(null);
         } else {
             txtCliEmail.setText(tblClientes.getModel().getValueAt(setar, 4).toString());
-        }        
+        }
         btnAdicionar.setEnabled(false);
         btnAlterar.setEnabled(true);
         btnRemover.setEnabled(true);
@@ -71,8 +92,8 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     /**
      * Método responsável pela edição dos dados do cliente
      */
-    private void ediitarCliente(String login) {
-       
+    private void editarCliente(String login) {
+
     }
 
     /**
@@ -81,10 +102,10 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     private void excluirCliente() {
         int confirma = JOptionPane.showConfirmDialog(null, "Confima a exclusão deste cliente?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            
-            }
+
         }
-    
+    }
+
     /**
      * Método responsável por limpar os campos e gerenciar os componentes
      */
@@ -219,8 +240,6 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Id Cliente");
 
-        txtCliId.setEnabled(false);
-
         jLabel8.setText("Contato");
 
         jLabel9.setText("Cidade");
@@ -342,15 +361,17 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-       // adicionarCliente();
+        getDados();
+        adicionarCliente(idcli, nomecli, contatocli, endcli, telcli, emailcli, cidadecli, estadocli);
+        
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void txtCliPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCliPesquisarKeyReleased
-      //  pesquisarCliente();
+        //  pesquisarCliente();
     }//GEN-LAST:event_txtCliPesquisarKeyReleased
 
     private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
-       // setarCampos();
+        // setarCampos();
     }//GEN-LAST:event_tblClientesMouseClicked
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
@@ -358,7 +379,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-       // excluirCliente();
+        // excluirCliente();
     }//GEN-LAST:event_btnRemoverActionPerformed
 
 

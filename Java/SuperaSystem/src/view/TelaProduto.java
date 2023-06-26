@@ -1,5 +1,6 @@
 package view;
 
+import Bean.InfoProdutoBean;
 import DAO.InfoProdutoDao;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -21,7 +22,7 @@ public class TelaProduto extends javax.swing.JInternalFrame {
     
     public TelaProduto() {
         initComponents();
-              
+        setarTabela();      
         
     }
 
@@ -35,13 +36,28 @@ public class TelaProduto extends javax.swing.JInternalFrame {
         btnRemover.setEnabled(true);
     } 
     
+    private void setarTabela(){
+        DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
+        model.setRowCount(0);
+        ArrayList<InfoProdutoBean> infoProd = infoProduto.pesquisarProduto();
+        
+        for(int i=0; i< infoProd.size(); i++){
+            model.addRow(new Object[]{
+                infoProd.get(i).getNserie(),
+                infoProd.get(i).getPatProd(),
+                infoProd.get(i).getLoteProd(),
+                infoProd.get(i).getModelo(),
+            });
+        }
+        
+    }
     
     private void limpar() {
         txtSerialPesquisa.setText(null);
         txtModel.setText(null);
         txtPat.setText(null);
         txtLote.setText(null);
-        ((DefaultTableModel) tbProd.getModel()).setRowCount(0);
+       // ((DefaultTableModel) tbProd.getModel()).setRowCount(0);
         btnAdicionar.setEnabled(true);
         btnAlterar.setEnabled(false);
         btnRemover.setEnabled(false);
@@ -108,7 +124,7 @@ public class TelaProduto extends javax.swing.JInternalFrame {
         jLabel1.setToolTipText("");
 
         btnRemover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/delete.png"))); // NOI18N
-        btnRemover.setToolTipText("Excluir cliente");
+        btnRemover.setToolTipText("Excluir Equipamento");
         btnRemover.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnRemover.setEnabled(false);
         btnRemover.setPreferredSize(new java.awt.Dimension(80, 80));
@@ -119,7 +135,7 @@ public class TelaProduto extends javax.swing.JInternalFrame {
         });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/update.png"))); // NOI18N
-        btnAlterar.setToolTipText("Editar cliente");
+        btnAlterar.setToolTipText("Editar Equipamento");
         btnAlterar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAlterar.setEnabled(false);
         btnAlterar.setPreferredSize(new java.awt.Dimension(80, 80));
@@ -130,7 +146,7 @@ public class TelaProduto extends javax.swing.JInternalFrame {
         });
 
         btnAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/create.png"))); // NOI18N
-        btnAdicionar.setToolTipText("Adicionar cliente");
+        btnAdicionar.setToolTipText("Adicionar Equipamento");
         btnAdicionar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnAdicionar.setPreferredSize(new java.awt.Dimension(80, 80));
         btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
@@ -161,7 +177,7 @@ public class TelaProduto extends javax.swing.JInternalFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Título 1", "Título 2", "Título 3", "Título 4"
+                "N. Série", "Patrimônio", "Lote", "Modelo"
             }
         ));
         tbProd.setFocusable(false);
@@ -273,12 +289,14 @@ public class TelaProduto extends javax.swing.JInternalFrame {
     private void txtSerialPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSerialPesquisaKeyReleased
       conta++;
       if(conta >=3){
-           ArrayList<String> infoProd = infoProduto.pesquisarProduto(txtSerialPesquisa.getText());
+           ArrayList<InfoProdutoBean> infoProd = infoProduto.pesquisarProduto(txtSerialPesquisa.getText());
            if(!infoProd.isEmpty()){
-               txtModel.setText(infoProd.get(2));
-               txtPat.setText(infoProd.get(3));        
-               txtLote.setText(infoProd.get(1));
-               txtSerialNumber.setText(infoProd.get(0));
+              txtModel.setText(infoProd.get(0).getModelo());
+              txtPat.setText(infoProd.get(0).getPatProd());        
+              txtLote.setText(infoProd.get(0).getLoteProd());
+              txtSerialNumber.setText(infoProd.get(0).getNserie());
+           }else{
+               limpar();
            }
       }
      
@@ -304,8 +322,8 @@ public class TelaProduto extends javax.swing.JInternalFrame {
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
       
-        ArrayList<String> infoProd = infoProduto.pesquisarProduto();
-        System.out.println(infoProd);
+        ArrayList<InfoProdutoBean> infoProd = infoProduto.pesquisarProduto();
+        System.out.println(infoProd.get(0).getNserie());
     }//GEN-LAST:event_formInternalFrameOpened
 
 
