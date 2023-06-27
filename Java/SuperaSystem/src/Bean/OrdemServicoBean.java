@@ -4,8 +4,7 @@
  */
 package Bean;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -13,58 +12,43 @@ import java.util.Calendar;
  */
 public class OrdemServicoBean {
     
-    private String tipo;
-    private String situacao;
-    private String equipamento; 
-    private String defeito; 
+    private String id_pedido;
+    private Date data_os;
+    private int qtde_equipamento;
+    private String defeito;
     private String servico;
     private String tecnico;
     private String valor;
     private String idcli;
-    private ArrayList<ProdutosBean> equipamentos;
-    private Calendar data_os; 
+    private String situacao;
+    private String orcamento; 
     
+    public OrdemServicoBean() {
+        
+    }
 
-    public OrdemServicoBean(String tipo, String situacao, String equipamento, String defeito, String servico, String tecnico, String valor, String idcli, ArrayList<ProdutosBean> equipamentos, Calendar data_os) {
-        this.tipo = tipo;
-        this.situacao = situacao;
-        this.equipamento = equipamento;
-        this.defeito = defeito;
-        this.servico = servico;
-        this.tecnico = tecnico;
-        this.valor = valor;
-        this.idcli = idcli;
-        this.equipamentos = equipamentos;
+    public String getId_pedido() {
+        return id_pedido;
+    }
+
+    public void setId_pedido(String id_pedido) {
+        this.id_pedido = id_pedido;
+    }
+
+    public Date getData_os() {
+        return data_os;
+    }
+
+    public void setData_os(Date data_os) {
         this.data_os = data_os;
     }
 
-    public OrdemServicoBean() {
-    }
-    
-    
-
-    public String getTipo() {
-        return tipo;
+    public int getQtde_equipamento() {
+        return qtde_equipamento;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getSituacao() {
-        return situacao;
-    }
-
-    public void setSituacao(String situacao) {
-        this.situacao = situacao;
-    }
-
-    public String getEquipamento() {
-        return equipamento;
-    }
-
-    public void setEquipamento(String equipamento) {
-        this.equipamento = equipamento;
+    public void setQtde_equipamento(int qtde_equipamento) {
+        this.qtde_equipamento = qtde_equipamento;
     }
 
     public String getDefeito() {
@@ -107,24 +91,22 @@ public class OrdemServicoBean {
         this.idcli = idcli;
     }
 
-    public ArrayList<ProdutosBean> getEquipamentos() {
-        return equipamentos;
+    public String getSituacao() {
+        return situacao;
     }
 
-    public void setEquipamentos(ArrayList<ProdutosBean> equipamentos) {
-        this.equipamentos = equipamentos;
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
     }
 
-    public Calendar getData_os() {
-        return data_os;
+    public String getOrcamento() {
+        return orcamento;
     }
 
-    public void setData_os(Calendar data_os) {
-        this.data_os = data_os;
+    public void setOrcamento(String orcamento) {
+        this.orcamento = orcamento;
     }
+
     
-    
-    
-    
-    
+   
 }

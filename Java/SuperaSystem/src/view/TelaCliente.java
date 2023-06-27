@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
  * @author HMJussani
  */
 public class TelaCliente extends javax.swing.JInternalFrame {
-    
+    private int conta=0;
     private String idcli = null;
     private String nomecli = null;
     private String contatocli = null;
@@ -21,24 +21,23 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     private String emailcli = null;
     private String cidadecli = null;
     private String estadocli = null;
-    ClienteDAO clientes = new ClienteDAO();
+    ClienteDAO clienteDao = new ClienteDAO();
 
     private void setarTabela() {
         DefaultTableModel model = (DefaultTableModel) tblClientes.getModel();
         model.setRowCount(0);
-        ArrayList<ClientesBean> listaCliente = clientes.pesquisarCliente();
-        
-        for(int i=0; i>listaCliente.size(); i++){
+        ArrayList<ClientesBean> listaCliente = clienteDao.pesquisarCliente();
+
+        for (int i = 0; i > listaCliente.size(); i++) {
             model.addRow(new Object[]{
                 listaCliente.get(i).getIdcli(),
                 listaCliente.get(i).getNomecli(),
                 listaCliente.get(i).getContatocli(),
-               listaCliente.get(i).getTelcli(),
-            });
+                listaCliente.get(i).getTelcli(),});
         }
     }
-    
-    private void getDados(){
+
+    private void getDados() {
         idcli = txtCliId.getText();
         nomecli = txtCliNome.getText();
         contatocli = txtCliContato.getText();
@@ -53,26 +52,8 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         initComponents();
         setarTabela();
     }
-
-    /**
-     * Método responsável por adicionar um novo cliente
-     */
-    private void adicionarCliente(String idcli, String nomecli, String contatocli, String endcli, String telcli, String emailcli, String cidadecli, String estadocli) {
-        if(clientes.adicionarCliente(nomecli, contatocli, endcli, telcli, emailcli, cidadecli, estadocli)){
-            JOptionPane.showMessageDialog(null, "Cliente adicionado com sucesso");
-        }
-    }
-
-    /**
-     * Método responsável pela pesquisa de clientes pelo nome com filtro
-     */
-    private void pesquisarCliente(String login) {
-
-    }
-
-    /**
-     * método usado para setar os campos de texto com o conteúdo da tabela
-     */
+   
+   
     private void setarCampos() {
         int setar = tblClientes.getSelectedRow();
         txtCliId.setText(tblClientes.getModel().getValueAt(setar, 0).toString());
@@ -88,27 +69,8 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         btnAlterar.setEnabled(true);
         btnRemover.setEnabled(true);
     }
+   
 
-    /**
-     * Método responsável pela edição dos dados do cliente
-     */
-    private void editarCliente(String login) {
-
-    }
-
-    /**
-     * Método responsável por excluir um cliente
-     */
-    private void excluirCliente() {
-        int confirma = JOptionPane.showConfirmDialog(null, "Confima a exclusão deste cliente?", "Atenção!", JOptionPane.YES_NO_OPTION);
-        if (confirma == JOptionPane.YES_OPTION) {
-
-        }
-    }
-
-    /**
-     * Método responsável por limpar os campos e gerenciar os componentes
-     */
     private void limpar() {
         txtCliPesquisar.setText(null);
         txtCliId.setText(null);
@@ -362,12 +324,33 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         getDados();
-        adicionarCliente(idcli, nomecli, contatocli, endcli, telcli, emailcli, cidadecli, estadocli);
-        
+        if (clienteDao.adicionarCliente(idcli, nomecli, contatocli, endcli, telcli, emailcli, cidadecli, estadocli)) {
+            JOptionPane.showMessageDialog(null, "Cliente adicionado com sucesso");
+        }
+
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void txtCliPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCliPesquisarKeyReleased
-        //  pesquisarCliente();
+        conta++;
+        System.out.println(txtCliPesquisar.getText());
+      if(conta >=3){
+           ArrayList<ClientesBean> cliente = clienteDao.pesquisarCliente(txtCliPesquisar.getText());
+           if(!cliente.isEmpty()){
+             // txtCliId.setText(listarCliente);
+              txtCliNome.setText(null);
+              txtCliEndereco.setText(null);
+              txtCliFone.setText(null);
+              txtCliEmail.setText(null);
+        
+               btnAdicionar.setEnabled(true);
+               btnAlterar.setEnabled(false);
+               btnRemover.setEnabled(false);
+               System.out.println(cliente);
+               
+           }else{
+               limpar();
+           }
+      }
     }//GEN-LAST:event_txtCliPesquisarKeyReleased
 
     private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
@@ -379,7 +362,9 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        // excluirCliente();
+       if(clienteDao.excluirCliente(txtCliNome.getText())){
+                JOptionPane.showMessageDialog(null, "Cliente removido com sucesso");
+                }
     }//GEN-LAST:event_btnRemoverActionPerformed
 
 

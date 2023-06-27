@@ -1,6 +1,5 @@
 package view;
 
-import Bean.ProdutosBean;
 import DAO.ProdutoDao;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;

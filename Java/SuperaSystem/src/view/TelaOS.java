@@ -1,11 +1,12 @@
 package view;
 
+import Bean.ClientesBean;
 import Bean.InfoProdutoBean;
 import Bean.ProdutosBean;
+import DAO.ClienteDAO;
 import DAO.InfoProdutoDao;
 import java.util.ArrayList;
-import java.util.Calendar;
-import javax.swing.JOptionPane;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 public class TelaOS extends javax.swing.JInternalFrame {
@@ -20,12 +21,14 @@ public class TelaOS extends javax.swing.JInternalFrame {
     private String valor = null;
     private String idcli = null;
     private ArrayList<ProdutosBean> equipamentos = null;
-    private Calendar data_os = null;
+    ClienteDAO clientes =  new ClienteDAO();
+    private Date data_os = null;
+    private int conta =0;
 
-    private void setaTabelaEquipamento(String ordemSErvico) {
+    private void setaTabelaEquipamento() {
         DefaultTableModel model = (DefaultTableModel) tblEquipamentos.getModel();
         model.setRowCount(0);
-        ArrayList<InfoProdutoBean> infoProd = infoProduto.pesquisarProduto(ordemSErvico);
+        ArrayList<InfoProdutoBean> infoProd = infoProduto.pesquisarProduto();
 
         for (int i = 0; i < infoProd.size(); i++) {
             model.addRow(new Object[]{
@@ -38,7 +41,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
 
     public TelaOS() {
         initComponents();
-        setaTabelaEquipamento(txtOs.getText());
+        setaTabelaEquipamento();
     }
 
     private void setarIdCli() {
@@ -425,7 +428,14 @@ public class TelaOS extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtCliPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCliPesquisarKeyReleased
-        // pesquisarCliente();
+        conta++;
+      if(conta >=3){
+          ArrayList<ClientesBean> cliente = clientes.pesquisarCliente("coamo") ;
+           if(!cliente.isEmpty()){
+            
+             
+           }
+      }
     }//GEN-LAST:event_txtCliPesquisarKeyReleased
 
     private void tblEquipamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEquipamentosMouseClicked

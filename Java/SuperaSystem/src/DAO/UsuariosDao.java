@@ -5,11 +5,13 @@
  */
 package DAO;
 
+import Bean.UsuariosBean;
 import conectaBancoDados.ConexaoDb;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,7 +23,8 @@ public class UsuariosDao {
     PreparedStatement stmt = null;
     ResultSet rs = null;
     Connection conexao = ConexaoDb.getConection();
-
+    ArrayList<UsuariosBean> usuario = new ArrayList<>();
+    
     public boolean checaUser(String login, String pass) throws SQLException {
         boolean sucesso = false;
         String sql = "select * from tbusuarios where login =? and senha=?";
@@ -66,6 +69,29 @@ public class UsuariosDao {
         return sucesso;
     }
 
+  public ArrayList<UsuariosBean> pesquisarUser(){ 
+      String sql = "select * from tbusuarios";
+        try {
+            conexao = ConexaoDb.getConection();
+            stmt = conexao.prepareStatement(sql);
+            rs = stmt.executeQuery();
+           while (rs.next()) {
+            UsuariosBean user = new UsuariosBean();
+            user.setIduser(rs.getString("iduser"));
+            user.setNome(rs.getString("usuario"));
+            user.setUser(rs.getString("login"));
+            user.setPass(rs.getString("senha"));
+            user.setPerfil(rs.getString("perfil"));
+            
+            usuario.add(user);
+            }
+           conexao.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }         
+        return usuario;
+    }
+    
     public String retornaUser(String login) throws SQLException {
         String user = null;
         String sql = "select * from tbusuarios where login=?;";

@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import Bean.usuariosBean;
+import Bean.UsuariosBean;
 import DAO.UsuariosDao;
 
 /**
@@ -51,6 +51,7 @@ public class TelaLogin extends javax.swing.JFrame {
     private void conecta(boolean sucesso) { 
        if(sucesso){
         UsuariosDao userDao = new UsuariosDao();
+        UsuariosBean usuario = new UsuariosBean();
         String pass = new String(txtSenha.getPassword());
         String user = txtUser.getText();
         try {
@@ -58,8 +59,8 @@ public class TelaLogin extends javax.swing.JFrame {
                 lblConectou.setText("Conectado!!");
                 lblConectou.setForeground(Color.green);
                 if (pass.equals("senha123")) {
-                    usuariosBean.setPass(pass);
-                    usuariosBean.setUser(user);
+                    usuario.setPass(pass);
+                    usuario.setUser(user);
                     JOptionPane.showMessageDialog(null, "Usuário logando com senha Padrão, Mude sua senha agora!");
                     TelaTrocaSenha trocaSenha = new TelaTrocaSenha(this, true);
                     trocaSenha.setVisible(true);

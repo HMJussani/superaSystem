@@ -29,22 +29,23 @@ public class ClienteDAO {
     /**
      * Método responsável por adicionar um novo cliente
      */
-    public boolean adicionarCliente(String nome, String contato, String endereco, String tel, String email, String cidade, String estado){
-       boolean sucesso = false;
-        String sql = "insert into tbclientes(nomecli,contatocli,endcli,telcli,emailcli,cidadeCli, estadoCli) values(?,?,?,?,?,?,?)";
+    public boolean adicionarCliente(String idcli, String nome, String contato, String endereco, String tel, String email, String cidade, String estado) {
+        boolean sucesso = false;
+        String sql = "insert into tbclientes(idcli,nomecli,contatocli,endcli,telcli,emailcli,cidadeCli, estadoCli) values(?,?,?,?,?,?,?,?a)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
-            pst.setString(1, nome);
-            pst.setString(2, contato);
-            pst.setString(3, endereco);
-            pst.setString(4, tel);
-            pst.setString(5, email);
-            pst.setString(6, cidade);
-            pst.setString(7, estado);
+            pst.setString(1, idcli);
+            pst.setString(2, nome);
+            pst.setString(3, contato);
+            pst.setString(4, endereco);
+            pst.setString(5, tel);
+            pst.setString(6, email);
+            pst.setString(7, cidade);
+            pst.setString(8, estado);
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {
-                sucesso = true;                
+                sucesso = true;
                 conexao.close();
             }
         } catch (SQLIntegrityConstraintViolationException e1) {
@@ -52,25 +53,27 @@ public class ClienteDAO {
 
         } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
-        } 
+        }
         return sucesso;
     }
 
     /**
      * Método responsável pela pesquisa de clientes pelo nome com filtro
      */
-    public ArrayList<ClientesBean> pesquisarCliente(String nomecli){
+    public ArrayList<ClientesBean> pesquisarCliente(String nomecli) {
         String sql = "select * from tbclientes where nomecli=?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1, nomecli);
             rs = pst.executeQuery();
-            while (rs.next()) {
+            if(rs.next()) {
                 ClientesBean cliente = new ClientesBean();
                 cliente.setIdcli(rs.getString("idcli"));
                 cliente.setNomecli(rs.getString("nomeCli"));
                 cliente.setContatocli(rs.getString("contatocli"));
+                cliente.setEndcli(rs.getString("endcli"));
+                cliente.setTelcli(rs.getString("telcli"));
                 cliente.setEmailcli(rs.getString("emailcli"));
                 cliente.setCidadecli(rs.getString("cidadecli"));
                 cliente.setEstadocli(rs.getString("estadocli"));
@@ -79,11 +82,11 @@ public class ClienteDAO {
             conexao.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
-        } 
-         return clienteList;
+        }
+        return clienteList;
     }
 
-    public ArrayList<ClientesBean> pesquisarCliente(){
+    public ArrayList<ClientesBean> pesquisarCliente() {
         String sql = "select * from tbclientes";
         try {
             conexao = ConexaoDb.getConection();
@@ -94,6 +97,8 @@ public class ClienteDAO {
                 cliente.setIdcli(rs.getString("idcli"));
                 cliente.setNomecli(rs.getString("nomeCli"));
                 cliente.setContatocli(rs.getString("contatocli"));
+                cliente.setEndcli(rs.getString("endcli"));
+                cliente.setTelcli(rs.getString("telcli"));
                 cliente.setEmailcli(rs.getString("emailcli"));
                 cliente.setCidadecli(rs.getString("cidadecli"));
                 cliente.setEstadocli(rs.getString("estadocli"));
@@ -142,7 +147,7 @@ public class ClienteDAO {
     /**
      * Método responsável por excluir um cliente
      */
-    public boolean excluirCliente(String login) throws SQLException {
+    public boolean excluirCliente(String login) {
         boolean sucesso = false;
         int confirma = JOptionPane.showConfirmDialog(null, "Confima a exclusão deste cliente?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
@@ -153,20 +158,14 @@ public class ClienteDAO {
                 pst.setString(1, login);
                 int apagado = pst.executeUpdate();
                 if (apagado > 0) {
-                    JOptionPane.showMessageDialog(null, "Cliente removido com sucesso");
                     sucesso = true;
+                    conexao.close();
                 }
             } catch (SQLIntegrityConstraintViolationException e1) {
                 JOptionPane.showMessageDialog(null, "Exclusão não realizada.\nCliente possui OS pendente.");
             } catch (HeadlessException | SQLException e2) {
                 JOptionPane.showMessageDialog(null, e2);
 
-            } finally {
-                try {
-                    conexao.close();
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, ex);
-                }
             }
         }
 

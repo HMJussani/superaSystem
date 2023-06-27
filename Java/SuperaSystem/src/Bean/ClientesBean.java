@@ -11,14 +11,14 @@ package Bean;
  */
 public class ClientesBean {
 
-    private String idcli = null;
-    private String nomecli = null;
-    private String contatocli = null;
-    private String endcli = null;
-    private String telcli = null;
-    private String emailcli = null;
-    private String cidadecli = null;
-    private String estadocli = null;
+    private String idcli;
+    private String nomecli ;
+    private String contatocli;
+    private String endcli ;
+    private String telcli;
+    private String emailcli;
+    private String cidadecli;
+    private String estadocli;
 
     public ClientesBean(String idcli, String nomecli, String contatocli, String endcli, String telcli, String emailcli, String cidadecli, String estadocli) {
         this.idcli = idcli;

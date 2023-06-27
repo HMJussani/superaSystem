@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import Bean.usuariosBean;
+import Bean.UsuariosBean;
 import DAO.UsuariosDao;
 
 /**
@@ -26,11 +26,12 @@ public class TelaTrocaSenha extends javax.swing.JDialog {
     private boolean trocaSenha() throws SQLException {
         boolean sucesso =false;
         UsuariosDao userDao = new UsuariosDao();
+        UsuariosBean usuario = new UsuariosBean();
         String pass = new String(txtAntigaSenha.getPassword());
         String newPass = new String(txtNovaSenha.getPassword());
         String user = txtUser.getText();
 
-        if ((pass.equals(usuariosBean.getPass())) && (user.equals(usuariosBean.getUser())) && (!newPass.isEmpty())) {
+        if ((pass.equals(usuario.getPass())) && (user.equals(usuario.getUser())) && (!newPass.isEmpty())) {
 
             if (userDao.editaUser(user, newPass)) {
                 JOptionPane.showMessageDialog(null, "Senha alterada com sucesso!");

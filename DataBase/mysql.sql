@@ -11,7 +11,7 @@ perfil varchar(20) default 'Tecnico'
 
 );
 
-insert into tbusuarios (iduser ,usuario ,login ,senha ,perfil)values(2,'Administrador', 'admin', 'admin', 'admin');
+insert into tbusuarios (iduser ,usuario ,login ,senha ,perfil)values(1,'Administrador', 'admin', 'admin', 'admin');
 insert into tbusuarios (iduser ,usuario ,login ,senha ,perfil)values(2,'Henrique Marega Jussani', 'hmjussani', '123', 'user');
 
 create table tbclientes(
@@ -26,37 +26,38 @@ estadoCli varchar(2)not null default 'PR'
 );
 
 create table tbpedido(
-pedido VARCHAR(10) primary key not null,
+id_pedido VARCHAR(10) primary key,
 data_os TIMESTAMP default current_timestamp,
-equipamento varchar(100) not null,
+qtde_equipamento int,
 defeito varchar(150) not null,
 servico varchar(150),
 tecnico varchar(20) ,
 valor decimal(10,2),
-idcli int not null,
-compTipo varchar(100),
+idcli VARCHAR(20) not null,
 situacao varchar(30),
 orcamento varchar(20),
-foreign key (idcli) references tbclientes(idcli),
-foreign key (compTipo) references tbcomponente(tipo),
+foreign key (idcli) references tbclientes(idcli)
+
 );
 
 
 create table tbInfoProd(
-nserie varchar(20) primary key not null,
-loteProd VARCHAR(10) unique not null,
-model varchar(20) unique not null,
-patProd varchar(20) unique not null
-
+nserie varchar(20) not null,
+id_pedido VARCHAR(10),
+model varchar(20) ,
+patProd varchar(20) unique,
+foreign key (id_pedido) references tbpedido(id_pedido),
+foreign key (model) references tbproduto(model),
+foreign key (nserie) references tbproduto(nserie)
 );
 
-insert into tbInfoProd (nserie, loteProd, model, patProd)values("12345","lote","modelo","patrimonio");
+insert into tbInfoProd (nserie, id_pedido, model, patProd)values("12345","id_pedido","modelo","patrimonio");
 
 create table tbproduto(
-nserie varchar(20) not null ,
-loteProd varchar(10)  not null,
-patProd VARCHAR(20)  not null,
-model varchar(50)   not null,
+nserie varchar(20) PRIMARY KEY not null ,
+loteProd varchar(10),
+patProd VARCHAR(20),
+model varchar(50) unique not null,
 mem VARCHAR(50) not null,
 mBoard VARCHAR(50) not null,
 source varchar(50) not null,
@@ -64,12 +65,7 @@ storage VARCHAR(50)  not null,
 sParalela varchar(5) default "0",
 sSerial varchar(5) default "1",
 redeLan varchar(50) default "onBoard",
-wifi varchar(50) default "off",
-foreign key (nserie) references tbInfoProd(nserie),
-foreign key (loteProd) references tbInfoProd(loteProd),
-foreign key (model) references tbInfoProd(model),
-foreign key (patProd) references tbInfoProd(patProd)
-
+wifi varchar(50) default "nao"
 
 );
 
