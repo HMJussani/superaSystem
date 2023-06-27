@@ -322,8 +322,6 @@ public class TelaProduto extends javax.swing.JInternalFrame {
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
       
-        ArrayList<InfoProdutoBean> infoProd = infoProduto.pesquisarProduto();
-        System.out.println(infoProd.get(0).getNserie());
     }//GEN-LAST:event_formInternalFrameOpened
 
 

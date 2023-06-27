@@ -1,261 +1,50 @@
 package view;
 
 import Bean.InfoProdutoBean;
+import Bean.ProdutosBean;
 import DAO.InfoProdutoDao;
-import conectaBancoDados.ConexaoDb;
-import java.sql.*;
-import java.awt.HeadlessException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import net.proteanit.sql.DbUtils;
-
 
 public class TelaOS extends javax.swing.JInternalFrame {
 
-    Connection conexao;
-    PreparedStatement pst;
-    ResultSet rs;
     InfoProdutoDao infoProduto = new InfoProdutoDao();
-    private String tipo;
-    
-    private void setaTabelaEquipamento(){
+    private String tipo = null;
+    private String situacao = null;
+    private String equipamento = null;
+    private String defeito = null; 
+    private String servico = null;
+    private String tecnico = null;
+    private String valor = null;
+    private String idcli = null;
+    private ArrayList<ProdutosBean> equipamentos = null;
+    private Calendar data_os = null;
+
+    private void setaTabelaEquipamento(String ordemSErvico) {
         DefaultTableModel model = (DefaultTableModel) tblEquipamentos.getModel();
         model.setRowCount(0);
-        ArrayList<InfoProdutoBean> infoProd = infoProduto.pesquisarProduto();
-        
-        for(int i=0; i< infoProd.size(); i++){
+        ArrayList<InfoProdutoBean> infoProd = infoProduto.pesquisarProduto(ordemSErvico);
+
+        for (int i = 0; i < infoProd.size(); i++) {
             model.addRow(new Object[]{
                 infoProd.get(i).getNserie(),
-                infoProd.get(i).getPatProd(),                
+                infoProd.get(i).getPatProd(),
                 infoProd.get(i).getModelo()
             });
         }
     }
 
-    
     public TelaOS() {
         initComponents();
-        setaTabelaEquipamento();
+        setaTabelaEquipamento(txtOs.getText());
     }
 
-    /**
-     * Método responsável pela pesquisa do cliente que será vinculado a OS
-     */
-    private void pesquisarCliente() {
-        String sql = "select idcli as Id, nomecli as Nome, fonecli as Fone from tbclientes where nomecli like ?";
-        try {
-            conexao = ConexaoDb.getConection();
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, txtCliPesquisar.getText() + "%");
-            rs = pst.executeQuery();
-            tblEquipamentos.setModel(DbUtils.resultSetToTableModel(rs));
-        } catch (HeadlessException | SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
-    }
-
-    /**
-     * Método responsável por setar o ID do cliente na OS
-     */
     private void setarIdCli() {
-        int setar = tblEquipamentos.getSelectedRow();       
+        int setar = tblEquipamentos.getSelectedRow();
     }
 
-    /**
-     * Método responsável pela emissão de uma Ordem de Serviço
-     */
-    private void emitirOs() {
-        String sql = "insert into tbos(tipo,situacao,equipamento,defeito,servico,tecnico,valor,idcli) values(?,?,?,?,?,?,?,?)";
-        try {
-            conexao = ConexaoDb.getConection();
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, tipo);
-            pst.setString(2, cboOsSit.getSelectedItem().toString());
-            pst.setString(3, txtOsEquip.getText());
-            pst.setString(4, txtOsDef.getText());
-            pst.setString(5, txtOsServ.getText());
-            pst.setString(6, boxTecnico.getSelectedItem().toString());
-            pst.setString(7, txtOsValor.getText().replace(",", "."));
-            int adicionado = pst.executeUpdate();
-            if (adicionado > 0) {
-                    recuperarOs();
-                    JOptionPane.showMessageDialog(null, "OS emitida com sucesso");
-                    btnOsAdicionar.setEnabled(false);
-                    btnOsPesquisar.setEnabled(false);
-                    btnOsImprimir.setEnabled(true);
-                }
-        } catch (HeadlessException | SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
-    }
-
-    /**
-     * Método responsável pela pesquisa de uma Ordem de Serviço
-     */
-    private void pesquisarOs() {
-        String num_os = JOptionPane.showInputDialog("Número da OS");
-        String sql = "select os,date_format(data_os,'%d/%m/%Y - %H:%i'),tipo,situacao,equipamento,defeito,servico,tecnico,valor,idcli from tbos where os= " + num_os;
-        try {
-            conexao = ConexaoDb.getConection();
-            pst = conexao.prepareStatement(sql);
-            rs = pst.executeQuery();
-            if (rs.next()) {
-                txtOs.setText(rs.getString(1));
-                txtData.setText(rs.getString(2));
-                String rbtTipo = rs.getString(3);
-                cboOsSit.setSelectedItem(rs.getString(4));
-                txtOsEquip.setText(rs.getString(5));
-                txtOsDef.setText(rs.getString(6));
-                txtOsServ.setText(rs.getString(7));
-                boxTecnico.setSelectedItem(rs.getString(8));
-                txtOsValor.setText(rs.getString(9));
-                btnOsAdicionar.setEnabled(false);
-                btnOsPesquisar.setEnabled(false);
-                txtCliPesquisar.setEnabled(false);
-                tblEquipamentos.setVisible(false);
-                btnOsAlterar.setEnabled(true);
-                btnOsExcluir.setEnabled(true);
-                btnOsImprimir.setEnabled(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "OS não cadastrada");
-            }
-        } catch (SQLSyntaxErrorException e) {
-            JOptionPane.showMessageDialog(null, "OS Inválida");
-        } catch (HeadlessException | SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
-    }
-
-    /**
-     * Método responsável pela edição de uma Ordem de Seviço
-     */
-    private void editarOs() {
-        String sql = "update tbos set tipo=?,situacao=?,equipamento=?,defeito=?,servico=?,tecnico=?,valor=? where os=?";
-        try {
-            conexao = ConexaoDb.getConection();
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, tipo);
-            pst.setString(2, cboOsSit.getSelectedItem().toString());
-            pst.setString(3, txtOsEquip.getText());
-            pst.setString(4, txtOsDef.getText());
-            pst.setString(5, txtOsServ.getText());
-            pst.setString(6, boxTecnico.getSelectedItem().toString());
-            pst.setString(7, txtOsValor.getText().replace(",", "."));
-            pst.setString(8, txtOs.getText());
-           int adicionado = pst.executeUpdate();
-           if (adicionado > 0) {
-                    JOptionPane.showMessageDialog(null, "OS alterada com sucesso");
-                    limpar();
-                }
-        } catch (HeadlessException | SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
-    }
-
-    /**
-     * Método responsável pela exclusão de uma Ordem de Serviço
-     */
-    private void excluirOs() {
-        conexao = ConexaoDb.getConection();
-        String verifica = cboOsSit.getSelectedItem().toString();
-        if (verifica.equals("Retirado")) {
-            int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esta OS?", "Atenção", JOptionPane.YES_NO_OPTION);
-            if (confirma == JOptionPane.YES_OPTION) {
-                String sql = "delete from tbos where os=?";
-                try {
-                    pst = conexao.prepareStatement(sql);
-                    pst.setString(1, txtOs.getText());
-                    int apagado = pst.executeUpdate();
-                    if (apagado > 0) {
-                        limpar();
-                        JOptionPane.showMessageDialog(null, "OS excluída com sucesso");
-                    }
-                } catch (HeadlessException | SQLException e) {
-                    JOptionPane.showMessageDialog(null, e);
-                } finally {
-                    try {
-                        conexao.close();
-                    } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(null, ex);
-                    }
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Para excluir esta OS é necessário modificar\no status para \"Retirado\"");
-        }
-    }
-
-    /**
-     * Método responsável pela impressão da Ordem de Serviço com JasperReports
-     */
-    private void imprimirOs() {
-        conexao = ConexaoDb.getConection();
-        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a impressão desta OS?", "Atenção", JOptionPane.YES_NO_OPTION);
-        if (confirma == JOptionPane.YES_OPTION) {
-            try {
-                HashMap filtro = new HashMap();
-                filtro.put("os", Integer.parseInt(txtOs.getText()));
-              //  JasperPrint print = JasperFillManager.fillReport(getClass().getResourceAsStream("/reports/os.jasper"), filtro, conexao);
-              //  JasperViewer.viewReport(print, false);
-                conexao.close();
-            } catch (NumberFormatException | SQLException e) {
-                JOptionPane.showMessageDialog(null, e);
-            }
-        }
-    }
-
-    /**
-     * Método usado para recuperar o número da OS
-     */
-    private void recuperarOs() {
-        String sql = "select max(os) from tbos";
-        try {
-            conexao = ConexaoDb.getConection();
-            pst = conexao.prepareStatement(sql);
-            rs = pst.executeQuery();
-            if (rs.next()) {
-                txtOs.setText(rs.getString(1));
-            }
-        } catch (HeadlessException | SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        } finally {
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        }
-    }
-
-    /**
-     * Método responsável por limpar os campos e gerenciar os componentes
-     */
     private void limpar() {
         txtOs.setText(null);
         txtData.setText(null);
@@ -636,7 +425,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtCliPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCliPesquisarKeyReleased
-        pesquisarCliente();
+        // pesquisarCliente();
     }//GEN-LAST:event_txtCliPesquisarKeyReleased
 
     private void tblEquipamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEquipamentosMouseClicked
@@ -644,31 +433,49 @@ public class TelaOS extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tblEquipamentosMouseClicked
 
     private void btnOsAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAdicionarActionPerformed
-        emitirOs();
+        //  if(emitirOs()){
+        // recuperarOs();
+        //  JOptionPane.showMessageDialog(null, "OS emitida com sucesso");
+        //  btnOsAdicionar.setEnabled(false);
+        //   btnOsPesquisar.setEnabled(false);
+        //  btnOsImprimir.setEnabled(true);
+        // }
     }//GEN-LAST:event_btnOsAdicionarActionPerformed
 
     private void btnOsPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsPesquisarActionPerformed
-        pesquisarOs();
+        btnOsAdicionar.setEnabled(false);
+        btnOsPesquisar.setEnabled(false);
+        txtCliPesquisar.setEnabled(false);
+        tblEquipamentos.setVisible(false);
+        btnOsAlterar.setEnabled(true);
+        btnOsExcluir.setEnabled(true);
+        btnOsImprimir.setEnabled(true);
     }//GEN-LAST:event_btnOsPesquisarActionPerformed
 
     private void btnOsAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAlterarActionPerformed
-        editarOs();
+        //if(editarOs()){
+        //JOptionPane.showMessageDialog(null, "OS alterada com sucesso");
+        //limpar();
+        //  }
     }//GEN-LAST:event_btnOsAlterarActionPerformed
 
     private void btnOsExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsExcluirActionPerformed
-        excluirOs();
+        // if(excluirOs(cboOsSit.getSelectedItem().toString(), txtOs.getText())){
+       // limpar();
+      //  JOptionPane.showMessageDialog(null, "OS excluída com sucesso");
+  //  }
     }//GEN-LAST:event_btnOsExcluirActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-       
+
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void txtCliPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCliPesquisarActionPerformed
-
+            //String num_os = JOptionPane.showInputDialog("Número da OS");
     }//GEN-LAST:event_txtCliPesquisarActionPerformed
 
     private void btnOsImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsImprimirActionPerformed
-        imprimirOs();
+        // imprimirOs();
     }//GEN-LAST:event_btnOsImprimirActionPerformed
 
     private void boxTecnicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxTecnicoActionPerformed

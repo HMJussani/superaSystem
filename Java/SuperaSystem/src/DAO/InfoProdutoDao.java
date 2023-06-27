@@ -46,9 +46,9 @@ public class InfoProdutoDao {
         }         
        return sucesso;
     }
- 
   public ArrayList<InfoProdutoBean> pesquisarProduto(String nserie){ 
-      String sql = "select * from tbInfoProd where nserie=?";
+       
+        String  sql = "select * from tbInfoProd where nserie=?";         
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -68,6 +68,7 @@ public class InfoProdutoDao {
         }         
         return infoProd;
     }
+  
     public ArrayList<InfoProdutoBean> pesquisarProduto(){ 
       String sql = "select * from tbInfoProd";
         try {
