@@ -8,12 +8,15 @@ package Bean;
  *
  * @author RMA
  */
-public class InfoProdutoBean {
+public class EquipOSBean {
     
    private String nserie ;
-   private String loteProd;
-   private String modelo;  
+   private String id_ordemServico;
+   private String model;  
    private String patProd;
+
+    public EquipOSBean() {
+    }
 
     public String getNserie() {
         return nserie;
@@ -23,20 +26,20 @@ public class InfoProdutoBean {
         this.nserie = nserie;
     }
 
-    public String getLoteProd() {
-        return loteProd;
+    public String getId_ordemServico() {
+        return id_ordemServico;
     }
 
-    public void setLoteProd(String loteProd) {
-        this.loteProd = loteProd;
+    public void setId_ordemServico(String id_ordemServico) {
+        this.id_ordemServico = id_ordemServico;
     }
 
-    public String getModelo() {
-        return modelo;
+    public String getModel() {
+        return model;
     }
 
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public String getPatProd() {
@@ -46,6 +49,8 @@ public class InfoProdutoBean {
     public void setPatProd(String patProd) {
         this.patProd = patProd;
     }
+  
+   
    
    
     

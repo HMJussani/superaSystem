@@ -5,7 +5,7 @@
 package DAO;
 
 
-import Bean.InfoProdutoBean;
+import Bean.EquipOSBean;
 import conectaBancoDados.ConexaoDb;
 import java.awt.HeadlessException;
 import java.sql.Connection;
@@ -19,22 +19,28 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author RMA
+ * table tbEquipOS
+ * private String nserie ;
+   private String id_ordemServico;
+   private String model;  
+   private String patProd;
  */
-public class InfoProdutoDao {
+
+public class EquipOsDao {
  PreparedStatement pst = null;
  ResultSet rs = null;
  Connection  conexao = ConexaoDb.getConection();
- ArrayList<InfoProdutoBean> infoProd = new ArrayList<>();
+ ArrayList<EquipOSBean> equipamentoOS = new ArrayList<>();
  
- public boolean adicionarInfo(String nserie,String id_pedido, String modelo, String patProd){
+ public boolean adicionarEquipamento(String nserie,String id_ordemServico, String model, String patProd){
      boolean sucesso = false; 
-     String sql = "insert into tbInfoProd(nserie, id_pedido, model, patProd) values(?,?,?,?)";
+     String sql = "insert into tbEquipOS(nserie, id_ordemServico, model, patProd) values(?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1, nserie);
-            pst.setString(2, id_pedido);
-            pst.setString(3, modelo);
+            pst.setString(2, id_ordemServico);
+            pst.setString(3, model);
             pst.setString(4, patProd);         
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {                   
@@ -47,58 +53,58 @@ public class InfoProdutoDao {
        return sucesso;
     }
   public ArrayList<String> pesquisarProduto(String nserie){ 
-       ArrayList<String> infoProduto = new ArrayList<>();
-        String  sql = "select * from tbInfoProd where nserie=?";         
+       ArrayList<String> equipOS = new ArrayList<>();
+        String  sql = "select * from tbEquipOS where nserie=?";         
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1,nserie);
             rs = pst.executeQuery();
            while (rs.next()) {            
-            infoProduto.add(rs.getString( "nserie"));
-            infoProduto.add(rs.getString("id_pedido"));
-            infoProduto.add(rs.getString( "model"));           
-            infoProduto.add(rs.getString( "patProd"));
+            equipOS.add(rs.getString( "nserie"));
+            equipOS.add(rs.getString("id_ordemServico"));
+            equipOS.add(rs.getString( "model"));           
+            equipOS.add(rs.getString( "patProd"));
                                  
             }
            conexao.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }         
-        return infoProduto;
+        return equipOS;
     }
   
-    public ArrayList<InfoProdutoBean> pesquisarProduto(){ 
-      String sql = "select * from tbInfoProd";
+    public ArrayList<EquipOSBean> pesquisarProduto(){ 
+      String sql = "select * from tbEquipOS";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             rs = pst.executeQuery();
            while (rs.next()) {
-            InfoProdutoBean infoProduto = new InfoProdutoBean();
-            infoProduto.setNserie(rs.getString( "nserie"));
-            infoProduto.setLoteProd(rs.getString("id_pedido"));
-            infoProduto.setModelo(rs.getString( "model"));           
-            infoProduto.setPatProd(rs.getString( "patProd"));
-            infoProd.add(infoProduto);
+            EquipOSBean equipOS = new EquipOSBean();
+            equipOS.setNserie(rs.getString( "nserie"));
+            equipOS.setId_ordemServico(rs.getString("id_ordemServico"));
+            equipOS.setModel(rs.getString( "model"));           
+            equipOS.setPatProd(rs.getString( "patProd"));
+            equipamentoOS.add(equipOS);
             }
            conexao.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }         
-        return infoProd;
+        return equipamentoOS;
     }
   
-  public boolean editarProduto(String nserie,String id_pedido, String modelo, String patProd){
+  public boolean editarProduto(String nserie,String id_ordemServico, String model, String patProd){
       boolean sucesso = false; 
       int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
       if (confirma == JOptionPane.YES_OPTION) {             
-        String sql = "update tbInfoProd set id_pedido=?, model=?,  patProd=? where nserie=?";
+        String sql = "update tbEquipOS set id_ordemServico=?, model=?,  patProd=? where nserie=?";
         try {
              conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);            
-            pst.setString(1, id_pedido);
-            pst.setString(2, modelo);
+            pst.setString(1, id_ordemServico);
+            pst.setString(2, model);
             pst.setString(3, patProd);   
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {                   
@@ -117,7 +123,7 @@ public class InfoProdutoDao {
         boolean sucesso = false;
         int confirma = JOptionPane.showConfirmDialog(null, "Confima a exclusão deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            String sql = "delete from tbInfoProd where nserie=?";
+            String sql = "delete from tbEquipOS where nserie=?";
             try {
                 conexao = ConexaoDb.getConection();
                 pst = conexao.prepareStatement(sql);

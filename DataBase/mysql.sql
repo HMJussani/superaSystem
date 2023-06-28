@@ -27,53 +27,52 @@ estadocli varchar(2)not null default 'PR'
 
 insert into tbclientes (idcli , nomecli, contatocli, endcli , telcli ) values ("idcli" , "nomecli", "contatocli", "endcli" , "telcli");
 
-create table tbpedido(
-id_pedido VARCHAR(10) primary key,
-data_os TIMESTAMP default current_timestamp,
-qtde_equipamento int,
-defeito varchar(150) not null,
-servico varchar(150),
-tecnico varchar(20) ,
-valor decimal(10,2),
-idcli VARCHAR(20) not null,
-situacao varchar(30),
-orcamento varchar(20),
-foreign key (idcli) references tbclientes(idcli)
 
-);
-
-
-insert into tbpedido (id_pedido, qtde_equipamento,defeito ,servico ,tecnico ,valor,idcli ,situacao ,orcamento)values("id_pedido", 1,"defeito" ,"servico" ,"tecnico" ,10.0,"idcli" ,"situacao" ,"orcamento");
-
-create table tbInfoProd(
-nserie varchar(20) not null,
-id_pedido VARCHAR(10),
-model varchar(20) ,
-patProd varchar(20) unique,
-foreign key (id_pedido) references tbpedido(id_pedido),
-foreign key (model) references tbproduto(model),
-foreign key (nserie) references tbproduto(nserie)
-);
-
-insert into tbInfoProd (nserie, id_pedido, model, patProd)values("12345","id_pedido","modelo","patrimonio");
-
-create table tbproduto(
+create table tbEquipOS(
 nserie varchar(20) PRIMARY KEY not null ,
-loteProd varchar(10),
-patProd VARCHAR(20),
-model varchar(50) unique not null,
+id_ordemServico VARCHAR(10) NOT NULL,
+model varchar(20),
+patProd varchar(20) unique NOT NULL,
+foreign key (id_ordemServico) references tbordemServico(id_ordemServico),
+foreign key (model) references tbmodelo(model)
+
+);
+
+insert into tbInfoProd (nserie, id_ordemServico, model, patProd)values("12345","id_pedido","modelo","patrimonio");
+
+
+create table tbordemServico(
+id_ordemServico VARCHAR(10) PRIMARY KEY,
+idcli VARCHAR(20) not null,
+dataAbertura DATE NOT NULL,
+dataFechamento DATE,
+garantia bool DEFAULT FALSE,
+defeito VARCHAR(100)DEFAULT "Verificar.",
+tecnico varchar(30)NOT NULL,
+valor varchar(10),
+foreign key (idcli) references tbclientes(idcli)
+);
+
+insert into tbordemServico (id_ordemServico, idcli, dataAbertura, garantia, defeito, tecnico, valor)values("12345","cliente","2023-06-28",FALSE,"Não liga","Tecnico","100,00");
+
+
+create table tbmodelo(
+model varchar(50) PRIMARY KEY,
 mem VARCHAR(50) not null,
 mBoard VARCHAR(50) not null,
+processador VARCHAR(50) not null,
 source varchar(50) not null,
 storage VARCHAR(50)  not null,
 sParalela varchar(5) default "0",
 sSerial varchar(5) default "1",
 redeLan varchar(50) default "onBoard",
-wifi varchar(50) default "nao"
+wifi varchar(50) default "nao",
+tipo varchar(50) default "ThinClient",
+gabinete varchar(50) not null
 
 );
 
-insert into tbproduto(nserie, loteProd, patProd, model, mem, mBoard, storage, source, sParalela,sSerial,redeLan, wifi) values("12345","lote","patrimonio","modelo","memoria","placaMae","fonteAlimenta","armazenamento","D25","DB9","lan","wifi");
+insert into tbmodelo(tipo, processador, gabinete, model, mem, mBoard, storage, source, sParalela,sSerial,redeLan, wifi) values("12345","lote","patrimonio","modelo","memoria","placaMae","fonteAlimenta","armazenamento","D25","DB9","lan","wifi");
 
 describe tbpedido;
 describe tbusuarios;

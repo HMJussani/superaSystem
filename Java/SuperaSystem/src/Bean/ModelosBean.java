@@ -9,11 +9,11 @@ package Bean;
  *
  * @author Rick
  */
-public class ProdutosBean {
+public class ModelosBean {
     
-    private String nserie;
-    private String loteProd;
-    private String patProd;
+    private String tipo;
+    private String processador;
+    private String gabinete;
     private String model;
     private String mem; 
     private String mBoard;
@@ -24,10 +24,10 @@ public class ProdutosBean {
     private String redeLan;
     private String wifi; 
 
-    public ProdutosBean(String nserie, String loteProd, String patProd, String model, String mem, String mBoard, String power, String storage, String sParalela, String sSerial, String redeLan, String wifi) {
-        this.nserie = nserie;
-        this.loteProd = loteProd;
-        this.patProd = patProd;
+    public ModelosBean(String tipo, String processador, String gabinete, String model, String mem, String mBoard, String power, String storage, String sParalela, String sSerial, String redeLan, String wifi) {
+        this.tipo = tipo;
+        this.processador = processador;
+        this.gabinete = gabinete;
         this.model = model;
         this.mem = mem;
         this.mBoard = mBoard;
@@ -39,28 +39,33 @@ public class ProdutosBean {
         this.wifi = wifi;
     }
 
-    public String getNserie() {
-        return nserie;
+    public ModelosBean() {
+    }
+    
+    
+
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setNserie(String nserie) {
-        this.nserie = nserie;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    public String getLoteProd() {
-        return loteProd;
+    public String getProcessador() {
+        return processador;
     }
 
-    public void setLoteProd(String loteProd) {
-        this.loteProd = loteProd;
+    public void setProcessador(String processador) {
+        this.processador = processador;
     }
 
-    public String getPatProd() {
-        return patProd;
+    public String getGabinete() {
+        return gabinete;
     }
 
-    public void setPatProd(String patProd) {
-        this.patProd = patProd;
+    public void setGabinete(String gabinete) {
+        this.gabinete = gabinete;
     }
 
     public String getModel() {
@@ -134,6 +139,7 @@ public class ProdutosBean {
     public void setWifi(String wifi) {
         this.wifi = wifi;
     }
-  
+
+    
     
 }

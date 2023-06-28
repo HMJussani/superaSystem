@@ -12,43 +12,58 @@ import java.util.Date;
  */
 public class OrdemServicoBean {
     
-    private String id_pedido;
-    private Date data_os;
-    private int qtde_equipamento;
-    private String defeito;
-    private String servico;
+    private String id_ordemServico;
+    private String idcli;
+    private Date dataAbertura;
+    private Date dataFechamento;
+    private Boolean garantia;
+    private String defeito;    
     private String tecnico;
     private String valor;
-    private String idcli;
-    private String situacao;
-    private String orcamento; 
+    
     
     public OrdemServicoBean() {
         
     }
 
-    public String getId_pedido() {
-        return id_pedido;
+    public String getId_ordemServico() {
+        return id_ordemServico;
     }
 
-    public void setId_pedido(String id_pedido) {
-        this.id_pedido = id_pedido;
+    public void setId_ordemServico(String id_ordemServico) {
+        this.id_ordemServico = id_ordemServico;
     }
 
-    public Date getData_os() {
-        return data_os;
+    public String getIdcli() {
+        return idcli;
     }
 
-    public void setData_os(Date data_os) {
-        this.data_os = data_os;
+    public void setIdcli(String idcli) {
+        this.idcli = idcli;
     }
 
-    public int getQtde_equipamento() {
-        return qtde_equipamento;
+    public Date getDataAbertura() {
+        return dataAbertura;
     }
 
-    public void setQtde_equipamento(int qtde_equipamento) {
-        this.qtde_equipamento = qtde_equipamento;
+    public void setDataAbertura(Date dataAbertura) {
+        this.dataAbertura = dataAbertura;
+    }
+
+    public Date getDataFechamento() {
+        return dataFechamento;
+    }
+
+    public void setDataFechamento(Date dataFechamento) {
+        this.dataFechamento = dataFechamento;
+    }
+
+    public Boolean getGarantia() {
+        return garantia;
+    }
+
+    public void setGarantia(Boolean garantia) {
+        this.garantia = garantia;
     }
 
     public String getDefeito() {
@@ -57,14 +72,6 @@ public class OrdemServicoBean {
 
     public void setDefeito(String defeito) {
         this.defeito = defeito;
-    }
-
-    public String getServico() {
-        return servico;
-    }
-
-    public void setServico(String servico) {
-        this.servico = servico;
     }
 
     public String getTecnico() {
@@ -83,30 +90,7 @@ public class OrdemServicoBean {
         this.valor = valor;
     }
 
-    public String getIdcli() {
-        return idcli;
-    }
-
-    public void setIdcli(String idcli) {
-        this.idcli = idcli;
-    }
-
-    public String getSituacao() {
-        return situacao;
-    }
-
-    public void setSituacao(String situacao) {
-        this.situacao = situacao;
-    }
-
-    public String getOrcamento() {
-        return orcamento;
-    }
-
-    public void setOrcamento(String orcamento) {
-        this.orcamento = orcamento;
-    }
-
+    
     
    
 }

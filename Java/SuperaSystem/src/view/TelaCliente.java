@@ -78,8 +78,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         txtEmail.setText("");
         txtContato.setText("");
         txtCidade.setText("");
-        txtEstado.setText("");
-        //((DefaultTableModel) tblClientes.getModel()).setRowCount(0);
+        txtEstado.setText("");        
         btnAdicionar.setEnabled(true);
         btnAlterar.setEnabled(false);
         btnRemover.setEnabled(false);
@@ -320,7 +319,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
         jLabel1.getAccessibleContext().setAccessibleName("");
 
-        setBounds(0, 0, 650, 500);
+        setBounds(0, 0, 822, 695);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed

@@ -1,7 +1,8 @@
-package view;
+package viewProd;
 
-import Bean.InfoProdutoBean;
-import DAO.InfoProdutoDao;
+import Bean.ModelosBean;
+import DAO.EquipOsDao;
+import DAO.ModelosDao;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -17,7 +18,8 @@ public class TelaProduto extends javax.swing.JInternalFrame {
     String loteProd = null;
     String modelo= null;  
     String patProd = null;
-    InfoProdutoDao infoProdutoDAO = new InfoProdutoDao();
+    ModelosDao produtoDAO = new ModelosDao();
+    EquipOsDao infoProdutoDAO = new EquipOsDao();
     int conta =0;
     
     public TelaProduto() {
@@ -28,9 +30,10 @@ public class TelaProduto extends javax.swing.JInternalFrame {
 
     private void setarCampos() {
         int setar = tbProd.getSelectedRow();
-        txtModel.setText(tbProd.getModel().getValueAt(setar, 0).toString());
+        txtModel.setText(tbProd.getModel().getValueAt(setar, 3).toString());
         txtPat.setText(tbProd.getModel().getValueAt(setar, 1).toString());        
-        txtLote.setText(tbProd.getModel().getValueAt(setar, 3).toString());
+        txtLote.setText(tbProd.getModel().getValueAt(setar, 2).toString());
+        txtSerialNumber.setText(tbProd.getModel().getValueAt(setar, 0).toString());
         btnAdicionar.setEnabled(false);
         btnAlterar.setEnabled(true);
         btnRemover.setEnabled(true);
@@ -39,25 +42,24 @@ public class TelaProduto extends javax.swing.JInternalFrame {
     private void setarTabela(){
         DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
         model.setRowCount(0);
-        ArrayList<InfoProdutoBean> infoProd = infoProdutoDAO.pesquisarProduto();
+        ArrayList<ModelosBean> modelos = produtoDAO.pesquisarModelo();
         
-        for(int i=0; i< infoProd.size(); i++){
+        for(int i=0; i< modelos.size(); i++){
             model.addRow(new Object[]{
-                infoProd.get(i).getNserie(),
-                infoProd.get(i).getPatProd(),
-                infoProd.get(i).getLoteProd(),
-                infoProd.get(i).getModelo(),
+            //    modelos.get(i).getNserie(),
+            //    modelos.get(i).getPatProd(),
+            //    modelos.get(i).getLoteProd(),
+                modelos.get(i).getModel()
+               
             });
         }
         
     }
     
-    private void limpar() {
-        txtSerialPesquisa.setText(null);
-        txtModel.setText(null);
-        txtPat.setText(null);
-        txtLote.setText(null);
-       // ((DefaultTableModel) tbProd.getModel()).setRowCount(0);
+    private void limpar() {       
+        txtModel.setText("");
+        txtPat.setText("");
+        txtLote.setText("");       
         btnAdicionar.setEnabled(true);
         btnAlterar.setEnabled(false);
         btnRemover.setEnabled(false);
@@ -101,7 +103,7 @@ public class TelaProduto extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setTitle("Produtos");
-        setPreferredSize(new java.awt.Dimension(645, 495));
+        setPreferredSize(new java.awt.Dimension(822, 695));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -275,14 +277,14 @@ public class TelaProduto extends javax.swing.JInternalFrame {
 
         jLabel1.getAccessibleContext().setAccessibleName("");
 
-        setBounds(0, 0, 650, 500);
+        setBounds(0, 0, 822, 695);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
        getDados();      
-       if(infoProdutoDAO.adicionarInfo(nserie, loteProd, modelo, patProd)){
-           JOptionPane.showMessageDialog(null, "Produto adicionando com sucesso");
-       }
+      // if(infoProdutoDAO.adicionarInfo(nserie, loteProd, modelo, patProd)){
+      //     JOptionPane.showMessageDialog(null, "Produto adicionando com sucesso");
+     //  }
        
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
@@ -295,10 +297,10 @@ public class TelaProduto extends javax.swing.JInternalFrame {
               txtPat.setText(infoProd.get(1));        
               txtLote.setText(infoProd.get(2));
               txtSerialNumber.setText(infoProd.get(3));
-              
+              conta=0;
               
            }else{
-               //limpar();
+               limpar();
            }
       }
      
