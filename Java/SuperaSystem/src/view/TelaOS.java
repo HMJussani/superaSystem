@@ -430,9 +430,9 @@ public class TelaOS extends javax.swing.JInternalFrame {
     private void txtCliPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCliPesquisarKeyReleased
         conta++;
       if(conta >=3){
-          ArrayList<ClientesBean> cliente = clientes.pesquisarCliente("coamo") ;
+          ArrayList<String> cliente = clientes.pesquisarCliente(txtCliPesquisar.getText()) ;
            if(!cliente.isEmpty()){
-            
+            txtCliPesquisar.setText(cliente.get(0));
              
            }
       }
@@ -443,6 +443,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tblEquipamentosMouseClicked
 
     private void btnOsAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAdicionarActionPerformed
+      
         //  if(emitirOs()){
         // recuperarOs();
         //  JOptionPane.showMessageDialog(null, "OS emitida com sucesso");

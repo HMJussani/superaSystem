@@ -26,14 +26,14 @@ public class InfoProdutoDao {
  Connection  conexao = ConexaoDb.getConection();
  ArrayList<InfoProdutoBean> infoProd = new ArrayList<>();
  
- public boolean adicionarInfo(String nserie,String loteProd, String modelo, String patProd){
+ public boolean adicionarInfo(String nserie,String id_pedido, String modelo, String patProd){
      boolean sucesso = false; 
-     String sql = "insert into tbInfoProd(nserie, loteProd, model, patProd) values(?,?,?,?)";
+     String sql = "insert into tbInfoProd(nserie, id_pedido, model, patProd) values(?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1, nserie);
-            pst.setString(2, loteProd);
+            pst.setString(2, id_pedido);
             pst.setString(3, modelo);
             pst.setString(4, patProd);         
             int adicionado = pst.executeUpdate();
@@ -46,27 +46,26 @@ public class InfoProdutoDao {
         }         
        return sucesso;
     }
-  public ArrayList<InfoProdutoBean> pesquisarProduto(String nserie){ 
-       
+  public ArrayList<String> pesquisarProduto(String nserie){ 
+       ArrayList<String> infoProduto = new ArrayList<>();
         String  sql = "select * from tbInfoProd where nserie=?";         
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1,nserie);
             rs = pst.executeQuery();
-           while (rs.next()) {
-            InfoProdutoBean infoProduto = new InfoProdutoBean();
-            infoProduto.setNserie(rs.getString( "nserie"));
-            infoProduto.setLoteProd(rs.getString("loteProd"));
-            infoProduto.setModelo(rs.getString( "model"));           
-            infoProduto.setPatProd(rs.getString( "patProd"));
-            infoProd.add(infoProduto);                     
+           while (rs.next()) {            
+            infoProduto.add(rs.getString( "nserie"));
+            infoProduto.add(rs.getString("id_pedido"));
+            infoProduto.add(rs.getString( "model"));           
+            infoProduto.add(rs.getString( "patProd"));
+                                 
             }
            conexao.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }         
-        return infoProd;
+        return infoProduto;
     }
   
     public ArrayList<InfoProdutoBean> pesquisarProduto(){ 
@@ -78,7 +77,7 @@ public class InfoProdutoDao {
            while (rs.next()) {
             InfoProdutoBean infoProduto = new InfoProdutoBean();
             infoProduto.setNserie(rs.getString( "nserie"));
-            infoProduto.setLoteProd(rs.getString("loteProd"));
+            infoProduto.setLoteProd(rs.getString("id_pedido"));
             infoProduto.setModelo(rs.getString( "model"));           
             infoProduto.setPatProd(rs.getString( "patProd"));
             infoProd.add(infoProduto);
@@ -90,15 +89,15 @@ public class InfoProdutoDao {
         return infoProd;
     }
   
-  public boolean editarProduto(String nserie,String loteProd, String modelo, String patProd){
+  public boolean editarProduto(String nserie,String id_pedido, String modelo, String patProd){
       boolean sucesso = false; 
       int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
       if (confirma == JOptionPane.YES_OPTION) {             
-        String sql = "update tbInfoProd set loteProd=?, model=?,  patProd=? where nserie=?";
+        String sql = "update tbInfoProd set id_pedido=?, model=?,  patProd=? where nserie=?";
         try {
              conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);            
-            pst.setString(1, loteProd);
+            pst.setString(1, id_pedido);
             pst.setString(2, modelo);
             pst.setString(3, patProd);   
             int adicionado = pst.executeUpdate();

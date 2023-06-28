@@ -31,7 +31,7 @@ public class ClienteDAO {
      */
     public boolean adicionarCliente(String idcli, String nome, String contato, String endereco, String tel, String email, String cidade, String estado) {
         boolean sucesso = false;
-        String sql = "insert into tbclientes(idcli,nomecli,contatocli,endcli,telcli,emailcli,cidadeCli, estadoCli) values(?,?,?,?,?,?,?,?a)";
+        String sql = "insert into tbclientes(idcli,nomecli,contatocli,endcli,telcli,emailcli,cidadeCli, estadoCli) values(?,?,?,?,?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -60,30 +60,30 @@ public class ClienteDAO {
     /**
      * Método responsável pela pesquisa de clientes pelo nome com filtro
      */
-    public ArrayList<ClientesBean> pesquisarCliente(String nomecli) {
-        String sql = "select * from tbclientes where nomecli=?";
+    public ArrayList<String> pesquisarCliente(String nomecli) {
+        String sql = "SELECT * FROM tbclientes where nomecli=?;";
+        ArrayList<String> cliente = new ArrayList<>();
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1, nomecli);
             rs = pst.executeQuery();
             if(rs.next()) {
-                ClientesBean cliente = new ClientesBean();
-                cliente.setIdcli(rs.getString("idcli"));
-                cliente.setNomecli(rs.getString("nomeCli"));
-                cliente.setContatocli(rs.getString("contatocli"));
-                cliente.setEndcli(rs.getString("endcli"));
-                cliente.setTelcli(rs.getString("telcli"));
-                cliente.setEmailcli(rs.getString("emailcli"));
-                cliente.setCidadecli(rs.getString("cidadecli"));
-                cliente.setEstadocli(rs.getString("estadocli"));
-                clienteList.add(cliente);
+               
+                cliente.add(rs.getString("idcli"));
+                cliente.add(rs.getString("nomecli"));
+                cliente.add(rs.getString("contatocli"));
+                cliente.add(rs.getString("endcli"));
+                cliente.add(rs.getString("telcli"));
+                cliente.add(rs.getString("emailcli"));
+                cliente.add(rs.getString("cidadecli"));
+                cliente.add(rs.getString("estadocli"));
             }
             conexao.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
-        return clienteList;
+        return cliente;
     }
 
     public ArrayList<ClientesBean> pesquisarCliente() {
@@ -95,7 +95,7 @@ public class ClienteDAO {
             while (rs.next()) {
                 ClientesBean cliente = new ClientesBean();
                 cliente.setIdcli(rs.getString("idcli"));
-                cliente.setNomecli(rs.getString("nomeCli"));
+                cliente.setNomecli(rs.getString("nomecli"));
                 cliente.setContatocli(rs.getString("contatocli"));
                 cliente.setEndcli(rs.getString("endcli"));
                 cliente.setTelcli(rs.getString("telcli"));

@@ -81,8 +81,7 @@ public class UsuariosDao {
             user.setNome(rs.getString("usuario"));
             user.setUser(rs.getString("login"));
             user.setPass(rs.getString("senha"));
-            user.setPerfil(rs.getString("perfil"));
-            
+            user.setPerfil(rs.getString("perfil"));            
             usuario.add(user);
             }
            conexao.close();

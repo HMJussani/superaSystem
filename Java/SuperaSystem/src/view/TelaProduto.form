@@ -215,7 +215,7 @@
               <Table columnCount="4" rowCount="4">
                 <Column editable="true" title="N. S&#xe9;rie" type="java.lang.Object"/>
                 <Column editable="true" title="Patrim&#xf4;nio" type="java.lang.Object"/>
-                <Column editable="true" title="Lote" type="java.lang.Object"/>
+                <Column editable="true" title="Ordem Servi&#xe7;o" type="java.lang.Object"/>
                 <Column editable="true" title="Modelo" type="java.lang.Object"/>
               </Table>
             </Property>

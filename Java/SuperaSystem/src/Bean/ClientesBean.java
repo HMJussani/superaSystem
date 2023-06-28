@@ -18,18 +18,7 @@ public class ClientesBean {
     private String telcli;
     private String emailcli;
     private String cidadecli;
-    private String estadocli;
-
-    public ClientesBean(String idcli, String nomecli, String contatocli, String endcli, String telcli, String emailcli, String cidadecli, String estadocli) {
-        this.idcli = idcli;
-        this.nomecli = nomecli;
-        this.contatocli = contatocli;
-        this.endcli = endcli;
-        this.telcli = telcli;
-        this.emailcli = emailcli;
-        this.cidadecli = cidadecli;
-        this.estadocli = estadocli;
-    }
+    private String estadocli;   
 
     public ClientesBean() {
     }

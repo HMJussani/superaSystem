@@ -73,8 +73,8 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                     chkSenha.setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Usuário não cadastrado");
-                    txtUserId.setEnabled(false);
-                    btnUsuRead.setEnabled(false);
+                   // txtUserId.setEnabled(false);
+                   // btnUsuRead.setEnabled(false);
                     btnUsuCreate.setEnabled(true);
                 }
             } catch (HeadlessException | SQLException e) {

@@ -17,7 +17,7 @@ public class TelaProduto extends javax.swing.JInternalFrame {
     String loteProd = null;
     String modelo= null;  
     String patProd = null;
-    InfoProdutoDao infoProduto = new InfoProdutoDao();
+    InfoProdutoDao infoProdutoDAO = new InfoProdutoDao();
     int conta =0;
     
     public TelaProduto() {
@@ -39,7 +39,7 @@ public class TelaProduto extends javax.swing.JInternalFrame {
     private void setarTabela(){
         DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
         model.setRowCount(0);
-        ArrayList<InfoProdutoBean> infoProd = infoProduto.pesquisarProduto();
+        ArrayList<InfoProdutoBean> infoProd = infoProdutoDAO.pesquisarProduto();
         
         for(int i=0; i< infoProd.size(); i++){
             model.addRow(new Object[]{
@@ -177,7 +177,7 @@ public class TelaProduto extends javax.swing.JInternalFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "N. Série", "Patrimônio", "Lote", "Modelo"
+                "N. Série", "Patrimônio", "Ordem Serviço", "Modelo"
             }
         ));
         tbProd.setFocusable(false);
@@ -280,7 +280,7 @@ public class TelaProduto extends javax.swing.JInternalFrame {
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
        getDados();      
-       if(infoProduto.adicionarInfo(nserie, loteProd, modelo, patProd)){
+       if(infoProdutoDAO.adicionarInfo(nserie, loteProd, modelo, patProd)){
            JOptionPane.showMessageDialog(null, "Produto adicionando com sucesso");
        }
        
@@ -289,14 +289,16 @@ public class TelaProduto extends javax.swing.JInternalFrame {
     private void txtSerialPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSerialPesquisaKeyReleased
       conta++;
       if(conta >=3){
-           ArrayList<InfoProdutoBean> infoProd = infoProduto.pesquisarProduto(txtSerialPesquisa.getText());
+           ArrayList<String> infoProd = infoProdutoDAO.pesquisarProduto(txtSerialPesquisa.getText());
            if(!infoProd.isEmpty()){
-              txtModel.setText(infoProd.get(0).getModelo());
-              txtPat.setText(infoProd.get(0).getPatProd());        
-              txtLote.setText(infoProd.get(0).getLoteProd());
-              txtSerialNumber.setText(infoProd.get(0).getNserie());
+              txtModel.setText(infoProd.get(0));
+              txtPat.setText(infoProd.get(1));        
+              txtLote.setText(infoProd.get(2));
+              txtSerialNumber.setText(infoProd.get(3));
+              
+              
            }else{
-               limpar();
+               //limpar();
            }
       }
      
@@ -308,14 +310,14 @@ public class TelaProduto extends javax.swing.JInternalFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
          getDados();
-       if(infoProduto.editarProduto(nserie, loteProd, modelo, patProd)){
+       if(infoProdutoDAO.editarProduto(nserie, loteProd, modelo, patProd)){
          JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso");  
        }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
           getDados();
-          if(infoProduto.excluirProduto(nserie)){
+          if(infoProdutoDAO.excluirProduto(nserie)){
                JOptionPane.showMessageDialog(null, "Produto removido com sucesso");
           }
     }//GEN-LAST:event_btnRemoverActionPerformed

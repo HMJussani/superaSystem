@@ -48,7 +48,7 @@ public class ProdutoDao {
                     conexao.close();
                 }       
         } catch (HeadlessException | SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(null,"Adicionando Produtos: " + e);
         }         
        return sucesso;
     }
@@ -77,7 +77,7 @@ public class ProdutoDao {
             }
            conexao.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(null,"Pesquisando Produtos: " + e);
         }         
         return produto;
     }
@@ -104,7 +104,7 @@ public class ProdutoDao {
             }
            conexao.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(null,"Pesquisando Produtos: " + e);
         }         
         return produto;
     }
@@ -133,7 +133,7 @@ public class ProdutoDao {
                     conexao.close();
                 }       
         } catch (HeadlessException | SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(null,"Editando Produtos: " + e);
              }  
         }
         return sucesso;
@@ -156,7 +156,7 @@ public class ProdutoDao {
             } catch (SQLIntegrityConstraintViolationException e1) {
                 JOptionPane.showMessageDialog(null, "Exclusão não realizada.\nProduto possui O.S. pendente.");
             } catch (HeadlessException | SQLException e2) {
-                JOptionPane.showMessageDialog(null, e2);
+                JOptionPane.showMessageDialog(null, "Excluindo Produtos: " + e2);
 
             } 
         }

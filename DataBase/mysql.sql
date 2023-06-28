@@ -20,10 +20,12 @@ nomecli varchar(100) not null,
 contatocli varchar(50) not null,
 endcli varchar(100) not null,
 telcli varchar(20),
-emailCli varchar(50)not null default 'contato@contato.com',
-cidadeCli varchar(50)not null default 'Maringá',
-estadoCli varchar(2)not null default 'PR'
+emailcli varchar(50)not null default 'contato@contato.com',
+cidadecli varchar(50)not null default 'Maringá',
+estadocli varchar(2)not null default 'PR'
 );
+
+insert into tbclientes (idcli , nomecli, contatocli, endcli , telcli ) values ("idcli" , "nomecli", "contatocli", "endcli" , "telcli");
 
 create table tbpedido(
 id_pedido VARCHAR(10) primary key,
@@ -40,6 +42,8 @@ foreign key (idcli) references tbclientes(idcli)
 
 );
 
+
+insert into tbpedido (id_pedido, qtde_equipamento,defeito ,servico ,tecnico ,valor,idcli ,situacao ,orcamento)values("id_pedido", 1,"defeito" ,"servico" ,"tecnico" ,10.0,"idcli" ,"situacao" ,"orcamento");
 
 create table tbInfoProd(
 nserie varchar(20) not null,
