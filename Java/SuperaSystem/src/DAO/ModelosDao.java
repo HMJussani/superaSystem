@@ -28,23 +28,23 @@ public class ModelosDao {
 
     public boolean adicionarModelo(String tipo, String processador, String gabinete, String model, String mem, String mBoard, String power, String storage, String sParalela, String sSerial, String redeLan, String wifi) {
         boolean sucesso = false;
-        String sql = "insert into tbmodelo(tipo, processador, gabinete, model, mem, mBoard, storage, source, sParalela,sSerial,redeLan, wifi) values(?,?,?,?,?,?,?,?,?,?,?,?);";
+        String sql = "insert into tbmodelo(model, mem, mBoard, processador,source, storage,sParalela,sSerial,redeLan,wifi,tipo,gabinete) values(?,?,?,?,?,?,?,?,?,?,?,?);";
 
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
-            pst.setString(1, tipo);
-            pst.setString(2, processador);
-            pst.setString(3, gabinete);
-            pst.setString(4, model);
-            pst.setString(5, mem);
-            pst.setString(6, mBoard);
-            pst.setString(7, power);
-            pst.setString(8, storage);
-            pst.setString(9, sParalela);
-            pst.setString(10, sSerial);
-            pst.setString(11, redeLan);
-            pst.setString(12, wifi);
+            pst.setString(1, model);
+            pst.setString(2, mem);
+            pst.setString(3, mBoard);
+            pst.setString(4, processador);
+            pst.setString(5, power);
+            pst.setString(6, storage);
+            pst.setString(7, sParalela);
+            pst.setString(8, sSerial);
+            pst.setString(9, redeLan);
+            pst.setString(10, wifi);
+            pst.setString(11, tipo);
+            pst.setString(12, gabinete);
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {
                 sucesso = true;
@@ -64,19 +64,19 @@ public class ModelosDao {
             pst = conexao.prepareStatement(sql);
             pst.setString(1, model);
             rs = pst.executeQuery();
-            while (rs.next()) {
-                produto.add(rs.getString("tipo"));
-                produto.add(rs.getString("processador"));
-                produto.add(rs.getString("gabinete"));
+            while (rs.next()) {                
                 produto.add(rs.getString("model"));
                 produto.add(rs.getString("mem"));
                 produto.add(rs.getString("mBoard"));
+                produto.add(rs.getString("processador"));
                 produto.add(rs.getString("source"));
                 produto.add(rs.getString("storage"));
                 produto.add(rs.getString("sParalela"));
                 produto.add(rs.getString("sSerial"));
                 produto.add(rs.getString("redeLan"));
                 produto.add(rs.getString("wifi"));
+                produto.add(rs.getString("tipo"));               
+                produto.add(rs.getString("gabinete"));
             }
             conexao.close();
         } catch (SQLException e) {
