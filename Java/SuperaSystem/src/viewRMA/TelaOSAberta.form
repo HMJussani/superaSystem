@@ -40,55 +40,27 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <Component id="jPanel1" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jPanel3" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
               <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
           </Group>
-          <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel6" alignment="1" min="-2" pref="92" max="-2" attributes="0"/>
-                  <Component id="jLabel13" alignment="1" min="-2" pref="62" max="-2" attributes="0"/>
-                  <Component id="jLabel8" alignment="1" min="-2" pref="46" max="-2" attributes="0"/>
-                  <Component id="jLabel9" alignment="1" min="-2" pref="46" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="boxTecnico" alignment="0" pref="173" max="32767" attributes="0"/>
-                  <Component id="txtServico" alignment="0" max="32767" attributes="0"/>
-                  <Component id="txtPat" alignment="0" min="-2" pref="172" max="-2" attributes="0"/>
-                  <Component id="txtEquip" alignment="0" min="-2" pref="172" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="2" attributes="0">
-                  <Component id="jLabel10" alignment="2" min="-2" pref="62" max="-2" attributes="0"/>
-                  <Component id="boxGarantia" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel7" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel12" alignment="2" min="-2" pref="107" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="txtOsValor" min="-2" pref="320" max="-2" attributes="0"/>
-                  <Component id="txtOsDef" min="-2" pref="320" max="-2" attributes="0"/>
-                  <Component id="txtSerialNumber" min="-2" pref="320" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace pref="25" max="32767" attributes="0"/>
-          </Group>
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="179" max="-2" attributes="0"/>
               <Component id="btnOsAdicionar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="btnOsPesquisar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnInsertProd" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="btnOsAlterar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="btnOsExcluir" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="btnOsImprimir" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -96,64 +68,18 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jPanel2" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
+              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+              <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtEquip" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtPat" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtSerialNumber" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtOsDef" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+                  <Component id="btnOsPesquisar" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnOsAdicionar" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnOsAlterar" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnOsExcluir" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnOsImprimir" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="boxGarantia" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtServico" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtOsValor" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="boxTecnico" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace pref="230" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                      <Component id="btnInsertProd" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnOsImprimir" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnOsAlterar" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnOsExcluir" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                      <Component id="btnOsAdicionar" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnOsPesquisar" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+              <EmptySpace pref="38" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -171,29 +97,26 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="2" attributes="0">
+                      <Component id="jLabel11" alignment="2" min="-2" pref="78" max="-2" attributes="0"/>
+                      <Component id="jLabel4" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" alignment="2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel11" alignment="1" max="32767" attributes="0"/>
-                      <Component id="jLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="txtNumOS" min="-2" pref="122" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="txtDataAbertura" min="-2" pref="138" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="txtCliNome" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtIDcli" min="-2" pref="122" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="txtIDcli" min="-2" pref="122" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="txtNumOS" min="-2" pref="122" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="txtDataAbertura" min="-2" pref="94" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="txtCliPesquisar" alignment="0" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="338" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -215,9 +138,9 @@
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtCliPesquisar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtCliNome" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace pref="92" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -234,6 +157,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNumOS">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNumOSKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtDataAbertura">
           <Properties>
@@ -252,19 +178,19 @@
             <Property name="text" type="java.lang.String" value="C&#xf3;d. Cliente:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtCliPesquisar">
+        <Component class="javax.swing.JTextField" name="txtCliNome">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCliPesquisarActionPerformed"/>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCliPesquisarKeyReleased"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCliNomeActionPerformed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCliNomeKeyReleased"/>
           </Events>
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="jPanel2">
+    <Container class="javax.swing.JPanel" name="jPanel3">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Equipamento"/>
+            <TitledBorder title="Equipamentos"/>
           </Border>
         </Property>
       </Properties>
@@ -273,23 +199,210 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="297" max="32767" attributes="0"/>
-                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jScrollPane1" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel9" alignment="0" min="-2" pref="46" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jLabel6" alignment="1" min="-2" pref="92" max="-2" attributes="0"/>
+                                      <Component id="jLabel13" alignment="1" min="-2" pref="62" max="-2" attributes="0"/>
+                                      <Component id="jLabel8" alignment="1" min="-2" pref="46" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="boxTecnico" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtServico" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtPat" alignment="0" min="-2" pref="172" max="-2" attributes="0"/>
+                              <Component id="txtEquip" alignment="0" min="-2" pref="172" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="2" attributes="0">
+                              <Component id="jLabel10" alignment="2" min="-2" pref="62" max="-2" attributes="0"/>
+                              <Component id="boxGarantia" alignment="2" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel7" alignment="2" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel12" alignment="2" min="-2" pref="107" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="txtOsValor" min="-2" pref="320" max="-2" attributes="0"/>
+                                      <Component id="txtOsDef" min="-2" pref="320" max="-2" attributes="0"/>
+                                      <Component id="txtSerialNumber" min="-2" pref="320" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="cbModel" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="0" max="32767" attributes="0"/>
-                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtEquip" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtPat" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtSerialNumber" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="txtOsDef" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                          <Component id="boxGarantia" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbModel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                          <Component id="txtServico" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtOsValor" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="boxTecnico" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="91" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
+        <Component class="javax.swing.JLabel" name="jLabel6">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="* Equipamento"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel13">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Patrim&#xf4;nio"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel8">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Servi&#xe7;o"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtServico">
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtPat">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtEquip">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtEquipActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel12">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="N&#xfa;mero de S&#xe9;rie"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel7">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="* Defeito"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtSerialNumber">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtOsDef">
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="boxGarantia">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Garantia"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel3">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Modelo"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbModel">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="1">
+                <StringItem index="0" value="Modelo"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbModelActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtOsValor">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel10">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Valor Total"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="boxTecnico">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="1">
+                <StringItem index="0" value="Tecnico"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boxTecnicoActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel9">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="T&#xe9;cnico"/>
+          </Properties>
+        </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -297,7 +410,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="tblEquipamentos">
+            <Component class="javax.swing.JTable" name="tbOS">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="3" rowCount="4">
@@ -330,69 +443,13 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblEquipamentosMouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbOSMouseClicked"/>
               </Events>
             </Component>
           </SubComponents>
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="jLabel6">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="* Equipamento"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtEquip">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtEquipActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel7">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="* Defeito"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel8">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Servi&#xe7;o"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel9">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="T&#xe9;cnico"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnOsAdicionar">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/imagem/create.png"/>
-        </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Emitir OS"/>
-        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor em Forma de M&#xe3;o"/>
-        </Property>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[80, 80]"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOsAdicionarActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtOsDef">
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtServico">
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel10">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Valor Total"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtOsValor">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="0"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="btnOsPesquisar">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
@@ -408,42 +465,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOsPesquisarActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnOsAlterar">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/imagem/update.png"/>
-        </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Editar OS"/>
-        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor em Forma de M&#xe3;o"/>
-        </Property>
-        <Property name="enabled" type="boolean" value="false"/>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[80, 80]"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOsAlterarActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnOsExcluir">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/imagem/delete.png"/>
-        </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Excluir OS"/>
-        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor em Forma de M&#xe3;o"/>
-        </Property>
-        <Property name="enabled" type="boolean" value="false"/>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[80, 80]"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOsExcluirActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnOsImprimir">
@@ -464,32 +485,48 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOsImprimirActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="boxGarantia">
+    <Component class="javax.swing.JButton" name="btnOsExcluir">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Garantia"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="boxTecnico">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="1">
-            <StringItem index="0" value="Tecnico"/>
-          </StringArray>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/imagem/delete.png"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Excluir OS"/>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Cursor em Forma de M&#xe3;o"/>
+        </Property>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[80, 80]"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boxTecnicoActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOsExcluirActionPerformed"/>
       </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
     </Component>
-    <Component class="javax.swing.JButton" name="btnInsertProd">
+    <Component class="javax.swing.JButton" name="btnOsAlterar">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/imagem/pc.png"/>
+          <Image iconType="3" name="/imagem/update.png"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Inserir Equipamento"/>
+        <Property name="toolTipText" type="java.lang.String" value="Editar OS"/>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Cursor em Forma de M&#xe3;o"/>
+        </Property>
+        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[80, 80]"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOsAlterarActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnOsAdicionar">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/imagem/create.png"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Emitir OS"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Cursor em Forma de M&#xe3;o"/>
         </Property>
@@ -498,28 +535,8 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInsertProdActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOsAdicionarActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel12">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="N&#xfa;mero de S&#xe9;rie"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel13">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Patrim&#xf4;nio"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtSerialNumber">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="0"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtPat">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="0"/>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>

@@ -28,7 +28,7 @@ public class ModelosDao {
 
     public boolean adicionarModelo(String tipo, String processador, String gabinete, String model, String mem, String mBoard, String power, String storage, String sParalela, String sSerial, String redeLan, String wifi) {
         boolean sucesso = false;
-        String sql = "insert into tbmodelo(model, mem, mBoard, processador,source, storage,sParalela,sSerial,redeLan,wifi,tipo,gabinete) values(?,?,?,?,?,?,?,?,?,?,?,?);";
+        String sql = "insert into tbmodelo(model, mem, mBoard, source, storage,sParalela,sSerial,redeLan,wifi,tipo, processador,gabinete) values(?,?,?,?,?,?,?,?,?,?,?,?);";
 
         try {
             conexao = ConexaoDb.getConection();
@@ -36,14 +36,14 @@ public class ModelosDao {
             pst.setString(1, model);
             pst.setString(2, mem);
             pst.setString(3, mBoard);
-            pst.setString(4, processador);
-            pst.setString(5, power);
-            pst.setString(6, storage);
-            pst.setString(7, sParalela);
-            pst.setString(8, sSerial);
-            pst.setString(9, redeLan);
-            pst.setString(10, wifi);
-            pst.setString(11, tipo);
+            pst.setString(4, power);
+            pst.setString(5, storage);
+            pst.setString(6, sParalela);
+            pst.setString(7, sSerial);
+            pst.setString(8, redeLan);
+            pst.setString(9, wifi);
+            pst.setString(10, tipo);
+             pst.setString(11, processador);
             pst.setString(12, gabinete);
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {
@@ -67,15 +67,15 @@ public class ModelosDao {
             while (rs.next()) {                
                 produto.add(rs.getString("model"));
                 produto.add(rs.getString("mem"));
-                produto.add(rs.getString("mBoard"));
-                produto.add(rs.getString("processador"));
+                produto.add(rs.getString("mBoard"));                
                 produto.add(rs.getString("source"));
                 produto.add(rs.getString("storage"));
                 produto.add(rs.getString("sParalela"));
                 produto.add(rs.getString("sSerial"));
                 produto.add(rs.getString("redeLan"));
                 produto.add(rs.getString("wifi"));
-                produto.add(rs.getString("tipo"));               
+                produto.add(rs.getString("tipo")); 
+                produto.add(rs.getString("processador"));
                 produto.add(rs.getString("gabinete"));
             }
             conexao.close();
@@ -115,23 +115,26 @@ public class ModelosDao {
         return listaModelos;
     }
 
-    public boolean editarModelo(String nserie, String mem, String mBoard, String storage, String power, String sParalela, String sSerial, String redeLan, String wifi) {
+    public boolean editarModelo( String model, String mem, String mBoard, String storage, String power, String sParalela, String sSerial, String redeLan, String wifi,String tipo,String processador,String gabinete) {
         boolean sucesso = false;
         int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            String sql = "update tbmodelo set tipo=?, processador=?, gabinete=?, mem=?, mBoard=?, storage=?, source=?, sParalela=? ,sSerial=?,redeLan=?, wifi=? where nserie=?";
+            String sql = "update tbmodelo set mem=?, mBoard=?, storage=?, source=?, sParalela=? ,sSerial=?,redeLan=?, wifi=?, tipo=?, processador=?, gabinete=? where model=?";
             try {
                 conexao = ConexaoDb.getConection();
                 pst = conexao.prepareStatement(sql);
                 pst.setString(1, mem);
-                pst.setString(2, mBoard);
-                pst.setString(3, storage);
-                pst.setString(4, power);
+                pst.setString(2, mBoard);                
+                pst.setString(3, power);
+                pst.setString(4, storage);
                 pst.setString(5, sParalela);
                 pst.setString(6, sSerial);
                 pst.setString(7, redeLan);
-                pst.setString(8, wifi);
-                pst.setString(9, nserie);
+                pst.setString(8, wifi);               
+                pst.setString(9, tipo);
+                pst.setString(10, processador);
+                pst.setString(11, gabinete);
+                 pst.setString(12, model);
                 int editado = pst.executeUpdate();
                 if (editado > 0) {
                     sucesso = true;
@@ -144,15 +147,15 @@ public class ModelosDao {
         return sucesso;
     }
 
-    public boolean excluirModelo(String nserie) {
+    public boolean excluirModelo(String model) {
         boolean sucesso = false;
-        int confirma = JOptionPane.showConfirmDialog(null, "Confima a exclusão deste Produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
+        int confirma = JOptionPane.showConfirmDialog(null, "Confima a exclusão deste Modelo?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            String sql = "delete from tbmodelo where nserie=?";
+            String sql = "delete from tbmodelo where model=?";
             try {
                 conexao = ConexaoDb.getConection();
                 pst = conexao.prepareStatement(sql);
-                pst.setString(1, nserie);
+                pst.setString(1, model);
                 int apagado = pst.executeUpdate();
                 if (apagado > 0) {
                     sucesso = true;

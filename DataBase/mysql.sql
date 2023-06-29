@@ -60,7 +60,6 @@ create table tbmodelo(
 model varchar(50) PRIMARY KEY,
 mem VARCHAR(50) not null,
 mBoard VARCHAR(50) not null,
-processador VARCHAR(50) not null,
 source varchar(50) not null,
 storage VARCHAR(50)  not null,
 sParalela varchar(5) default "0",
@@ -68,11 +67,12 @@ sSerial varchar(5) default "1",
 redeLan varchar(50) default "onBoard",
 wifi varchar(50) default "nao",
 tipo varchar(50) default "ThinClient",
+processador VARCHAR(50) not null,
 gabinete varchar(50) not null
 
 );
 
-insert into tbmodelo(tipo, processador, gabinete, model, mem, mBoard, storage, source, sParalela,sSerial,redeLan, wifi) values("12345","lote","patrimonio","modelo","memoria","placaMae","fonteAlimenta","armazenamento","D25","DB9","lan","wifi");
+insert into tbmodelo(model, mem, mBoard, source, storage, sParalela,sSerial,redeLan, wifi, tipo, processador, gabinete) values("modelo","memoria","placaMae","fonteAlimenta","armazenamento","D25","DB9","lan","wifi","ThinClient", "CPU", "Gabinete");
 
 describe tbpedido;
 describe tbusuarios;

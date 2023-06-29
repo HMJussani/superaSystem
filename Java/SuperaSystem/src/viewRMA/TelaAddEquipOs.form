@@ -39,18 +39,18 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel11" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="jLabel7" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel12" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel15" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtSerialNumber" linkSize="1" alignment="1" min="-2" pref="483" max="-2" attributes="0"/>
-                          <Component id="txtModel" linkSize="1" alignment="1" min="-2" pref="483" max="-2" attributes="0"/>
+                          <Component id="txtOrdemServ" linkSize="1" alignment="1" min="-2" pref="483" max="-2" attributes="0"/>
+                          <Component id="txtSerie" linkSize="1" alignment="1" min="-2" pref="483" max="-2" attributes="0"/>
                           <Component id="txtPat" linkSize="1" alignment="1" min="-2" pref="483" max="-2" attributes="0"/>
-                          <Component id="txtLote" linkSize="1" alignment="1" min="-2" pref="483" max="-2" attributes="0"/>
+                          <Component id="txtModel" linkSize="1" alignment="1" min="-2" pref="483" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
@@ -62,45 +62,53 @@
                       <Component id="btnRemover" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <EmptySpace min="14" pref="14" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="614" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
                       <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                      <Component id="txtSerialPesquisa" min="-2" pref="274" max="-2" attributes="0"/>
+                      <Component id="txtCliPesquisa" min="-2" pref="274" max="-2" attributes="0"/>
                       <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" pref="272" max="-2" attributes="0"/>
                   </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="622" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="185" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="txtSerialPesquisa" min="-2" pref="33" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
-                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="txtCliPesquisa" min="-2" pref="33" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
+                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="112" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="2" attributes="0">
-                  <Component id="jLabel11" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtSerialNumber" alignment="2" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="txtOrdemServ" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="2" attributes="0">
-                  <Component id="jLabel7" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtModel" alignment="2" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="txtSerie" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="2" attributes="0">
@@ -108,9 +116,9 @@
                   <Component id="txtPat" alignment="2" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="2" attributes="0">
-                  <Component id="jLabel15" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtLote" alignment="2" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="txtModel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="56" pref="56" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -118,6 +126,7 @@
                   <Component id="btnAlterar" min="-2" max="-2" attributes="0"/>
                   <Component id="btnRemover" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace pref="214" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -125,7 +134,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Pesquisa N&#xfa;mero de S&#xe9;rie:"/>
+        <Property name="text" type="java.lang.String" value="Pesquisa Cliente"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
       <AccessibilityProperties>
@@ -152,7 +161,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtPat">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtLote">
+    <Component class="javax.swing.JTextField" name="txtModel">
     </Component>
     <Component class="javax.swing.JButton" name="btnAlterar">
       <Properties>
@@ -189,9 +198,9 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAdicionarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtSerialPesquisa">
+    <Component class="javax.swing.JTextField" name="txtCliPesquisa">
       <Events>
-        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtSerialPesquisaKeyReleased"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtCliPesquisaKeyReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
@@ -213,9 +222,9 @@
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="4" rowCount="4">
-                <Column editable="true" title="N. S&#xe9;rie" type="java.lang.Object"/>
-                <Column editable="true" title="Patrim&#xf4;nio" type="java.lang.Object"/>
                 <Column editable="true" title="Ordem Servi&#xe7;o" type="java.lang.Object"/>
+                <Column editable="true" title="Patrim&#xf4;nio" type="java.lang.Object"/>
+                <Column editable="true" title="N. S&#xe9;rie" type="java.lang.Object"/>
                 <Column editable="true" title="Modelo" type="java.lang.Object"/>
               </Table>
             </Property>
@@ -262,14 +271,14 @@
         <Property name="text" type="java.lang.String" value="Modelo"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtModel">
+    <Component class="javax.swing.JTextField" name="txtSerie">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel11">
       <Properties>
         <Property name="text" type="java.lang.String" value="N&#xfa;mero de Serie"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtSerialNumber">
+    <Component class="javax.swing.JTextField" name="txtOrdemServ">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel12">
       <Properties>
@@ -278,7 +287,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel15">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Data / LoteFabrica&#xe7;&#xe3;o"/>
+        <Property name="text" type="java.lang.String" value="Ordem de Servi&#xe7;o"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -24,10 +24,7 @@ public class ModelosBean {
     private String redeLan;
     private String wifi; 
 
-    public ModelosBean(String tipo, String processador, String gabinete, String model, String mem, String mBoard, String power, String storage, String sParalela, String sSerial, String redeLan, String wifi) {
-        this.tipo = tipo;
-        this.processador = processador;
-        this.gabinete = gabinete;
+    public ModelosBean( String model, String mem, String mBoard, String power, String storage, String sParalela, String sSerial, String redeLan, String wifi,String tipo, String processador, String gabinete) {
         this.model = model;
         this.mem = mem;
         this.mBoard = mBoard;
@@ -37,6 +34,9 @@ public class ModelosBean {
         this.sSerial = sSerial;
         this.redeLan = redeLan;
         this.wifi = wifi;
+        this.tipo = tipo;
+        this.processador = processador;
+        this.gabinete = gabinete;
     }
 
     public ModelosBean() {

@@ -11,7 +11,8 @@ package Bean;
 public class EquipOSBean {
     
    private String nserie ;
-   private String id_ordemServico;
+   private String idCli ;
+   private String id_ordemServ;
    private String model;  
    private String patProd;
 
@@ -26,12 +27,12 @@ public class EquipOSBean {
         this.nserie = nserie;
     }
 
-    public String getId_ordemServico() {
-        return id_ordemServico;
+    public String getId_ordemServ() {
+        return id_ordemServ;
     }
 
-    public void setId_ordemServico(String id_ordemServico) {
-        this.id_ordemServico = id_ordemServico;
+    public void setId_ordemServ(String id_ordemServ) {
+        this.id_ordemServ = id_ordemServ;
     }
 
     public String getModel() {
@@ -48,6 +49,14 @@ public class EquipOSBean {
 
     public void setPatProd(String patProd) {
         this.patProd = patProd;
+    }
+
+    public String getIdCli() {
+        return idCli;
+    }
+
+    public void setIdCli(String idCli) {
+        this.idCli = idCli;
     }
   
    

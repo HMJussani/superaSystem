@@ -32,14 +32,14 @@ public class EquipOsDao {
  Connection  conexao = ConexaoDb.getConection();
  ArrayList<EquipOSBean> equipamentoOS = new ArrayList<>();
  
- public boolean adicionarEquipamento(String nserie,String id_ordemServico, String model, String patProd){
+ public boolean adicionarEquipamento(String idcli,String nserie,String id_ordemServ, String model, String patProd){
      boolean sucesso = false; 
-     String sql = "insert into tbEquipOS(nserie, id_ordemServico, model, patProd) values(?,?,?,?)";
+     String sql = "insert into tbEquipOS(idCli,nserie, id_ordemServico, model, patProd) values(?,?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1, nserie);
-            pst.setString(2, id_ordemServico);
+            pst.setString(2, id_ordemServ);
             pst.setString(3, model);
             pst.setString(4, patProd);         
             int adicionado = pst.executeUpdate();
@@ -52,15 +52,16 @@ public class EquipOsDao {
         }         
        return sucesso;
     }
-  public ArrayList<String> pesquisarProduto(String nserie){ 
+  public ArrayList<String> pesquisarProduto(String idCli){ 
        ArrayList<String> equipOS = new ArrayList<>();
-        String  sql = "select * from tbEquipOS where nserie=?";         
+        String  sql = "select * from tbEquipOS where idCli=?";         
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
-            pst.setString(1,nserie);
+            pst.setString(1,idCli);
             rs = pst.executeQuery();
-           while (rs.next()) {            
+           while (rs.next()) { 
+            equipOS.add(rs.getString( "idCli"));   
             equipOS.add(rs.getString( "nserie"));
             equipOS.add(rs.getString("id_ordemServico"));
             equipOS.add(rs.getString( "model"));           
@@ -83,7 +84,7 @@ public class EquipOsDao {
            while (rs.next()) {
             EquipOSBean equipOS = new EquipOSBean();
             equipOS.setNserie(rs.getString( "nserie"));
-            equipOS.setId_ordemServico(rs.getString("id_ordemServico"));
+            equipOS.setId_ordemServ(rs.getString("id_ordemServico"));
             equipOS.setModel(rs.getString( "model"));           
             equipOS.setPatProd(rs.getString( "patProd"));
             equipamentoOS.add(equipOS);

@@ -26,7 +26,6 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private String sSerial = null;
     private String redeLan = null;
     private String wifi = null;
-
     int conta = 0;
 
     public TelaModelos() {
@@ -44,10 +43,10 @@ public class TelaModelos extends javax.swing.JInternalFrame {
             model.addRow(new Object[]{
                 modeloEquip.get(i).getModel(),
                 modeloEquip.get(i).getmBoard(),
+                modeloEquip.get(i).getProcessador(),
                 modeloEquip.get(i).getMem(),
                 modeloEquip.get(i).getStorage(),
-                modeloEquip.get(i).getPower(),
-                modeloEquip.get(i).getProcessador()
+                modeloEquip.get(i).getPower()
 
             });
         }
@@ -72,15 +71,15 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         txtModel.setText(lista.get(0));
         txtMemoria.setText(lista.get(1));
         txtMotherBoard.setText(lista.get(2));
-        txtCPU.setText(lista.get(3));
-        txtAlimentacao.setText(lista.get(4));
-        txtArmazenamento.setText(lista.get(5));
-        txtParalela.setText(lista.get(6));
-        txtSerial.setText(lista.get(7));
-        txtRede.setText(lista.get(8));
-        txtWifi.setText(lista.get(9));
+        txtAlimentacao.setText(lista.get(3));
+        txtArmazenamento.setText(lista.get(4));
+        txtParalela.setText(lista.get(5));
+        txtSerial.setText(lista.get(6));
+        txtRede.setText(lista.get(7));
+        txtWifi.setText(lista.get(8));
+        txtTipo.setText(lista.get(9));
+        txtCPU.setText(lista.get(10));
         txtGabinete.setText(lista.get(11));
-        txtTipo.setText(lista.get(10));
         btnAdicionar.setEnabled(true);
         btnAlterar.setEnabled(true);
         btnRemover.setEnabled(true);
@@ -88,18 +87,11 @@ public class TelaModelos extends javax.swing.JInternalFrame {
 
     private void setarCampos() {
         int setar = tbEquip.getSelectedRow();
-        txtCPU.setText(tbEquip.getModel().getValueAt(setar, 0).toString());
-        txtGabinete.setText(tbEquip.getModel().getValueAt(setar, 1).toString());
-        txtTipo.setText(tbEquip.getModel().getValueAt(setar, 2).toString());
-        txtMemoria.setText(tbEquip.getModel().getValueAt(setar, 4).toString());
-        txtMotherBoard.setText(tbEquip.getModel().getValueAt(setar, 5).toString());
-        // txtModel.setText(tbEquip.getModel().getValueAt(setar, 3).toString());
-        // txtArmazenamento.setText(tbEquip.getModel().getValueAt(setar, 6).toString());
-        // txtAlimentacao.setText(tbEquip.getModel().getValueAt(setar, 5).toString());
-        // txtParalela.setText(tbEquip.getModel().getValueAt(setar, 7).toString());
-        // txtSerial.setText(tbEquip.getModel().getValueAt(setar, 8).toString());
-        // txtRede.setText(tbEquip.getModel().getValueAt(setar, 9).toString());
-        // txtWifi.setText(tbEquip.getModel().getValueAt(setar, 10).toString());
+        String modelo = tbEquip.getValueAt(setar, 0).toString();
+        ArrayList<String> equipamento = computador.pesquisarModelo(modelo);
+        if (!equipamento.isEmpty()) {
+            setarCampos(equipamento);
+        }
     }
 
     private void limpar() {
@@ -115,9 +107,9 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         txtSerial.setText(null);
         txtRede.setText(null);
         txtWifi.setText(null);
-        btnAdicionar.setEnabled(true);
-        btnAlterar.setEnabled(false);
-        btnRemover.setEnabled(false);
+        // btnAdicionar.setEnabled(true);
+        // btnAlterar.setEnabled(false);
+        // btnRemover.setEnabled(false);
     }
 
     /**
@@ -260,7 +252,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Modelo", "MotherBoard", "Processador ", "Memória", "Alimentação", "Armazenamento"
+                "Modelo", "MotherBoard", "Processador ", "Memória", "Armazenamento", "Alimentação"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -425,8 +417,9 @@ public class TelaModelos extends javax.swing.JInternalFrame {
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         getDados();
-        if (computador.adicionarModelo(sSerial, tipo, tipo, model, mem, mBoard, storage, power, sParalela, sSerial, redeLan, wifi)) {
+        if (computador.adicionarModelo(tipo, processador, gabinete, model, mem, mBoard, power, storage, sParalela, sSerial, redeLan, wifi)) {
             JOptionPane.showMessageDialog(null, "Produto inserido com sucesso.");
+            setarTabela();
         }
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
@@ -436,6 +429,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
             ArrayList<String> equipamento = computador.pesquisarModelo(txtSerialPesquisa.getText());
             if (!equipamento.isEmpty()) {
                 setarCampos(equipamento);
+                conta = 0;
             } else {
                 limpar();
             }
@@ -444,21 +438,22 @@ public class TelaModelos extends javax.swing.JInternalFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         getDados();
-        if (computador.editarModelo(sSerial, mem, mBoard, storage, power, sParalela, sSerial, redeLan, wifi)) {
+        if (computador.editarModelo(model, mem, mBoard, storage, power, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete)) {
             JOptionPane.showMessageDialog(null, "Produto alterado com sucesso");
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        String nSerie = txtModel.getText();
+        String model = txtModel.getText();
         int confirma = JOptionPane.showConfirmDialog(null, "Confima a exclusão deste cliente?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            if (nSerie.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Insira o Número de Série do equipamento.");
+            if (model.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Insira o Modelo a ser excluído.");
             } else {
-                if (computador.excluirModelo(nSerie)) {
+                if (computador.excluirModelo(model)) {
                     limpar();
                     JOptionPane.showMessageDialog(null, "Produto removido com sucesso");
+                    setarTabela();
                 }
             }
         }

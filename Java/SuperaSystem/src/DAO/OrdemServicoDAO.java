@@ -8,11 +8,12 @@ package DAO;
 import Bean.OrdemServicoBean;
 import conectaBancoDados.ConexaoDb;
 import java.awt.HeadlessException;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 
@@ -26,36 +27,11 @@ public class OrdemServicoDAO {
     ResultSet rs = null;
     java.sql.Connection conexao = ConexaoDb.getConection();
     ArrayList<OrdemServicoBean> ordemServico = new ArrayList<>();
-    ClienteDAO clientes = new ClienteDAO();
 
-    public ArrayList<String> pesquisarCliente(String nome) {
-        ArrayList<String> clienteList = new ArrayList<>();
-        String sql = "select * from tbclientes where nomecli=?";
-        try {
-            conexao = ConexaoDb.getConection();
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, nome);
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                clienteList.add(rs.getString("idcli"));
-                clienteList.add(rs.getString("nomeCli"));
-                clienteList.add(rs.getString("contatocli"));
-                clienteList.add(rs.getString("emailcli"));
-                clienteList.add(rs.getString("cidadecli"));
-                clienteList.add(rs.getString("estadocli"));
-
-            }
-            conexao.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-
-        return clienteList;
-    }
-
+ 
     public boolean novaOs(String id_ordemServico, String idcli, Date dataAbertura, Boolean garantia, String defeito, String tecnico, String valor) {
         boolean sucesso = false;
-        String sql = "insert into tbordemServico (id_ordemServico, idcli, dataAbertura, garantia, defeito, tecnico, valor)values(?,?,?,?,?,?,?,?)";
+        String sql = "insert into tbordemServico (id_ordemServico, idcli, dataAbertura, garantia, defeito, tecnico, valor)values(?,?,?,?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -89,13 +65,14 @@ public class OrdemServicoDAO {
             rs = pst.executeQuery();
             while (rs.next()) {
                 OrdemServicoBean os = new OrdemServicoBean();
-                os.setId_ordemServico(rs.getString("id_pedido"));
-                os.setDataAbertura(rs.getDate("data_os"));
+                os.setId_ordemServico(rs.getString("id_ordemServico"));
+                os.setDataAbertura(rs.getDate("dataAbertura"));
                 os.setDefeito(rs.getString("defeito"));
                 os.setGarantia(rs.getBoolean("garantia"));
                 os.setTecnico(rs.getString("tecnico"));
                 os.setValor(rs.getString("valor"));
                 os.setIdcli(rs.getString("idcli"));
+                ordemServico.add(os);
             }
 
         } catch (SQLException e) {
@@ -104,23 +81,24 @@ public class OrdemServicoDAO {
         return ordemServico;
     }
 
-    public ArrayList<OrdemServicoBean> pesquisarOs(String idcli) {
-        String sql = "SELECT * FROM tbordemServico where idcli = ?";
+    public ArrayList<OrdemServicoBean> pesquisarOs(String numOs) {
+        String sql = "SELECT * FROM tbordemServico where id_ordemServico = ?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
-            pst.setString(1, idcli);
+            pst.setString(1, numOs);
             rs = pst.executeQuery();
             while (rs.next()) {
                 OrdemServicoBean os = new OrdemServicoBean();
-                os.setId_ordemServico(rs.getString("id_pedido"));
-                os.setDataAbertura(rs.getDate("data_os"));                
+                os.setId_ordemServico(rs.getString("id_ordemServico"));
+                os.setDataAbertura(rs.getDate("dataAbertura"));                
                 os.setDefeito(rs.getString("defeito"));
                 os.setGarantia(rs.getBoolean("garantia"));
                 os.setTecnico(rs.getString("tecnico"));
-                os.setValor(rs.getString("valor"));                
+                os.setValor(rs.getString("valor")); 
+                ordemServico.add(os);
             }
 
         } catch (SQLException e) {
