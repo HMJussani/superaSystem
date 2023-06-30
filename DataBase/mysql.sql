@@ -32,13 +32,15 @@ create table tbEquipOS(
 nserie varchar(20) PRIMARY KEY not null ,
 id_ordemServico VARCHAR(10) NOT NULL,
 model varchar(20),
+idcli VARCHAR(20) unique not null,
 patProd varchar(20) unique NOT NULL,
+foreign key (idcli) references tbclientes(idcli),
 foreign key (id_ordemServico) references tbordemServico(id_ordemServico),
 foreign key (model) references tbmodelo(model)
 
 );
 
-insert into tbInfoProd (nserie, id_ordemServico, model, patProd)values("12345","id_pedido","modelo","patrimonio");
+insert into tbEquipOS (idcli, nserie, id_ordemServico, model, patProd)values("idcli","12345","id_pedido","modelo","patrimonio");
 
 
 create table tbordemServico(

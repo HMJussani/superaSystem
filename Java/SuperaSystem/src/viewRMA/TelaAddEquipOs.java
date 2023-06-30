@@ -1,7 +1,5 @@
 package viewRMA;
 
-import Bean.ModelosBean;
-import Bean.OrdemServicoBean;
 import DAO.ClienteDAO;
 import DAO.EquipOsDao;
 import DAO.ModelosDao;
@@ -20,7 +18,7 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
     String loteProd = null;
     String modelo= null;  
     String patProd = null;
-    String idCliente = null;
+    String idCli = null;
     ModelosDao produtoDAO = new ModelosDao();
     EquipOsDao equipOs = new EquipOsDao();
     ClienteDAO clientes = new ClienteDAO();
@@ -46,7 +44,7 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
     private void setarTabela(){
         DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
         model.setRowCount(0);
-        ArrayList<String> ordemServico = equipOs.pesquisarProduto(idCliente);
+        ArrayList<String> ordemServico = equipOs.pesquisarProduto(idCli);
         
         for(int i=0; i< ordemServico .size(); i++){
             model.addRow(new Object[]{
@@ -292,7 +290,7 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
        getDados();      
-      if(equipOs.adicionarEquipamento(nserie, loteProd, modelo, patProd)){
+      if(equipOs.adicionarEquipamento(idCli, nserie, modelo, modelo, patProd)){
           JOptionPane.showMessageDialog(null, "Produto adicionando com sucesso");
        }
        
@@ -303,7 +301,7 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
       if(conta >=3){
            ArrayList<String> clienteOs = clientes.pesquisarCliente(txtCliPesquisa.getText());
            if(!clienteOs.isEmpty()){
-             idCliente = clienteOs.get(0);
+             idCli = clienteOs.get(0);
               conta=0;
               
            }else{
