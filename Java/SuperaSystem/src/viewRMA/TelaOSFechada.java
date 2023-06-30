@@ -454,14 +454,14 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtCliPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCliPesquisarKeyReleased
-        conta++;
+     /*   conta++;
         if (conta >= 3) {
             ArrayList<String> cliente = clientes.pesquisarCliente(txtCliPesquisar.getText());
             if (!cliente.isEmpty()) {
                 txtCliPesquisar.setText(cliente.get(0));
 
             }
-        }
+        }*/
     }//GEN-LAST:event_txtCliPesquisarKeyReleased
 
     private void tblEquipamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEquipamentosMouseClicked

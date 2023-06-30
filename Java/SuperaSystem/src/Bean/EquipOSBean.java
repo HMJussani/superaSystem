@@ -12,7 +12,7 @@ public class EquipOSBean {
     
    private String nserie ;
    private String idCli ;
-   private String id_ordemServ;
+   private String idOrdServ;
    private String model;  
    private String patProd;
 
@@ -27,12 +27,12 @@ public class EquipOSBean {
         this.nserie = nserie;
     }
 
-    public String getId_ordemServ() {
-        return id_ordemServ;
+    public String getidOrdServ() {
+        return idOrdServ;
     }
 
-    public void setId_ordemServ(String id_ordemServ) {
-        this.id_ordemServ = id_ordemServ;
+    public void setIdOrdServ(String idOrdServ) {
+        this.idOrdServ = idOrdServ;
     }
 
     public String getModel() {

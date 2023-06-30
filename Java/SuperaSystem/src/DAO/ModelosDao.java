@@ -18,6 +18,8 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author RMA
+ * public ModelosBean(int idModel, String tipo, String processador, String gabinete, String model, String mem, String mBoard, String fonteAlimenta, String armazenaModel, String armazenaTipo, String sParalela, String sSerial, String redeLan, String wifi, String expansao) {
+
  */
 public class ModelosDao {
 
@@ -26,9 +28,9 @@ public class ModelosDao {
     Connection conexao = ConexaoDb.getConection();
     ArrayList<ModelosBean> listaModelos = new ArrayList<>();
 
-    public boolean adicionarModelo(String tipo, String processador, String gabinete, String model, String mem, String mBoard, String power, String storage, String sParalela, String sSerial, String redeLan, String wifi) {
+    public boolean adicionarModelo(int idModel, String tipo, String processador, String gabinete, String model, String mem, String mBoard, String fonteAlimenta, String armazenaModel, String armazenaTipo, String sParalela, String sSerial, String redeLan, String wifi, String expansao) {
         boolean sucesso = false;
-        String sql = "insert into tbmodelo(model, mem, mBoard, source, storage,sParalela,sSerial,redeLan,wifi,tipo, processador,gabinete) values(?,?,?,?,?,?,?,?,?,?,?,?);";
+        String sql = "insert into tbmodelo(idModel,tipo,processador,gabinete,model,mem,mBoard,fonteAlimenta,armazenaModel,armazenaTipo,sParalela,sSerial,redeLan,wifi,expansao) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
         try {
             conexao = ConexaoDb.getConection();
@@ -56,33 +58,35 @@ public class ModelosDao {
         return sucesso;
     }
 
-    public ArrayList<String> pesquisarModelo(String model) {
-        ArrayList<String> produto = new ArrayList<>();
+    public ArrayList<ModelosBean> pesquisarModelo(String model) {
+        
         String sql = "select * from tbmodelo where model=?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1, model);
             rs = pst.executeQuery();
-            while (rs.next()) {                
-                produto.add(rs.getString("model"));
-                produto.add(rs.getString("mem"));
-                produto.add(rs.getString("mBoard"));                
-                produto.add(rs.getString("source"));
-                produto.add(rs.getString("storage"));
-                produto.add(rs.getString("sParalela"));
-                produto.add(rs.getString("sSerial"));
-                produto.add(rs.getString("redeLan"));
-                produto.add(rs.getString("wifi"));
-                produto.add(rs.getString("tipo")); 
-                produto.add(rs.getString("processador"));
-                produto.add(rs.getString("gabinete"));
+            while (rs.next()) {   
+                ModelosBean produto = new ModelosBean();
+                produto.setModel(rs.getString("model"));
+                produto.setMem(rs.getString("mem"));
+                produto.setmBoard(rs.getString("mBoard"));                
+                produto.setPower(rs.getString("source"));
+                produto.setStorage(rs.getString("storage"));
+                produto.setsParalela(rs.getString("sParalela"));
+                produto.setsSerial(rs.getString("sSerial"));
+                produto.setRedeLan(rs.getString("redeLan"));
+                produto.setWifi(rs.getString("wifi"));
+                produto.setTipo(rs.getString("tipo")); 
+                produto.setProcessador(rs.getString("processador"));
+                produto.setGabinete(rs.getString("gabinete"));
+                listaModelos.add(produto);
             }
             conexao.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Pesquisando Produtos: " + e);
         }
-        return produto;
+        return listaModelos;
     }
 
     public ArrayList<ModelosBean> pesquisarModelo() {
@@ -115,11 +119,11 @@ public class ModelosDao {
         return listaModelos;
     }
 
-    public boolean editarModelo( String model, String mem, String mBoard, String storage, String power, String sParalela, String sSerial, String redeLan, String wifi,String tipo,String processador,String gabinete) {
+    public boolean editarModelo(int idModel, String tipo, String processador, String gabinete, String model, String mem, String mBoard, String fonteAlimenta, String armazenaModel, String armazenaTipo, String sParalela, String sSerial, String redeLan, String wifi, String expansao){
         boolean sucesso = false;
         int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            String sql = "update tbmodelo set mem=?, mBoard=?, storage=?, source=?, sParalela=? ,sSerial=?,redeLan=?, wifi=?, tipo=?, processador=?, gabinete=? where model=?";
+            String sql = "update tbmodelo set mem=?, mBoard=?, source=?, storage=?, sParalela=? ,sSerial=?,redeLan=?, wifi=?, tipo=?, processador=?, gabinete=? where model=?";
             try {
                 conexao = ConexaoDb.getConection();
                 pst = conexao.prepareStatement(sql);
@@ -171,3 +175,5 @@ public class ModelosDao {
         return sucesso;
     }
 }
+
+

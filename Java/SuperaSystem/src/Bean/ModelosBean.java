@@ -11,38 +11,50 @@ package Bean;
  */
 public class ModelosBean {
     
+    private int idModel;
     private String tipo;
     private String processador;
     private String gabinete;
     private String model;
     private String mem; 
     private String mBoard;
-    private String power;
-    private String storage;            
+    private String fonteAlimenta;
+    private String armazenaModel;
+    private String armazenaTipo;
     private String sParalela;
     private String sSerial; 
     private String redeLan;
     private String wifi; 
+    private String expansao;
 
-    public ModelosBean( String model, String mem, String mBoard, String power, String storage, String sParalela, String sSerial, String redeLan, String wifi,String tipo, String processador, String gabinete) {
+    public ModelosBean() {
+    }
+
+    public ModelosBean(int idModel, String tipo, String processador, String gabinete, String model, String mem, String mBoard, String fonteAlimenta, String armazenaModel, String armazenaTipo, String sParalela, String sSerial, String redeLan, String wifi, String expansao) {
+        this.idModel = idModel;
+        this.tipo = tipo;
+        this.processador = processador;
+        this.gabinete = gabinete;
         this.model = model;
         this.mem = mem;
         this.mBoard = mBoard;
-        this.power = power;
-        this.storage = storage;
+        this.fonteAlimenta = fonteAlimenta;
+        this.armazenaModel = armazenaModel;
+        this.armazenaTipo = armazenaTipo;
         this.sParalela = sParalela;
         this.sSerial = sSerial;
         this.redeLan = redeLan;
         this.wifi = wifi;
-        this.tipo = tipo;
-        this.processador = processador;
-        this.gabinete = gabinete;
+        this.expansao = expansao;
     }
 
-    public ModelosBean() {
+    public int getIdModel() {
+        return idModel;
     }
-    
-    
+
+    public void setIdModel(int idModel) {
+        this.idModel = idModel;
+    }
 
     public String getTipo() {
         return tipo;
@@ -92,20 +104,28 @@ public class ModelosBean {
         this.mBoard = mBoard;
     }
 
-    public String getPower() {
-        return power;
+    public String getFonteAlimenta() {
+        return fonteAlimenta;
     }
 
-    public void setPower(String power) {
-        this.power = power;
+    public void setFonteAlimenta(String fonteAlimenta) {
+        this.fonteAlimenta = fonteAlimenta;
     }
 
-    public String getStorage() {
-        return storage;
+    public String getArmazenaModel() {
+        return armazenaModel;
     }
 
-    public void setStorage(String storage) {
-        this.storage = storage;
+    public void setArmazenaModel(String armazenaModel) {
+        this.armazenaModel = armazenaModel;
+    }
+
+    public String getArmazenaTipo() {
+        return armazenaTipo;
+    }
+
+    public void setArmazenaTipo(String armazenaTipo) {
+        this.armazenaTipo = armazenaTipo;
     }
 
     public String getsParalela() {
@@ -140,6 +160,14 @@ public class ModelosBean {
         this.wifi = wifi;
     }
 
+    public String getExpansao() {
+        return expansao;
+    }
+
+    public void setExpansao(String expansao) {
+        this.expansao = expansao;
+    }
+    
     
     
 }

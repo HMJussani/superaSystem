@@ -59,15 +59,15 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     private void setarCampos() {
         int setar = tblClientes.getSelectedRow();
         String nomeCli = (tblClientes.getModel().getValueAt(setar, 1).toString());
-        ArrayList<String> cliente = clienteDao.pesquisarCliente(nomeCli);
-        txtId.setText(cliente.get(0));
-        txtNome.setText(cliente.get(1));
-        txtEndereco.setText(cliente.get(3));
-        txtFone.setText(cliente.get(4));
-        txtEmail.setText(cliente.get(5));
-        txtContato.setText(cliente.get(2));
-        txtCidade.setText(cliente.get(6));
-        txtEstado.setText(cliente.get(7));
+        ArrayList<ClientesBean> cliente = clienteDao.pesquisarCliente(nomeCli);
+        txtId.setText(cliente.get(0).getIdcli());
+        txtNome.setText(cliente.get(0).getNomecli());
+        txtEndereco.setText(cliente.get(0).getEndcli());
+        txtFone.setText(cliente.get(0).getTelcli());
+        txtEmail.setText(cliente.get(0).getEmailcli());
+        txtContato.setText(cliente.get(0).getContatocli());
+        txtCidade.setText(cliente.get(0).getCidadecli());
+        txtEstado.setText(cliente.get(0).getEstadocli());
         btnAdicionar.setEnabled(false);
         btnAlterar.setEnabled(true);
         btnRemover.setEnabled(true);
@@ -205,11 +205,11 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         tblClientes.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (tblClientes.getColumnModel().getColumnCount() > 0) {
             tblClientes.getColumnModel().getColumn(0).setResizable(false);
-            tblClientes.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tblClientes.getColumnModel().getColumn(0).setPreferredWidth(6);
             tblClientes.getColumnModel().getColumn(2).setResizable(false);
-            tblClientes.getColumnModel().getColumn(2).setPreferredWidth(10);
+            tblClientes.getColumnModel().getColumn(2).setPreferredWidth(6);
             tblClientes.getColumnModel().getColumn(3).setResizable(false);
-            tblClientes.getColumnModel().getColumn(3).setPreferredWidth(10);
+            tblClientes.getColumnModel().getColumn(3).setPreferredWidth(6);
         }
 
         jLabel7.setText("Id Cliente");
@@ -352,16 +352,16 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     private void txtPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyReleased
         conta++;
         if (conta >= 3) {
-            ArrayList<String> cliente = clienteDao.pesquisarCliente(txtPesquisar.getText());
+            ArrayList<ClientesBean> cliente = clienteDao.pesquisarCliente(txtPesquisar.getText());
             if (!cliente.isEmpty()) {
-                txtId.setText(cliente.get(0));
-                txtNome.setText(cliente.get(1));
-                txtEndereco.setText(cliente.get(3));
-                txtFone.setText(cliente.get(4));
-                txtEmail.setText(cliente.get(5));
-                txtContato.setText(cliente.get(2));
-                txtCidade.setText(cliente.get(6));
-                txtEstado.setText(cliente.get(7));
+                txtId.setText(cliente.get(0).getIdcli());
+                txtNome.setText(cliente.get(0).getNomecli());
+                txtEndereco.setText(cliente.get(0).getEndcli());
+                txtFone.setText(cliente.get(0).getTelcli());
+                txtEmail.setText(cliente.get(0).getEmailcli());
+                txtContato.setText(cliente.get(0).getContatocli());
+                txtCidade.setText(cliente.get(0).getCidadecli());
+                txtEstado.setText(cliente.get(0).getEstadocli());
                 btnAdicionar.setEnabled(false);
                 btnAlterar.setEnabled(true);
                 btnRemover.setEnabled(true);
@@ -376,8 +376,8 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tblClientesMouseClicked
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-       getDados();
-        if(clienteDao.editarCliente(idcli, nomecli, contatocli, endcli, title, emailcli, cidadecli, estadocli)){
+        getDados();
+        if (clienteDao.editarCliente(idcli, nomecli, contatocli, endcli, title, emailcli, cidadecli, estadocli)) {
             JOptionPane.showMessageDialog(null, "Dados do cliente alterados com sucesso");
         }
     }//GEN-LAST:event_btnAlterarActionPerformed

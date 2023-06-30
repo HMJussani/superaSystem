@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
  * @author RMA
  * table tbEquipOS
  * private String nserie ;
-   private String id_ordemServico;
+   private String idOrdServ;
    private String model;  
    private String patProd;
  */
@@ -32,16 +32,17 @@ public class EquipOsDao {
  Connection  conexao = ConexaoDb.getConection();
  ArrayList<EquipOSBean> equipamentoOS = new ArrayList<>();
  
- public boolean adicionarEquipamento(String idcli,String nserie,String id_ordemServ, String model, String patProd){
+ public boolean adicionarEquipamento(String idcli, String nserie,String idOrdServ, String idModel, String patProd){
      boolean sucesso = false; 
-     String sql = "insert into tbEquipOS(idCli,nserie, id_ordemServico, model, patProd) values(?,?,?,?,?)";
+     String sql = "insert into tbEquipOS(idCli,nserie, idOrdServ, model, patProd) values(?,?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
-            pst.setString(1, nserie);
-            pst.setString(2, id_ordemServ);
-            pst.setString(3, model);
-            pst.setString(4, patProd);         
+             pst.setString(1, idcli);
+            pst.setString(2, nserie);
+            pst.setString(3, idOrdServ);
+            pst.setString(4, idModel);
+            pst.setString(5, patProd);         
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {                   
                     sucesso = true;
@@ -63,7 +64,7 @@ public class EquipOsDao {
            while (rs.next()) { 
             equipOS.add(rs.getString( "idCli"));   
             equipOS.add(rs.getString( "nserie"));
-            equipOS.add(rs.getString("id_ordemServico"));
+            equipOS.add(rs.getString("idOrdServ"));
             equipOS.add(rs.getString( "model"));           
             equipOS.add(rs.getString( "patProd"));
                                  
@@ -84,7 +85,7 @@ public class EquipOsDao {
            while (rs.next()) {
             EquipOSBean equipOS = new EquipOSBean();
             equipOS.setNserie(rs.getString( "nserie"));
-            equipOS.setId_ordemServ(rs.getString("id_ordemServico"));
+            equipOS.setIdOrdServ(rs.getString("idOrdServ"));
             equipOS.setModel(rs.getString( "model"));           
             equipOS.setPatProd(rs.getString( "patProd"));
             equipamentoOS.add(equipOS);
@@ -96,15 +97,15 @@ public class EquipOsDao {
         return equipamentoOS;
     }
   
-  public boolean editarProduto(String nserie,String id_ordemServico, String model, String patProd){
+  public boolean editarProduto(String nserie,String idOrdServ, String model, String patProd){
       boolean sucesso = false; 
       int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
       if (confirma == JOptionPane.YES_OPTION) {             
-        String sql = "update tbEquipOS set id_ordemServico=?, model=?,  patProd=? where nserie=?";
+        String sql = "update tbEquipOS set idOrdServ=?, model=?,  patProd=? where nserie=?";
         try {
              conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);            
-            pst.setString(1, id_ordemServico);
+            pst.setString(1, idOrdServ);
             pst.setString(2, model);
             pst.setString(3, patProd);   
             int adicionado = pst.executeUpdate();

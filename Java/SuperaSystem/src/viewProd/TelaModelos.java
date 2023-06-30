@@ -13,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TelaModelos extends javax.swing.JInternalFrame {
 
-    ModelosDao computador = new ModelosDao();
+    
     private String processador = null;
     private String gabinete = null;
     private String tipo = null;
@@ -67,19 +67,19 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         wifi = txtWifi.getText();
     }
 
-    private void setarCampos(ArrayList<String> lista) {
-        txtModel.setText(lista.get(0));
-        txtMemoria.setText(lista.get(1));
-        txtMotherBoard.setText(lista.get(2));
-        txtAlimentacao.setText(lista.get(3));
-        txtArmazenamento.setText(lista.get(4));
-        txtParalela.setText(lista.get(5));
-        txtSerial.setText(lista.get(6));
-        txtRede.setText(lista.get(7));
-        txtWifi.setText(lista.get(8));
-        txtTipo.setText(lista.get(9));
-        txtCPU.setText(lista.get(10));
-        txtGabinete.setText(lista.get(11));
+    private void setarCampos(ArrayList<ModelosBean> lista) {
+        txtModel.setText(lista.get(0).getModel());
+        txtMemoria.setText(lista.get(0).getMem());
+        txtMotherBoard.setText(lista.get(0).getmBoard());
+        txtAlimentacao.setText(lista.get(0).getPower());
+        txtArmazenamento.setText(lista.get(0).getStorage());
+        txtParalela.setText(lista.get(0).getsParalela());
+        txtSerial.setText(lista.get(0).getsSerial());
+        txtRede.setText(lista.get(0).getRedeLan());
+        txtWifi.setText(lista.get(0).getWifi());
+        txtTipo.setText(lista.get(0).getTipo());
+        txtCPU.setText(lista.get(0).getProcessador());
+        txtGabinete.setText(lista.get(0).getGabinete());
         btnAdicionar.setEnabled(true);
         btnAlterar.setEnabled(true);
         btnRemover.setEnabled(true);
@@ -87,8 +87,9 @@ public class TelaModelos extends javax.swing.JInternalFrame {
 
     private void setarCampos() {
         int setar = tbEquip.getSelectedRow();
+        ModelosDao computador = new ModelosDao();
         String modelo = tbEquip.getValueAt(setar, 0).toString();
-        ArrayList<String> equipamento = computador.pesquisarModelo(modelo);
+        ArrayList<ModelosBean> equipamento = computador.pesquisarModelo(modelo);
         if (!equipamento.isEmpty()) {
             setarCampos(equipamento);
         }
@@ -417,6 +418,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         getDados();
+        ModelosDao computador = new ModelosDao();
         if (computador.adicionarModelo(tipo, processador, gabinete, model, mem, mBoard, power, storage, sParalela, sSerial, redeLan, wifi)) {
             JOptionPane.showMessageDialog(null, "Produto inserido com sucesso.");
             setarTabela();
@@ -426,7 +428,8 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private void txtSerialPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSerialPesquisaKeyReleased
         conta++;
         if (conta >= 3) {
-            ArrayList<String> equipamento = computador.pesquisarModelo(txtSerialPesquisa.getText());
+            ModelosDao computador = new ModelosDao();
+            ArrayList<ModelosBean> equipamento = computador.pesquisarModelo(txtSerialPesquisa.getText());
             if (!equipamento.isEmpty()) {
                 setarCampos(equipamento);
                 conta = 0;
@@ -438,6 +441,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         getDados();
+        ModelosDao computador = new ModelosDao();
         if (computador.editarModelo(model, mem, mBoard, storage, power, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete)) {
             JOptionPane.showMessageDialog(null, "Produto alterado com sucesso");
         }
@@ -450,6 +454,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
             if (model.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Insira o Modelo a ser excluído.");
             } else {
+                ModelosDao computador = new ModelosDao();
                 if (computador.excluirModelo(model)) {
                     limpar();
                     JOptionPane.showMessageDialog(null, "Produto removido com sucesso");

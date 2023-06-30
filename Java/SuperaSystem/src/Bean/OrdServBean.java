@@ -12,9 +12,9 @@ import java.sql.Date;
  *
  * @author RMA
  */
-public class OrdemServicoBean {
+public class OrdServBean {
     
-    private String id_ordemServico;
+    private String idOrdServ;
     private String idcli;
     private Date dataAbertura;
     private Date dataFechamento;
@@ -24,21 +24,11 @@ public class OrdemServicoBean {
     private String valor;
     
     
-    public OrdemServicoBean() {
+    public OrdServBean() {
         
     }
 
-    public String getId_ordemServico() {
-        return id_ordemServico;
-    }
-
-    public void setId_ordemServico(String id_ordemServico) {
-        this.id_ordemServico = id_ordemServico;
-    }
-
-    public String getIdcli() {
-        return idcli;
-    }
+   
 
     public void setIdcli(String idcli) {
         this.idcli = idcli;
@@ -90,6 +80,14 @@ public class OrdemServicoBean {
 
     public void setValor(String valor) {
         this.valor = valor;
+    }
+
+    public String getIdOrdServ() {
+        return idOrdServ;
+    }
+
+    public void setIdOrdServ(String idOrdServ) {
+        this.idOrdServ = idOrdServ;
     }
 
     

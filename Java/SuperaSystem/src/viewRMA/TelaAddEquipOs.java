@@ -1,8 +1,12 @@
 package viewRMA;
 
+import Bean.ClientesBean;
+import Bean.EquipOSBean;
+import Bean.OrdServBean;
 import DAO.ClienteDAO;
 import DAO.EquipOsDao;
 import DAO.ModelosDao;
+import DAO.OrdServDAO;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -13,66 +17,66 @@ import javax.swing.table.DefaultTableModel;
  * @author HMJussani
  */
 public class TelaAddEquipOs extends javax.swing.JInternalFrame {
-   
+
     String nserie = null;
     String loteProd = null;
-    String modelo= null;  
+    String modelo = null;
     String patProd = null;
     String idCli = null;
     ModelosDao produtoDAO = new ModelosDao();
     EquipOsDao equipOs = new EquipOsDao();
     ClienteDAO clientes = new ClienteDAO();
-    int conta =0;
-    
+    OrdServDAO ordemDAO = new OrdServDAO();
+    int conta = 0;
+
     public TelaAddEquipOs() {
         initComponents();
-              
-        
+       // setarTabela();
+
     }
 
     private void setarCampos() {
-        int setar = tbProd.getSelectedRow();
+        /*  int setar = tbProd.getSelectedRow();
         txtSerie.setText(tbProd.getModel().getValueAt(setar, 3).toString());
         txtPat.setText(tbProd.getModel().getValueAt(setar, 1).toString());        
         txtModel.setText(tbProd.getModel().getValueAt(setar, 2).toString());
         txtOrdemServ.setText(tbProd.getModel().getValueAt(setar, 0).toString());
         btnAdicionar.setEnabled(false);
         btnAlterar.setEnabled(true);
-        btnRemover.setEnabled(true);
-    } 
-    
-    private void setarTabela(){
+        btnRemover.setEnabled(true);*/
+    }
+
+    private void setarTabela(String idCli) {
         DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
         model.setRowCount(0);
-        ArrayList<String> ordemServico = equipOs.pesquisarProduto(idCli);
-        
-        for(int i=0; i< ordemServico .size(); i++){
+        ArrayList<OrdServBean> ordensServico = ordemDAO.pesquisarOs(idCli);
+        for (int i = 0; i < ordensServico.size(); i++) {
             model.addRow(new Object[]{
-            //    modelos.get(i).getNserie(),
-            //    modelos.get(i).getPatProd(),
-            //    modelos.get(i).getLoteProd(),
-            //    modelos.get(i).getModel()
-               
+                ordensServico.get(i).getIdOrdServ(),
+               // ordensServico.get(i).
+               // ordensServico.get(i).getNserie(),
+               // ordensServico.get(i).getModel()
             });
         }
-        
     }
-    
-    private void limpar() {       
+
+    private void limpar() {
+        txtIdCli.setText("");
         txtSerie.setText("");
         txtPat.setText("");
-        txtModel.setText("");       
+        txtModel.setText("");
         btnAdicionar.setEnabled(true);
         btnAlterar.setEnabled(false);
         btnRemover.setEnabled(false);
     }
-    
-    private void getDados(){
-        nserie = txtOrdemServ.getText();        
-        modelo= txtSerie.getText();
+
+    private void getDados() {
+        nserie = txtOrdemServ.getText();
+        modelo = txtSerie.getText();
         patProd = txtPat.getText();
         loteProd = txtModel.getText();
-       
+        idCli = txtIdCli.getText();
+
     }
 
     /**
@@ -90,7 +94,7 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
         txtModel = new javax.swing.JTextField();
         btnAlterar = new javax.swing.JButton();
         btnAdicionar = new javax.swing.JButton();
-        txtCliPesquisa = new javax.swing.JTextField();
+        txtIdCli = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbProd = new javax.swing.JTable();
@@ -100,6 +104,9 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
         txtOrdemServ = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtCliNome = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -159,9 +166,9 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
             }
         });
 
-        txtCliPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtIdCli.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtCliPesquisaKeyReleased(evt);
+                txtIdCliKeyReleased(evt);
             }
         });
 
@@ -201,6 +208,20 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
 
         jLabel15.setText("Ordem de Serviço");
 
+        jLabel2.setText("Código Cliente");
+        jLabel2.setToolTipText("");
+        jLabel2.setPreferredSize(new java.awt.Dimension(90, 16));
+
+        jLabel3.setText("       Cliente");
+        jLabel3.setToolTipText("");
+        jLabel3.setPreferredSize(new java.awt.Dimension(90, 16));
+
+        txtCliNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCliNomeKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -228,16 +249,23 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(txtCliPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(185, 185, 185))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(txtIdCli, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(txtCliNome)
+                .addGap(10, 10, 10)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtModel, txtOrdemServ, txtPat, txtSerie});
@@ -246,18 +274,22 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCliPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addComponent(jLabel6)))
-                        .addGap(6, 6, 6))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(11, 11, 11)
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtCliNome, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtIdCli, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(jLabel6))
+                .addGap(6, 6, 6)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -275,12 +307,12 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addGap(56, 56, 56)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(214, Short.MAX_VALUE))
+                .addGap(88, 88, 88))
         );
 
         jLabel1.getAccessibleContext().setAccessibleName("");
@@ -289,49 +321,65 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-       getDados();      
-      if(equipOs.adicionarEquipamento(idCli, nserie, modelo, modelo, patProd)){
-          JOptionPane.showMessageDialog(null, "Produto adicionando com sucesso");
-       }
-       
+        getDados();
+        if (equipOs.adicionarEquipamento(idCli, nserie, modelo, modelo, patProd)) {
+            JOptionPane.showMessageDialog(null, "Produto adicionando com sucesso");
+        }
+
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
-    private void txtCliPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCliPesquisaKeyReleased
-      conta++;
-      if(conta >=3){
-           ArrayList<String> clienteOs = clientes.pesquisarCliente(txtCliPesquisa.getText());
-           if(!clienteOs.isEmpty()){
-             idCli = clienteOs.get(0);
-              conta=0;
-              
-           }else{
-               limpar();
-           }
-      }
-     
-    }//GEN-LAST:event_txtCliPesquisaKeyReleased
+    private void txtIdCliKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdCliKeyReleased
+        conta++;
+        if (conta >= 3) {
+            ArrayList<ClientesBean> clienteOs = clientes.pesquisarCliente(txtIdCli.getText());
+            if (!clienteOs.isEmpty()) {
+                txtCliNome.setText(clienteOs.get(0).getIdcli());
+                setarTabela(txtIdCli.getText());
+                conta = 0;
+
+            } else {
+                limpar();
+            }
+        }
+
+    }//GEN-LAST:event_txtIdCliKeyReleased
 
     private void tbProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProdMouseClicked
-       setarCampos();
+        setarCampos();
     }//GEN-LAST:event_tbProdMouseClicked
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-         getDados();
-      // if(infoProdutoDAO.editarProduto(nserie, loteProd, modelo, patProd)){
-     //    JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso");  
-       //}
+        getDados();
+        // if(infoProdutoDAO.editarProduto(nserie, loteProd, modelo, patProd)){
+        //    JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso");  
+        //}
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-          getDados();
+        getDados();
         //  if(infoProdutoDAO.excluirProduto(nserie)){
         //       JOptionPane.showMessageDialog(null, "Produto removido com sucesso");
-       //   }
+        //   }
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-      
+
     }//GEN-LAST:event_formInternalFrameOpened
+
+    private void txtCliNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCliNomeKeyReleased
+        conta++;
+        if (conta >= 3) {
+            ArrayList<ClientesBean> clienteOs = clientes.pesquisarCliente(txtCliNome.getText());
+            if (!clienteOs.isEmpty()) {
+                txtIdCli.setText(clienteOs.get(0).getIdcli());
+                setarTabela(clienteOs.get(0).getIdcli());
+                conta = 0;
+
+            } else {
+                limpar();
+            }
+        }
+    }//GEN-LAST:event_txtCliNomeKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -342,11 +390,14 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbProd;
-    private javax.swing.JTextField txtCliPesquisa;
+    private javax.swing.JTextField txtCliNome;
+    private javax.swing.JTextField txtIdCli;
     private javax.swing.JTextField txtModel;
     private javax.swing.JTextField txtOrdemServ;
     private javax.swing.JTextField txtPat;

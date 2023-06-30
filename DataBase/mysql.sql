@@ -27,43 +27,46 @@ estadocli varchar(2)not null default 'PR'
 
 insert into tbclientes (idcli , nomecli, contatocli, endcli , telcli ) values ("idcli" , "nomecli", "contatocli", "endcli" , "telcli");
 
-
-create table tbEquipOS(
+drop table tbEquip;
+create table tbEquip(
 nserie varchar(20) PRIMARY KEY not null ,
-id_ordemServico VARCHAR(10) NOT NULL,
-model varchar(20),
-idcli VARCHAR(20) unique not null,
-patProd varchar(20) unique NOT NULL,
-foreign key (idcli) references tbclientes(idcli),
-foreign key (id_ordemServico) references tbordemServico(id_ordemServico),
+model varchar(50) not null,
+patEquip varchar(20) unique NOT NULL,
 foreign key (model) references tbmodelo(model)
-
 );
 
-insert into tbEquipOS (idcli, nserie, id_ordemServico, model, patProd)values("idcli","12345","id_pedido","modelo","patrimonio");
+insert into tbEquipOS (idcli, nserie, idOrdServ, idModel, patProd)values("idcli","idOrdServ","id_pedido",1,"patrimonio");
+select * from tbEquipOS;
 
-
-create table tbordemServico(
-id_ordemServico VARCHAR(10) PRIMARY KEY,
+create table tbOrdServ(
+idOrdServ VARCHAR(10) PRIMARY KEY,
 idcli VARCHAR(20) not null,
 dataAbertura DATE NOT NULL,
 dataFechamento DATE,
 garantia bool DEFAULT FALSE,
 defeito VARCHAR(100)DEFAULT "Verificar.",
+solucao VARCHAR(100)DEFAULT "Verificar.",
+aberta  boolean default true,
 tecnico varchar(30)NOT NULL,
 valor varchar(10),
 foreign key (idcli) references tbclientes(idcli)
 );
 
+select * from tbOrdServ;
+
 insert into tbordemServico (id_ordemServico, idcli, dataAbertura, garantia, defeito, tecnico, valor)values("12345","cliente","2023-06-28",FALSE,"Não liga","Tecnico","100,00");
 
+drop table tbmodelo;
 
 create table tbmodelo(
-model varchar(50) PRIMARY KEY,
+idModel int PRIMARY KEY AUTO_INCREMENT,
+model varchar(50) unique not null ,
 mem VARCHAR(50) not null,
 mBoard VARCHAR(50) not null,
-source varchar(50) not null,
-storage VARCHAR(50)  not null,
+expansao varchar(50) default "Sem expansões",
+armazenaTipo varchar(10)default "USB Flash",
+armazenaModel varchar(50) not null,
+fonteAlimenta VARCHAR(50)  not null,
 sParalela varchar(5) default "0",
 sSerial varchar(5) default "1",
 redeLan varchar(50) default "onBoard",
@@ -71,8 +74,9 @@ wifi varchar(50) default "nao",
 tipo varchar(50) default "ThinClient",
 processador VARCHAR(50) not null,
 gabinete varchar(50) not null
-
 );
+
+
 
 insert into tbmodelo(model, mem, mBoard, source, storage, sParalela,sSerial,redeLan, wifi, tipo, processador, gabinete) values("modelo","memoria","placaMae","fonteAlimenta","armazenamento","D25","DB9","lan","wifi","ThinClient", "CPU", "Gabinete");
 
@@ -80,4 +84,5 @@ describe tbpedido;
 describe tbusuarios;
 describe tbclientes;
 describe tbcomponentes;
+
 

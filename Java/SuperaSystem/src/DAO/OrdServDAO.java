@@ -5,13 +5,14 @@
  */
 package DAO;
 
-import Bean.OrdemServicoBean;
+import Bean.OrdServBean;
 import conectaBancoDados.ConexaoDb;
 import java.awt.HeadlessException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
 import java.util.HashMap;
@@ -21,21 +22,20 @@ import javax.swing.JOptionPane;
  *
  * @author hmjussani
  */
-public class OrdemServicoDAO {
+public class OrdServDAO {
 
     PreparedStatement pst = null;
     ResultSet rs = null;
     java.sql.Connection conexao = ConexaoDb.getConection();
-    ArrayList<OrdemServicoBean> ordemServico = new ArrayList<>();
+    ArrayList<OrdServBean> ordemServico = new ArrayList<>();
 
- 
-    public boolean novaOs(String id_ordemServico, String idcli, Date dataAbertura, Boolean garantia, String defeito, String tecnico, String valor) {
+    public boolean novaOs(String idOrdServ, String idcli, Date dataAbertura, Boolean garantia, String defeito, String tecnico, String valor) {
         boolean sucesso = false;
-        String sql = "insert into tbordemServico (id_ordemServico, idcli, dataAbertura, garantia, defeito, tecnico, valor)values(?,?,?,?,?,?,?)";
+        String sql = "insert into tbOrdServ (idOrdServ, idcli, dataAbertura, garantia, defeito, tecnico, valor)values(?,?,?,?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
-            pst.setString(1, id_ordemServico);
+            pst.setString(1, idOrdServ);
             pst.setString(2, idcli);
             pst.setDate(3, (java.sql.Date) dataAbertura);
             pst.setBoolean(4, garantia);
@@ -48,6 +48,8 @@ public class OrdemServicoDAO {
                 sucesso = true;
                 conexao.close();
             }
+        } catch (SQLIntegrityConstraintViolationException e1) {
+            JOptionPane.showMessageDialog(null, "Ordem de serviço já existente.");
         } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -55,8 +57,8 @@ public class OrdemServicoDAO {
         return sucesso;
     }
 
-    public ArrayList<OrdemServicoBean> pesquisarOs() {
-        String sql = "SELECT * FROM tbordemServico";
+    public ArrayList<OrdServBean> pesquisarOs() {
+        String sql = "SELECT * FROM tbOrdServ";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -64,8 +66,8 @@ public class OrdemServicoDAO {
             pst = conexao.prepareStatement(sql);
             rs = pst.executeQuery();
             while (rs.next()) {
-                OrdemServicoBean os = new OrdemServicoBean();
-                os.setId_ordemServico(rs.getString("id_ordemServico"));
+                OrdServBean os = new OrdServBean();
+                os.setIdOrdServ(rs.getString("idOrdServ"));
                 os.setDataAbertura(rs.getDate("dataAbertura"));
                 os.setDefeito(rs.getString("defeito"));
                 os.setGarantia(rs.getBoolean("garantia"));
@@ -81,23 +83,23 @@ public class OrdemServicoDAO {
         return ordemServico;
     }
 
-    public ArrayList<OrdemServicoBean> pesquisarOs(String numOs) {
-        String sql = "SELECT * FROM tbordemServico where id_ordemServico = ?";
+    public ArrayList<OrdServBean> pesquisarOs(String idCli) {
+        String sql = "SELECT * FROM tbOrdServ where idcli = ?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
-            pst.setString(1, numOs);
+            pst.setString(1, idCli);
             rs = pst.executeQuery();
             while (rs.next()) {
-                OrdemServicoBean os = new OrdemServicoBean();
-                os.setId_ordemServico(rs.getString("id_ordemServico"));
-                os.setDataAbertura(rs.getDate("dataAbertura"));                
+                OrdServBean os = new OrdServBean();
+                os.setIdOrdServ(rs.getString("idOrdServ"));
+                os.setDataAbertura(rs.getDate("dataAbertura"));
                 os.setDefeito(rs.getString("defeito"));
                 os.setGarantia(rs.getBoolean("garantia"));
                 os.setTecnico(rs.getString("tecnico"));
-                os.setValor(rs.getString("valor")); 
+                os.setValor(rs.getString("valor"));
                 ordemServico.add(os);
             }
 
@@ -107,20 +109,20 @@ public class OrdemServicoDAO {
         return ordemServico;
     }
 
-    public boolean editarOs(String id_ordemServico, String defeito,Date dataFechamento, String solucao, String tecnico, String valor) {
+    public boolean editarOs(String idOrdServ, String defeito, Date dataFechamento, String solucao, String tecnico, String valor) {
         boolean sucesso = false;
-        String sql = "update tbordemServico set dataFechamento=?, defeito=?, tecnico=?, valor=? where id_ordemServico=?";
+        String sql = "update tbOrdServ set dataFechamento=?, defeito=?, tecnico=?, valor=? where idOrdServ=?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             conexao = ConexaoDb.getConection();
-            pst = conexao.prepareStatement(sql);           
+            pst = conexao.prepareStatement(sql);
             pst.setDate(3, (java.sql.Date) dataFechamento);
             pst.setString(4, defeito);
             pst.setString(5, solucao);
             pst.setString(6, tecnico);
-            pst.setString(7, valor);            
-            pst.setString(8, id_ordemServico);
+            pst.setString(7, valor);
+            pst.setString(8, idOrdServ);
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {
                 sucesso = true;
@@ -138,16 +140,16 @@ public class OrdemServicoDAO {
      *
      * @return
      */
-    public boolean excluirOs(String retirado, String id_ordemServico) {
+    public boolean excluirOs(String retirado, String idOrdServ) {
         boolean sucesso = false;
         conexao = ConexaoDb.getConection();
         if (retirado.equals("Retirado")) {
             int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esta OS?", "Atenção", JOptionPane.YES_NO_OPTION);
             if (confirma == JOptionPane.YES_OPTION) {
-                String sql = "delete from tbordemServico where id_ordemServico=?";
+                String sql = "delete from tbOrdServ where idOrdServ=?";
                 try {
                     pst = conexao.prepareStatement(sql);
-                    pst.setString(1, id_ordemServico);
+                    pst.setString(1, idOrdServ);
                     int apagado = pst.executeUpdate();
                     if (apagado > 0) {
                         sucesso = true;
