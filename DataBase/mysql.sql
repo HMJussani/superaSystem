@@ -59,8 +59,7 @@ insert into tbordemServico (id_ordemServico, idcli, dataAbertura, garantia, defe
 drop table tbmodelo;
 
 create table tbmodelo(
-idModel int PRIMARY KEY AUTO_INCREMENT,
-model varchar(50) unique not null ,
+model varchar(50) PRIMARY KEY  ,
 mem VARCHAR(50) not null,
 mBoard VARCHAR(50) not null,
 expansao varchar(50) default "Sem expansões",
@@ -86,3 +85,4 @@ describe tbclientes;
 describe tbcomponentes;
 
 
+select * from tbmodelo;

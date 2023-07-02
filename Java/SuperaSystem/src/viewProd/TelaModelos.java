@@ -14,18 +14,20 @@ import javax.swing.table.DefaultTableModel;
 public class TelaModelos extends javax.swing.JInternalFrame {
 
     
-    private String processador = null;
-    private String gabinete = null;
-    private String tipo = null;
-    private String model = null;
-    private String mem = null;
-    private String mBoard = null;
-    private String power = null;
-    private String storage = null;
-    private String sParalela = null;
-    private String sSerial = null;
-    private String redeLan = null;
-    private String wifi = null;
+    private String model;
+    private String mem; 
+    private String mBoard;
+    private String expansao;
+    private String armazenaTipo;
+     private String armazenaModel;
+    private String fonteAlimenta;
+    private String sParalela;
+    private String sSerial; 
+    private String redeLan;
+    private String wifi; 
+     private String tipo;
+    private String processador;
+    private String gabinete;
     int conta = 0;
 
     public TelaModelos() {
@@ -45,8 +47,8 @@ public class TelaModelos extends javax.swing.JInternalFrame {
                 modeloEquip.get(i).getmBoard(),
                 modeloEquip.get(i).getProcessador(),
                 modeloEquip.get(i).getMem(),
-                modeloEquip.get(i).getStorage(),
-                modeloEquip.get(i).getPower()
+                modeloEquip.get(i).getArmazenaModel(),
+                modeloEquip.get(i).getFonteAlimenta()
 
             });
         }
@@ -58,10 +60,10 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         mBoard = txtMotherBoard.getText();
         processador = txtCPU.getText();
         tipo = txtTipo.getText();
-        storage = txtArmazenamento.getText();
-        power = txtAlimentacao.getText();
-        sParalela = txtSerial.getText();
-        sSerial = txtParalela.getText();
+        armazenaModel = txtArmazenamento.getText();
+        fonteAlimenta = txtAlimentacao.getText();
+        sParalela = txtParalela.getText();
+        sSerial = txtSerial.getText();
         gabinete = txtGabinete.getText();
         redeLan = txtRede.getText();
         wifi = txtWifi.getText();
@@ -71,8 +73,8 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         txtModel.setText(lista.get(0).getModel());
         txtMemoria.setText(lista.get(0).getMem());
         txtMotherBoard.setText(lista.get(0).getmBoard());
-        txtAlimentacao.setText(lista.get(0).getPower());
-        txtArmazenamento.setText(lista.get(0).getStorage());
+        txtAlimentacao.setText(lista.get(0).getFonteAlimenta());
+        txtArmazenamento.setText(lista.get(0).getArmazenaModel());
         txtParalela.setText(lista.get(0).getsParalela());
         txtSerial.setText(lista.get(0).getsSerial());
         txtRede.setText(lista.get(0).getRedeLan());
@@ -108,9 +110,9 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         txtSerial.setText(null);
         txtRede.setText(null);
         txtWifi.setText(null);
-        // btnAdicionar.setEnabled(true);
-        // btnAlterar.setEnabled(false);
-        // btnRemover.setEnabled(false);
+        btnAdicionar.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        btnRemover.setEnabled(false);
     }
 
     /**
@@ -162,7 +164,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         setTitle("Produtos");
         setPreferredSize(new java.awt.Dimension(645, 495));
 
-        jLabel1.setText("Pesquisa Número de Série:");
+        jLabel1.setText("Pesquisa Modelo");
         jLabel1.setToolTipText("");
 
         jLabel2.setText("Processador");
@@ -419,7 +421,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         getDados();
         ModelosDao computador = new ModelosDao();
-        if (computador.adicionarModelo(tipo, processador, gabinete, model, mem, mBoard, power, storage, sParalela, sSerial, redeLan, wifi)) {
+        if (computador.adicionarModelo(tipo, processador, gabinete, model, mem, mBoard, fonteAlimenta, armazenaModel, armazenaTipo, sParalela, sSerial, redeLan, wifi, expansao)) {
             JOptionPane.showMessageDialog(null, "Produto inserido com sucesso.");
             setarTabela();
         }
@@ -442,7 +444,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         getDados();
         ModelosDao computador = new ModelosDao();
-        if (computador.editarModelo(model, mem, mBoard, storage, power, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete)) {
+        if (computador.editarModelo(model, mem, mBoard, expansao, armazenaTipo, armazenaModel, fonteAlimenta, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete)) {
             JOptionPane.showMessageDialog(null, "Produto alterado com sucesso");
         }
     }//GEN-LAST:event_btnAlterarActionPerformed

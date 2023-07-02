@@ -9,75 +9,43 @@ package Bean;
  *
  * @author Rick
  */
-public class ModelosBean {
-    
-    private int idModel;
-    private String tipo;
-    private String processador;
-    private String gabinete;
+public class ModelosBean {    
+   
     private String model;
     private String mem; 
     private String mBoard;
-    private String fonteAlimenta;
-    private String armazenaModel;
+    private String expansao;
     private String armazenaTipo;
+     private String armazenaModel;
+    private String fonteAlimenta;
     private String sParalela;
     private String sSerial; 
     private String redeLan;
     private String wifi; 
-    private String expansao;
+     private String tipo;
+    private String processador;
+    private String gabinete;
 
-    public ModelosBean() {
-    }
-
-    public ModelosBean(int idModel, String tipo, String processador, String gabinete, String model, String mem, String mBoard, String fonteAlimenta, String armazenaModel, String armazenaTipo, String sParalela, String sSerial, String redeLan, String wifi, String expansao) {
-        this.idModel = idModel;
-        this.tipo = tipo;
-        this.processador = processador;
-        this.gabinete = gabinete;
+    public ModelosBean(String model, String mem, String mBoard, String expansao, String armazenaTipo, String armazenaModel, String fonteAlimenta, String sParalela, String sSerial, String redeLan, String wifi, String tipo, String processador, String gabinete) {
         this.model = model;
         this.mem = mem;
         this.mBoard = mBoard;
-        this.fonteAlimenta = fonteAlimenta;
-        this.armazenaModel = armazenaModel;
+        this.expansao = expansao;
         this.armazenaTipo = armazenaTipo;
+        this.armazenaModel = armazenaModel;
+        this.fonteAlimenta = fonteAlimenta;
         this.sParalela = sParalela;
         this.sSerial = sSerial;
         this.redeLan = redeLan;
         this.wifi = wifi;
-        this.expansao = expansao;
-    }
-
-    public int getIdModel() {
-        return idModel;
-    }
-
-    public void setIdModel(int idModel) {
-        this.idModel = idModel;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public String getProcessador() {
-        return processador;
-    }
-
-    public void setProcessador(String processador) {
         this.processador = processador;
-    }
-
-    public String getGabinete() {
-        return gabinete;
-    }
-
-    public void setGabinete(String gabinete) {
         this.gabinete = gabinete;
+    }
+    
+    
+    
+    public ModelosBean() {
     }
 
     public String getModel() {
@@ -104,12 +72,20 @@ public class ModelosBean {
         this.mBoard = mBoard;
     }
 
-    public String getFonteAlimenta() {
-        return fonteAlimenta;
+    public String getExpansao() {
+        return expansao;
     }
 
-    public void setFonteAlimenta(String fonteAlimenta) {
-        this.fonteAlimenta = fonteAlimenta;
+    public void setExpansao(String expansao) {
+        this.expansao = expansao;
+    }
+
+    public String getArmazenaTipo() {
+        return armazenaTipo;
+    }
+
+    public void setArmazenaTipo(String armazenaTipo) {
+        this.armazenaTipo = armazenaTipo;
     }
 
     public String getArmazenaModel() {
@@ -120,12 +96,12 @@ public class ModelosBean {
         this.armazenaModel = armazenaModel;
     }
 
-    public String getArmazenaTipo() {
-        return armazenaTipo;
+    public String getFonteAlimenta() {
+        return fonteAlimenta;
     }
 
-    public void setArmazenaTipo(String armazenaTipo) {
-        this.armazenaTipo = armazenaTipo;
+    public void setFonteAlimenta(String fonteAlimenta) {
+        this.fonteAlimenta = fonteAlimenta;
     }
 
     public String getsParalela() {
@@ -160,14 +136,30 @@ public class ModelosBean {
         this.wifi = wifi;
     }
 
-    public String getExpansao() {
-        return expansao;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setExpansao(String expansao) {
-        this.expansao = expansao;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
-    
+
+    public String getProcessador() {
+        return processador;
+    }
+
+    public void setProcessador(String processador) {
+        this.processador = processador;
+    }
+
+    public String getGabinete() {
+        return gabinete;
+    }
+
+    public void setGabinete(String gabinete) {
+        this.gabinete = gabinete;
+    }
+
     
     
 }
