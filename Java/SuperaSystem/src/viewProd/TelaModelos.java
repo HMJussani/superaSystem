@@ -421,7 +421,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         getDados();
         ModelosDao computador = new ModelosDao();
-        if (computador.adicionarModelo(tipo, processador, gabinete, model, mem, mBoard, fonteAlimenta, armazenaModel, armazenaTipo, sParalela, sSerial, redeLan, wifi, expansao)) {
+        if (computador.adicionarModelo(model, mem, mBoard, expansao, armazenaTipo, armazenaModel, fonteAlimenta, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete)) {
             JOptionPane.showMessageDialog(null, "Produto inserido com sucesso.");
             setarTabela();
         }

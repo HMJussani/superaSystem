@@ -30,13 +30,17 @@ insert into tbclientes (idcli , nomecli, contatocli, endcli , telcli ) values ("
 drop table tbEquip;
 create table tbEquip(
 nserie varchar(20) PRIMARY KEY not null ,
+idOrdServ VARCHAR(10),
 model varchar(50) not null,
 patEquip varchar(20) unique NOT NULL,
-foreign key (model) references tbmodelo(model)
+idcli VARCHAR(20) not null,
+foreign key (model) references tbmodelo(model),
+foreign key (idOrdServ) references tbOrdServ(idOrdServ),
+foreign key (idcli) references tbclientes(idcli)
 );
 
-insert into tbEquipOS (idcli, nserie, idOrdServ, idModel, patProd)values("idcli","idOrdServ","id_pedido",1,"patrimonio");
-select * from tbEquipOS;
+insert into tbEquip(nserie, idOrdServ, model, patEquip, idcli) values("nserie","OS", "SPD18G1", "patrimonio", "idCli");
+select * from tbEquip;
 
 create table tbOrdServ(
 idOrdServ VARCHAR(10) PRIMARY KEY,

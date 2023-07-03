@@ -6,29 +6,38 @@ package Bean;
 
 import java.sql.Date;
 
-
-
 /**
  *
  * @author RMA
  */
 public class OrdServBean {
-    
+
     private String idOrdServ;
     private String idcli;
     private Date dataAbertura;
     private Date dataFechamento;
     private Boolean garantia;
-    private String defeito;    
+    private String defeito;
+    private String solucao;
+    private Boolean aberta;
     private String tecnico;
     private String valor;
-    
-    
+
     public OrdServBean() {
-        
+
     }
 
-   
+    public String getIdOrdServ() {
+        return idOrdServ;
+    }
+
+    public void setIdOrdServ(String idOrdServ) {
+        this.idOrdServ = idOrdServ;
+    }
+
+    public String getIdcli() {
+        return idcli;
+    }
 
     public void setIdcli(String idcli) {
         this.idcli = idcli;
@@ -66,6 +75,22 @@ public class OrdServBean {
         this.defeito = defeito;
     }
 
+    public String getSolucao() {
+        return solucao;
+    }
+
+    public void setSolucao(String solucao) {
+        this.solucao = solucao;
+    }
+
+    public Boolean getAberta() {
+        return aberta;
+    }
+
+    public void setAberta(Boolean aberta) {
+        this.aberta = aberta;
+    }
+
     public String getTecnico() {
         return tecnico;
     }
@@ -82,15 +107,4 @@ public class OrdServBean {
         this.valor = valor;
     }
 
-    public String getIdOrdServ() {
-        return idOrdServ;
-    }
-
-    public void setIdOrdServ(String idOrdServ) {
-        this.idOrdServ = idOrdServ;
-    }
-
-    
-    
-   
 }

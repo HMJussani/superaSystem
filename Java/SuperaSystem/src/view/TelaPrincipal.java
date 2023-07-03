@@ -3,7 +3,7 @@ package view;
 
 import viewRMA.TelaOSFechada;
 import viewProd.TelaModelos;
-import viewRMA.TelaAddEquipOs;
+import viewRMA.TelaInvetarioEquip;
 import conectaBancoDados.ConexaoDb;
 import java.text.DateFormat;
 import java.util.Date;
@@ -342,7 +342,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menSobreMouseClicked
 
     private void MenCadProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenCadProdActionPerformed
-        TelaAddEquipOs prods = new TelaAddEquipOs();
+        TelaInvetarioEquip prods = new TelaInvetarioEquip();
         prods.setVisible(true);
         desktop.add(prods);
     }//GEN-LAST:event_MenCadProdActionPerformed

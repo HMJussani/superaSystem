@@ -3,9 +3,12 @@ package viewRMA;
 import Bean.ClientesBean;
 import Bean.ModelosBean;
 import Bean.OrdServBean;
+import Bean.UsuariosBean;
 import DAO.ClienteDAO;
 import DAO.EquipOsDao;
+import DAO.ModelosDao;
 import DAO.OrdServDAO;
+import DAO.UsuariosDao;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,9 +28,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private String tecnico = null;
     private String valor = null;
     private ArrayList<ModelosBean> equipamentos = null;
-    ClienteDAO clientesDao = new ClienteDAO();    
+    ClienteDAO clientesDao = new ClienteDAO();
     EquipOsDao equipOsDao = new EquipOsDao();
-    OrdServDAO ordemServico = new OrdServDAO();
+    
 
     private int conta = 0;
 
@@ -35,8 +38,30 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         initComponents();
         setaTabelaOs();
         txtDataAbertura.setText(setData());
+        setTecnico();
+        setModelo();
     }
 
+    private void setTecnico() {
+        UsuariosDao userDAO = new UsuariosDao();
+        ArrayList<UsuariosBean> tecList = userDAO.pesquisarUser();
+
+        for (int i = 0; i < tecList.size(); i++) {
+            String tecnico = tecList.get(i).getNome().toString();
+            cbTecnico.addItem(tecnico);            
+        }
+    }
+
+    private void setModelo() {
+        ModelosDao modeloDao = new ModelosDao();
+        ArrayList<ModelosBean> modelList = modeloDao.pesquisarModelo();
+
+        for (int i = 0; i < modelList.size(); i++) {
+            String modelo = modelList.get(i).getModel().toString();
+            cbModel.addItem(modelo);            
+        }
+    }
+    
     private void getDados() {
         nserie = txtSerialNumber.getText();
         id_ordemServico = txtNumOS.getText();
@@ -44,8 +69,8 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         patProd = txtPat.getText();
         idcli = txtIDcli.getText();
         dataAbertura = getData();
-        garantia = false;        
-        tecnico = boxTecnico.getSelectedItem().toString();
+        garantia = false;
+        tecnico = cbTecnico.getSelectedItem().toString();
         valor = txtOsValor.getText();
     }
 
@@ -62,7 +87,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     }
 
     private void setaTabelaOs() {
-     /*  DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
+        /*  DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
         model.setRowCount(0);
         ArrayList<OrdemServicoBean> ordensServico = ordemDAO.pesquisarOs();
 
@@ -74,19 +99,18 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             });
         }*/
     }
-    
-    private void getClientes(ArrayList<ClientesBean> clientesBean){
+
+    private void getClientes(ArrayList<ClientesBean> clientesBean) {
         txtContatoCli.setText(clientesBean.get(0).getContatocli());
         txtEmailCli.setText(clientesBean.get(0).getEmailcli());
         txtCliNome.setText(clientesBean.get(0).getNomecli());
         txtIDcli.setText(clientesBean.get(0).getIdcli());
+        
     }
 
     private void setarOs(ArrayList<OrdServBean> ordemServico) {
-        
-        
-        
-        boxTecnico.setSelectedIndex(0);
+
+        cbTecnico.setSelectedIndex(0);
         txtOsValor.setText(ordemServico.get(0).getValor());
     }
 
@@ -132,7 +156,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         jLabel13 = new javax.swing.JLabel();
         txtPat = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        boxTecnico = new javax.swing.JComboBox<>();
+        cbTecnico = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         txtOsValor = new javax.swing.JTextField();
@@ -149,9 +173,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbEquip = new javax.swing.JTable();
         jLabel15 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnAdicionaEquip = new javax.swing.JButton();
         btnOsPesquisar = new javax.swing.JButton();
         btnOsImprimir = new javax.swing.JButton();
         btnOsExcluir = new javax.swing.JButton();
@@ -212,14 +236,12 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
         jLabel13.setText("Patrimônio");
 
-        txtPat.setText("0");
-
         jLabel8.setText("Serviço Realizado");
 
-        boxTecnico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tecnico" }));
-        boxTecnico.addActionListener(new java.awt.event.ActionListener() {
+        cbTecnico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tecnico" }));
+        cbTecnico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boxTecnicoActionPerformed(evt);
+                cbTecnicoActionPerformed(evt);
             }
         });
 
@@ -237,8 +259,6 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         });
 
         jLabel7.setText(" Defeito Reclamado");
-
-        txtSerialNumber.setText("0");
 
         jLabel12.setText("Número de Série");
 
@@ -265,7 +285,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         jTextArea2.setRows(5);
         jScrollPane1.setViewportView(jTextArea2);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbEquip.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -276,14 +296,14 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane4.setViewportView(jTable2);
+        jScrollPane4.setViewportView(tbEquip);
 
         jLabel15.setText("Equipamentos");
 
-        jButton1.setText("Adicionar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAdicionaEquip.setText("Adicionar");
+        btnAdicionaEquip.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAdicionaEquipActionPerformed(evt);
             }
         });
 
@@ -328,13 +348,13 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                                 .addGap(10, 10, 10)
                                 .addComponent(txtPat)
                                 .addGap(44, 44, 44)
-                                .addComponent(jButton1))))
+                                .addComponent(btnAdicionaEquip))))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(28, 28, 28)
                             .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(boxTecnico, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbTecnico, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
@@ -365,7 +385,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel14});
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {boxTecnico, cbModel, txtContatoCli, txtIDcli, txtNumOS});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cbModel, cbTecnico, txtContatoCli, txtIDcli, txtNumOS});
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtPat, txtSerialNumber});
 
@@ -408,7 +428,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                     .addComponent(jLabel13)
                     .addComponent(txtPat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnAdicionaEquip))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -430,7 +450,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel10)
                     .addComponent(txtOsValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boxTecnico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbTecnico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addGap(37, 37, 37))
         );
@@ -538,6 +558,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
     private void btnOsAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAdicionarActionPerformed
         getDados();
+        OrdServDAO ordemServico = new OrdServDAO();
         if (ordemServico.novaOs(id_ordemServico, idcli, dataAbertura, garantia, defeito, tecnico, valor)) {
             JOptionPane.showMessageDialog(null, "Ordem de Serviço criada com sucesso");
         }
@@ -580,9 +601,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         // imprimirOs();
     }//GEN-LAST:event_btnOsImprimirActionPerformed
 
-    private void boxTecnicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxTecnicoActionPerformed
+    private void cbTecnicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTecnicoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_boxTecnicoActionPerformed
+    }//GEN-LAST:event_cbTecnicoActionPerformed
 
     private void cbModelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbModelActionPerformed
         // TODO add your handling code here:
@@ -591,9 +612,15 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private void txtNumOSKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumOSKeyReleased
         conta++;
         if (conta >= 3) {
-            ArrayList<OrdServBean> ordensServico = ordemServico.pesquisarOs(txtNumOS.getText());
-            if (!ordensServico.isEmpty()) {
-                setarOs(ordensServico);
+            OrdServDAO ordemServico = new OrdServDAO();
+            ArrayList<OrdServBean> ordenList = ordemServico.pesquisarOs();
+            if (!ordenList.isEmpty()) {
+                String procurado = "";
+                for(int i =0; i <ordenList.size(); i++){
+                    //if(ordenList.get(i).getIdcli())
+                }
+                
+                txtIDcli.setText(procurado);
                 conta = 0;
             } else {
                 limpar();
@@ -609,19 +636,19 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailCliKeyReleased
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnAdicionaEquipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionaEquipActionPerformed
+        setTecnico();
+    }//GEN-LAST:event_btnAdicionaEquipActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> boxTecnico;
+    private javax.swing.JButton btnAdicionaEquip;
     private javax.swing.JButton btnOsAdicionar;
     private javax.swing.JButton btnOsAlterar;
     private javax.swing.JButton btnOsExcluir;
     private javax.swing.JButton btnOsImprimir;
     private javax.swing.JButton btnOsPesquisar;
     private javax.swing.JComboBox<String> cbModel;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> cbTecnico;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -639,9 +666,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTable tbEquip;
     private javax.swing.JTextField txtCliNome;
     private javax.swing.JTextField txtContatoCli;
     private javax.swing.JTextField txtDataAbertura;

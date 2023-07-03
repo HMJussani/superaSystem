@@ -14,7 +14,7 @@ public class EquipOSBean {
    private String idCli ;
    private String idOrdServ;
    private String model;  
-   private String patProd;
+   private String patEquip;
 
     public EquipOSBean() {
     }
@@ -43,12 +43,12 @@ public class EquipOSBean {
         this.model = model;
     }
 
-    public String getPatProd() {
-        return patProd;
+    public String getPatEquip() {
+        return patEquip;
     }
 
-    public void setPatProd(String patProd) {
-        this.patProd = patProd;
+    public void setPatEquip(String patEquip) {
+        this.patEquip = patEquip;
     }
 
     public String getIdCli() {

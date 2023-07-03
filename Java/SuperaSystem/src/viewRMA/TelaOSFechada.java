@@ -32,7 +32,7 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
         for (int i = 0; i < infoProd.size(); i++) {
             model.addRow(new Object[]{
                 infoProd.get(i).getNserie(),
-                infoProd.get(i).getPatProd(),
+               // infoProd.get(i).getPatProd(),
                 infoProd.get(i).getModel()
             });
         }

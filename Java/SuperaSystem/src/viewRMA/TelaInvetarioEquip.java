@@ -2,6 +2,7 @@ package viewRMA;
 
 import Bean.ClientesBean;
 import Bean.EquipOSBean;
+import Bean.ModelosBean;
 import Bean.OrdServBean;
 import DAO.ClienteDAO;
 import DAO.EquipOsDao;
@@ -16,46 +17,53 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author HMJussani
  */
-public class TelaAddEquipOs extends javax.swing.JInternalFrame {
+public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
 
     String nserie = null;
-    String loteProd = null;
-    String modelo = null;
-    String patProd = null;
-    String idCli = null;
+    String model = null;
+    String patEquip = null;
+    String idcli = null;
+    String idOrdServ = null;
     ModelosDao produtoDAO = new ModelosDao();
-    EquipOsDao equipOs = new EquipOsDao();
+
     ClienteDAO clientes = new ClienteDAO();
-    OrdServDAO ordemDAO = new OrdServDAO();
+    
     int conta = 0;
 
-    public TelaAddEquipOs() {
+    public TelaInvetarioEquip() {
         initComponents();
-       // setarTabela();
+        // setarTabela();
+        setModelo();
 
+    }
+
+    private void setModelo() {
+        ModelosDao modeloDao = new ModelosDao();
+        ArrayList<ModelosBean> modelList = modeloDao.pesquisarModelo();
+
+        for (int i = 0; i < modelList.size(); i++) {
+            String modelo = modelList.get(i).getModel().toString();
+            cbModel.addItem(modelo);
+        }
     }
 
     private void setarCampos() {
-        /*  int setar = tbProd.getSelectedRow();
-        txtSerie.setText(tbProd.getModel().getValueAt(setar, 3).toString());
-        txtPat.setText(tbProd.getModel().getValueAt(setar, 1).toString());        
-        txtModel.setText(tbProd.getModel().getValueAt(setar, 2).toString());
+        int setar = tbProd.getSelectedRow(); 
         txtOrdemServ.setText(tbProd.getModel().getValueAt(setar, 0).toString());
-        btnAdicionar.setEnabled(false);
-        btnAlterar.setEnabled(true);
-        btnRemover.setEnabled(true);*/
-    }
+        }
 
     private void setarTabela(String idCli) {
         DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
         model.setRowCount(0);
-        ArrayList<OrdServBean> ordensServico = ordemDAO.pesquisarOs(idCli);
-        for (int i = 0; i < ordensServico.size(); i++) {
+        EquipOsDao equipOs = new EquipOsDao();
+        ArrayList<EquipOSBean> equipList = equipOs.pesquisarProduto(idCli);
+        for (int i = 0; i < equipList.size(); i++) {
             model.addRow(new Object[]{
-                ordensServico.get(i).getIdOrdServ(),
-               // ordensServico.get(i).
-               // ordensServico.get(i).getNserie(),
-               // ordensServico.get(i).getModel()
+                equipList.get(i).getidOrdServ(), // ordensServico.get(i).
+                equipList.get(i).getPatEquip(),
+                equipList.get(i).getNserie(),                
+                equipList.get(i).getModel(),
+                
             });
         }
     }
@@ -64,18 +72,18 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
         txtIdCli.setText("");
         txtSerie.setText("");
         txtPat.setText("");
-        txtModel.setText("");
+        cbModel.setSelectedIndex(0);
         btnAdicionar.setEnabled(true);
         btnAlterar.setEnabled(false);
         btnRemover.setEnabled(false);
     }
 
     private void getDados() {
-        nserie = txtOrdemServ.getText();
-        modelo = txtSerie.getText();
-        patProd = txtPat.getText();
-        loteProd = txtModel.getText();
-        idCli = txtIdCli.getText();
+        idOrdServ = txtOrdemServ.getText();
+        nserie = txtSerie.getText();
+        model = cbModel.getSelectedItem().toString();
+        patEquip = txtPat.getText();
+        idcli = txtIdCli.getText();
 
     }
 
@@ -91,7 +99,6 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         btnRemover = new javax.swing.JButton();
         txtPat = new javax.swing.JTextField();
-        txtModel = new javax.swing.JTextField();
         btnAlterar = new javax.swing.JButton();
         btnAdicionar = new javax.swing.JButton();
         txtIdCli = new javax.swing.JTextField();
@@ -107,6 +114,7 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtCliNome = new javax.swing.JTextField();
+        cbModel = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -222,36 +230,12 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
             }
         });
 
+        cbModel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Modelo" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel15)
-                            .addComponent(jLabel11))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtOrdemServ, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtSerie, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPat, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtModel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(169, 169, 169)
-                        .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -266,10 +250,33 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel15)
+                            .addComponent(jLabel11))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtSerie)
+                            .addComponent(txtPat)
+                            .addComponent(cbModel, javax.swing.GroupLayout.Alignment.TRAILING, 0, 229, Short.MAX_VALUE)
+                            .addComponent(txtOrdemServ)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(169, 169, 169)
+                        .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 622, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(182, Short.MAX_VALUE))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtModel, txtOrdemServ, txtPat, txtSerie});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -305,8 +312,8 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
                     .addComponent(txtPat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                    .addComponent(jLabel7)
+                    .addComponent(cbModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -322,7 +329,8 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         getDados();
-        if (equipOs.adicionarEquipamento(idCli, nserie, modelo, modelo, patProd)) {
+        EquipOsDao equipOs = new EquipOsDao();
+        if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli)) {
             JOptionPane.showMessageDialog(null, "Produto adicionando com sucesso");
         }
 
@@ -350,7 +358,7 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         getDados();
-        // if(infoProdutoDAO.editarProduto(nserie, loteProd, modelo, patProd)){
+        // if(infoProdutoDAO.editarProduto(nserie, loteProd, modelo, patEquip)){
         //    JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso");  
         //}
     }//GEN-LAST:event_btnAlterarActionPerformed
@@ -386,6 +394,7 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnRemover;
+    private javax.swing.JComboBox<String> cbModel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -398,7 +407,6 @@ public class TelaAddEquipOs extends javax.swing.JInternalFrame {
     private javax.swing.JTable tbProd;
     private javax.swing.JTextField txtCliNome;
     private javax.swing.JTextField txtIdCli;
-    private javax.swing.JTextField txtModel;
     private javax.swing.JTextField txtOrdemServ;
     private javax.swing.JTextField txtPat;
     private javax.swing.JTextField txtSerie;
