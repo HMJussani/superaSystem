@@ -26,9 +26,9 @@ public class EquipOsDao {
     ResultSet rs = null;
     Connection conexao = ConexaoDb.getConection();
 
-    public boolean adicionarEquipamento(String nserie, String idOrdServ, String model, String patEquip, String idCli) {
+    public boolean adicionarEquipamento(String nserie, String idOrdServ, String model, String patEquip, String idcli) {
         boolean sucesso = false;
-        String sql = "insert into tbEquip(nserie, idOrdServ, model, patEquip) values(?,?,?,?,?)";
+        String sql = "insert into tbEquip(nserie, idOrdServ, model, patEquip, idcli) values(?,?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -36,7 +36,7 @@ public class EquipOsDao {
             pst.setString(2, idOrdServ);
             pst.setString(3, model);
             pst.setString(4, patEquip);
-            pst.setString(5, idCli);
+            pst.setString(5, idcli);
 
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {
@@ -49,13 +49,13 @@ public class EquipOsDao {
         return sucesso;
     }
 
-    public ArrayList<EquipOSBean> pesquisarProduto(String idCli) {
-        String sql = "select * from tbEquip where idCli=?";
+    public ArrayList<EquipOSBean> pesquisarProduto(String idcli) {
+        String sql = "select * from tbEquip where idcli=?";
         ArrayList<EquipOSBean> equipamentoOS = new ArrayList<>();
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
-            pst.setString(1, idCli);
+            pst.setString(1, idcli);
             rs = pst.executeQuery();
             while (rs.next()) {
                 EquipOSBean equipOS = new EquipOSBean();
@@ -94,21 +94,25 @@ public class EquipOsDao {
         return equipamentoOS;
     }
 
-    public boolean editarProduto(String nserie, String idOrdServ, String model, String patEquip) {
+    public boolean editarProduto(String nserie, String idOrdServ, String model, String patEquip, String idcli) {
         boolean sucesso = false;
         int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            String sql = "update tbEquip set idOrdServ=?, model=?,  patEquip=? where nserie=?";
+            String sql = "update tbEquip set idOrdServ=?, model=?,  patEquip=?, idcli=? where nserie=?";
             try {
                 conexao = ConexaoDb.getConection();
                 pst = conexao.prepareStatement(sql);
                 pst.setString(1, idOrdServ);
                 pst.setString(2, model);
                 pst.setString(3, patEquip);
+                pst.setString(4, idcli);
+                pst.setString(5, nserie);
                 int adicionado = pst.executeUpdate();
                 if (adicionado > 0) {
                     sucesso = true;
                     conexao.close();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Alteração não realizada.");
                 }
             } catch (HeadlessException | SQLException e) {
                 JOptionPane.showMessageDialog(null, e);
@@ -131,6 +135,8 @@ public class EquipOsDao {
                 if (apagado > 0) {
                     sucesso = true;
                     conexao.close();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Exclusão não realizada.Equipamento não encontrado.");
                 }
             } catch (SQLIntegrityConstraintViolationException e1) {
                 JOptionPane.showMessageDialog(null, "Exclusão não realizada.\nComponente possui O.S. pendente.");

@@ -29,8 +29,8 @@ insert into tbclientes (idcli , nomecli, contatocli, endcli , telcli ) values ("
 
 drop table tbEquip;
 create table tbEquip(
-nserie varchar(20) PRIMARY KEY not null ,
-idOrdServ VARCHAR(10),
+nserie varchar(20) PRIMARY KEY,
+idOrdServ VARCHAR(10)not null,
 model varchar(50) not null,
 patEquip varchar(20) unique NOT NULL,
 idcli VARCHAR(20) not null,
@@ -39,7 +39,7 @@ foreign key (idOrdServ) references tbOrdServ(idOrdServ),
 foreign key (idcli) references tbclientes(idcli)
 );
 
-insert into tbEquip(nserie, idOrdServ, model, patEquip, idcli) values("nserie","OS", "SPD18G1", "patrimonio", "idCli");
+insert into tbEquip(nserie, idOrdServ, model, patEquip, idcli) values("nserie","3072023", "modelo", "patrimonio", "idcli");
 select * from tbEquip;
 
 create table tbOrdServ(
@@ -87,6 +87,6 @@ describe tbpedido;
 describe tbusuarios;
 describe tbclientes;
 describe tbcomponentes;
-
-
+select * from tbEquip;
+delete from tbEquip where nserie=?;
 select * from tbmodelo;

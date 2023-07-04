@@ -1,6 +1,7 @@
 package viewRMA;
 
 import Bean.ClientesBean;
+import Bean.EquipOSBean;
 import Bean.ModelosBean;
 import Bean.OrdServBean;
 import Bean.UsuariosBean;
@@ -18,9 +19,9 @@ import javax.swing.table.DefaultTableModel;
 public class TelaOSAberta extends javax.swing.JInternalFrame {
 
     private String nserie = null;
-    private String id_ordemServico = null;
+    private String idOrdServ = null;
     private String model = null;
-    private String patProd = null;
+    private String patEquip = null;
     private String idcli = null;
     private java.sql.Date dataAbertura = null;
     private Boolean garantia = false;
@@ -35,8 +36,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private int conta = 0;
 
     public TelaOSAberta() {
-        initComponents();
-        setaTabelaOs();
+        initComponents();       
         txtDataAbertura.setText(setData());
         setTecnico();
         setModelo();
@@ -64,9 +64,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     
     private void getDados() {
         nserie = txtSerialNumber.getText();
-        id_ordemServico = txtNumOS.getText();
+        idOrdServ = txtNumOS.getText();
         model = cbModel.getSelectedItem().toString();
-        patProd = txtPat.getText();
+        patEquip = txtPat.getText();
         idcli = txtIDcli.getText();
         dataAbertura = getData();
         garantia = false;
@@ -86,18 +86,18 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         return data;
     }
 
-    private void setaTabelaOs() {
-        /*  DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
+   private void setarTabela(String idCli) {
+        DefaultTableModel model = (DefaultTableModel) tbEquip.getModel();
         model.setRowCount(0);
-        ArrayList<OrdemServicoBean> ordensServico = ordemDAO.pesquisarOs();
-
-        for (int i = 0; i < ordensServico.size(); i++) {
+        EquipOsDao equipOs = new EquipOsDao();
+        ArrayList<EquipOSBean> equipList = equipOs.pesquisarProduto(idCli);
+        for (int i = 0; i < equipList.size(); i++) {
             model.addRow(new Object[]{
-                ordensServico.get(i).getId_ordemServico(),
-                ordensServico.get(i).getIdcli(),
-                ordensServico.get(i).getDataAbertura()
-            });
-        }*/
+                equipList.get(i).getidOrdServ(), // ordensServico.get(i).
+                equipList.get(i).getPatEquip(),
+                equipList.get(i).getNserie(),
+                equipList.get(i).getModel(),});
+        }
     }
 
     private void getClientes(ArrayList<ClientesBean> clientesBean) {
@@ -559,7 +559,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private void btnOsAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAdicionarActionPerformed
         getDados();
         OrdServDAO ordemServico = new OrdServDAO();
-        if (ordemServico.novaOs(id_ordemServico, idcli, dataAbertura, garantia, defeito, tecnico, valor)) {
+        if (ordemServico.novaOs(idOrdServ, idcli, dataAbertura, garantia, defeito, tecnico, valor)) {
             JOptionPane.showMessageDialog(null, "Ordem de Serviço criada com sucesso");
         }
 
@@ -614,13 +614,11 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         if (conta >= 3) {
             OrdServDAO ordemServico = new OrdServDAO();
             ArrayList<OrdServBean> ordenList = ordemServico.pesquisarOs();
-            if (!ordenList.isEmpty()) {
-                String procurado = "";
-                for(int i =0; i <ordenList.size(); i++){
-                    //if(ordenList.get(i).getIdcli())
+            if (!ordenList.isEmpty()) {                
+                for(int i =0; i <ordenList.size(); i++){                    
+                    txtIDcli.setText(ordenList.get(i).getIdcli());
+                    setarTabela(ordenList.get(i).getIdcli());
                 }
-                
-                txtIDcli.setText(procurado);
                 conta = 0;
             } else {
                 limpar();
@@ -638,6 +636,12 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
     private void btnAdicionaEquipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionaEquipActionPerformed
         setTecnico();
+         getDados();
+        EquipOsDao equipOs = new EquipOsDao();
+        if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli)) {
+            JOptionPane.showMessageDialog(null, "Produto adicionando com sucesso");
+            setarTabela(idcli);
+        }
     }//GEN-LAST:event_btnAdicionaEquipActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
