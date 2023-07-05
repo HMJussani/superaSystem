@@ -59,7 +59,5 @@ public class UsuariosBean {
     public void setIduser(String iduser) {
         this.iduser = iduser;
     }
-
-    
     
 }

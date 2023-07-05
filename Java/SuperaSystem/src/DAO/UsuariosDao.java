@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -24,7 +25,7 @@ public class UsuariosDao {
     ResultSet rs = null;
     Connection conexao = ConexaoDb.getConection();
     ArrayList<UsuariosBean> usuario = new ArrayList<>();
-    
+
     public boolean checaUser(String login, String pass) throws SQLException {
         boolean sucesso = false;
         String sql = "select * from tbusuarios where login =? and senha=?";
@@ -46,51 +47,52 @@ public class UsuariosDao {
         }
         return sucesso;
     }
-  
-    public boolean excluiUser(String login) throws SQLException {
+
+    public boolean excluiUser(String login) {
         boolean sucesso = false;
-        //String user = null;
-        String sql = "delete from tbusuarios where login =?;";
+        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a exclusão deste usuário?", "Atenção!", JOptionPane.YES_NO_OPTION);
+        if (confirma == JOptionPane.YES_OPTION) {
+            String sql = "delete from tbusuarios where login =?;";
+            try {
+                stmt = conexao.prepareStatement(sql);
+                stmt.setString(1, login);
+                int execute = stmt.executeUpdate();
+                if (execute > 0) {
+                    sucesso = true;
+                    conexao.close();
+                }
 
-        try {
-            stmt = conexao.prepareStatement(sql);
-            stmt.setString(1, login);
-           int execute= stmt.executeUpdate();
-            if (execute>0) {
-                sucesso = true;
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Erro deletando usuários: " + e);
+            } finally {
+
             }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro SQL usuários: " + e);
-        } finally {
-            conexao.close();
-
         }
         return sucesso;
     }
 
-  public ArrayList<UsuariosBean> pesquisarUser(){ 
-      String sql = "select * from tbusuarios";
+    public ArrayList<UsuariosBean> pesquisarUser() {
+        String sql = "select * from tbusuarios";
         try {
             conexao = ConexaoDb.getConection();
             stmt = conexao.prepareStatement(sql);
             rs = stmt.executeQuery();
-           while (rs.next()) {
-            UsuariosBean user = new UsuariosBean();
-            user.setIduser(rs.getString("iduser"));
-            user.setNome(rs.getString("usuario"));
-            user.setUser(rs.getString("login"));
-            user.setPass(rs.getString("senha"));
-            user.setPerfil(rs.getString("perfil"));            
-            usuario.add(user);
+            while (rs.next()) {
+                UsuariosBean user = new UsuariosBean();
+                user.setIduser(rs.getString("iduser"));
+                user.setNome(rs.getString("usuario"));
+                user.setUser(rs.getString("login"));
+                user.setPass(rs.getString("senha"));
+                user.setPerfil(rs.getString("perfil"));
+                usuario.add(user);
             }
-           conexao.close();
+            conexao.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
-        }         
+        }
         return usuario;
     }
-    
+
     public String retornaUser(String login) throws SQLException {
         String user = null;
         String sql = "select * from tbusuarios where login=?;";
@@ -100,7 +102,7 @@ public class UsuariosDao {
             stmt.setString(1, login);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                user += rs.getString("iduser") + "," + rs.getString("usuario") + "," + rs.getString("login") + "," + rs.getString("perfil"); 
+                user += rs.getString("iduser") + "," + rs.getString("usuario") + "," + rs.getString("login") + "," + rs.getString("perfil");
             }
 
         } catch (SQLException e) {
@@ -111,7 +113,8 @@ public class UsuariosDao {
         }
         return user;
     }
- public String retornaPerfil(String login) throws SQLException {
+
+    public String retornaPerfil(String login) throws SQLException {
         String user = null;
         String sql = "select * from tbusuarios where login=?;";
         try {
@@ -120,7 +123,7 @@ public class UsuariosDao {
             stmt.setString(1, login);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                user = rs.getString("perfil"); 
+                user = rs.getString("perfil");
             }
 
         } catch (SQLException e) {
@@ -131,7 +134,7 @@ public class UsuariosDao {
         }
         return user;
     }
-    
+
     public boolean editaUser(String user, String pass) throws SQLException {
         String sql = "update tbusuarios set senha=? where login =?;";
         boolean sucesso = false;
@@ -151,7 +154,7 @@ public class UsuariosDao {
         return sucesso;
     }
 
-    public boolean criaUser(String nome, String login, String senha, String perfil) throws SQLException {
+    public boolean criaUser(String nome, String login, String senha, String perfil){
         String sql = "insert into tbusuarios (nome, usuario, senha, perfil) values (?,?,?,? );";
         boolean sucesso = false;
         try {
@@ -162,13 +165,15 @@ public class UsuariosDao {
             stmt.setString(4, perfil);
             stmt.executeUpdate();
             sucesso = true;
-        } catch (Exception e) {
+            conexao.close();
+        } catch (SQLIntegrityConstraintViolationException e1) {
+            JOptionPane.showMessageDialog(null, "Login em uso.\nEscolha outro login.");
+        }
+        catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro ao criar novo usuário: " + e);
 
-        } finally {
-            conexao.close();
-
-        }
+        } 
         return sucesso;
     }
 }
+
