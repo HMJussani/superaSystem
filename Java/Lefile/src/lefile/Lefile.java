@@ -22,6 +22,9 @@ public class Lefile {
      * @param args the command line arguments
      */
     public static void main(String args[]) throws IOException {
+      
+      
+       /* 
         String pagina = "";
         String path = "C://Users//hmjussani//Documents//WebTemp/index.html";
         try {
@@ -39,7 +42,7 @@ public class Lefile {
         } catch (Exception FileNotFoundException) {
             System.out.println("Arquivo não encontrado");
         }
-
+*/
     }
 
     private static void garvarArquivo(String linha) throws IOException {

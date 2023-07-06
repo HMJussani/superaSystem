@@ -35,7 +35,7 @@ create table tbEquip(
 nserie varchar(20) PRIMARY KEY,
 idOrdServ VARCHAR(10)not null,
 model varchar(50) not null,
-patEquip varchar(20) unique NOT NULL,
+patEquip varchar(20) NOT NULL,
 idcli VARCHAR(20) not null,
 foreign key (model) references tbmodelo(model),
 foreign key (idOrdServ) references tbOrdServ(idOrdServ),
