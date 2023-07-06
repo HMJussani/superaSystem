@@ -7,9 +7,12 @@ iduser int primary key auto_increment,
 usuario varchar(50) not null,
 login varchar(20) not null unique,
 senha varchar(20) not null,
-perfil varchar(20) default 'Tecnico'
-
+perfil varchar(20) default 'Tecnico',
+email varchar(50)not null default 'contato@contato.com'
 );
+
+alter table tbusuarios add email varchar(50)not null default 'contato@contato.com';
+
 
 insert into tbusuarios (iduser ,usuario ,login ,senha ,perfil)values(1,'Administrador', 'admin', 'admin', 'admin');
 insert into tbusuarios (iduser ,usuario ,login ,senha ,perfil)values(2,'Henrique Marega Jussani', 'hmjussani', '123', 'user');
