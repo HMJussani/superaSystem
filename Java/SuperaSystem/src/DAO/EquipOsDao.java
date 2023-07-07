@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
  * @author RMA table tbEquip private String nserie ; private String idOrdServ;
  * private String model; private String patEquip;
  */
-public class EquipOsDao {
+public class EquipOsDAO {
 
     PreparedStatement pst = null;
     ResultSet rs = null;

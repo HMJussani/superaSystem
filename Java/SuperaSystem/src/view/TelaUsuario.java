@@ -2,7 +2,7 @@ package view;
 
 import Atxy2k.CustomTextField.RestrictedTextField;
 import Bean.UsuariosBean;
-import DAO.UsuariosDao;
+import DAO.UsuariosDAO;
 import conectaBancoDados.ConexaoDb;
 import java.sql.*;
 
@@ -42,7 +42,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     }
 
     private void setarTabela() {
-        UsuariosDao userDao = new UsuariosDao();
+        UsuariosDAO userDao = new UsuariosDAO();
         DefaultTableModel model = (DefaultTableModel) tbUser.getModel();
         model.setRowCount(0);
         ArrayList<UsuariosBean> usuarios = userDao.pesquisarUser();
@@ -316,7 +316,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
 
     private void btnUsuCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuCreateActionPerformed
         getDados();
-        UsuariosDao userDao = new UsuariosDao();
+        UsuariosDAO userDao = new UsuariosDAO();
         if (userDao.criaUser(nome, login, pass, perfil, email)) {
             JOptionPane.showMessageDialog(null, "Usuário criado com sucesso.");
             setarTabela();
@@ -329,7 +329,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnUsuUpdateActionPerformed
 
     private void btnUsuDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuDeleteActionPerformed
-        UsuariosDao userDao = new UsuariosDao();
+        UsuariosDAO userDao = new UsuariosDAO();
         getDados();
         if (userDao.excluiUser(login)) {
             JOptionPane.showMessageDialog(null, "Usuário deletado com sucesso.");

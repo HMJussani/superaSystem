@@ -4,8 +4,8 @@ import Bean.ClientesBean;
 import Bean.EquipOSBean;
 import Bean.ModelosBean;
 import DAO.ClienteDAO;
-import DAO.EquipOsDao;
-import DAO.ModelosDao;
+import DAO.EquipOsDAO;
+import DAO.ModelosDAO;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -22,7 +22,7 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     String patEquip = null;
     String idcli = null;
     String idOrdServ = null;
-    ModelosDao produtoDAO = new ModelosDao();
+    ModelosDAO produtoDAO = new ModelosDAO();
 
     ClienteDAO clientes = new ClienteDAO();
 
@@ -35,7 +35,7 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     }
 
     private void setModelo() {
-        ModelosDao modeloDao = new ModelosDao();
+        ModelosDAO modeloDao = new ModelosDAO();
         ArrayList<ModelosBean> modelList = modeloDao.pesquisarModelo();
 
         for (int i = 0; i < modelList.size(); i++) {
@@ -60,7 +60,7 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     private void setarTabela(String idCli) {
         DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
         model.setRowCount(0);
-        EquipOsDao equipOs = new EquipOsDao();
+        EquipOsDAO equipOs = new EquipOsDAO();
         ArrayList<EquipOSBean> equipList = equipOs.pesquisarProduto(idCli);
         for (int i = 0; i < equipList.size(); i++) {
             model.addRow(new Object[]{
@@ -327,7 +327,7 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         getDados();
-        EquipOsDao equipOs = new EquipOsDao();
+        EquipOsDAO equipOs = new EquipOsDAO();
         if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli)) {
             JOptionPane.showMessageDialog(null, "Produto adicionando com sucesso");
             setarTabela(idcli);
@@ -357,7 +357,7 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         getDados();
-        EquipOsDao equipOs = new EquipOsDao();
+        EquipOsDAO equipOs = new EquipOsDAO();
         if (equipOs.editarProduto(nserie, idOrdServ, model, patEquip, idcli)) {
             JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso");
             setarTabela(idcli);
@@ -366,7 +366,7 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
         getDados();
-        EquipOsDao equipOs = new EquipOsDao();
+        EquipOsDAO equipOs = new EquipOsDAO();
         if (equipOs.excluirProduto(nserie)) {
             JOptionPane.showMessageDialog(null, "Equipamento removido com sucesso");
             setarTabela(idcli);

@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
  * String redeLan, String wifi, String expansao) {
  *
  */
-public class ModelosDao {
+public class ModelosDAO {
 
     PreparedStatement pst = null;
     ResultSet rs = null;

@@ -3,14 +3,14 @@ package viewRMA;
 import Bean.EquipOSBean;
 import Bean.ModelosBean;
 import DAO.ClienteDAO;
-import DAO.EquipOsDao;
+import DAO.EquipOsDAO;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 public class TelaOSFechada extends javax.swing.JInternalFrame {
 
-    EquipOsDao infoProduto = new EquipOsDao();
+    EquipOsDAO infoProduto = new EquipOsDAO();
     private String tipo = null;
     private String situacao = null;
     private String equipamento = null;

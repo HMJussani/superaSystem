@@ -1,7 +1,7 @@
 package viewProd;
 
 import Bean.ModelosBean;
-import DAO.ModelosDao;
+import DAO.ModelosDAO;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -36,7 +36,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     }
 
     private void setarTabela() {
-        ModelosDao equipDao = new ModelosDao();
+        ModelosDAO equipDao = new ModelosDAO();
         DefaultTableModel model = (DefaultTableModel) tbEquip.getModel();
         model.setRowCount(0);
         ArrayList<ModelosBean> modeloEquip = equipDao.pesquisarModelo();
@@ -89,7 +89,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
 
     private void setarCampos() {
         int setar = tbEquip.getSelectedRow();
-        ModelosDao computador = new ModelosDao();
+        ModelosDAO computador = new ModelosDAO();
         String modelo = tbEquip.getValueAt(setar, 0).toString();
         ArrayList<ModelosBean> equipamento = computador.pesquisarModelo(modelo);
         if (!equipamento.isEmpty()) {
@@ -420,7 +420,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         getDados();
-        ModelosDao computador = new ModelosDao();
+        ModelosDAO computador = new ModelosDAO();
         if (computador.adicionarModelo(model, mem, mBoard, expansao, armazenaTipo, armazenaModel, fonteAlimenta, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete)) {
             JOptionPane.showMessageDialog(null, "Produto inserido com sucesso.");
             setarTabela();
@@ -430,7 +430,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private void txtSerialPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSerialPesquisaKeyReleased
         conta++;
         if (conta >= 3) {
-            ModelosDao computador = new ModelosDao();
+            ModelosDAO computador = new ModelosDAO();
             ArrayList<ModelosBean> equipamento = computador.pesquisarModelo(txtSerialPesquisa.getText());
             if (!equipamento.isEmpty()) {
                 setarCampos(equipamento);
@@ -443,7 +443,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         getDados();
-        ModelosDao computador = new ModelosDao();
+        ModelosDAO computador = new ModelosDAO();
         if (computador.editarModelo(model, mem, mBoard, expansao, armazenaTipo, armazenaModel, fonteAlimenta, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete)) {
             JOptionPane.showMessageDialog(null, "Produto alterado com sucesso");
         }
@@ -456,7 +456,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
             if (model.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Insira o Modelo a ser excluído.");
             } else {
-                ModelosDao computador = new ModelosDao();
+                ModelosDAO computador = new ModelosDAO();
                 if (computador.excluirModelo(model)) {
                     limpar();
                     JOptionPane.showMessageDialog(null, "Produto removido com sucesso");

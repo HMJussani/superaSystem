@@ -59,6 +59,8 @@ valor varchar(10),
 foreign key (idcli) references tbclientes(idcli)
 );
 
+
+
 select * from tbOrdServ;
 
 insert into tbordemServico (id_ordemServico, idcli, dataAbertura, garantia, defeito, tecnico, valor)values("12345","cliente","2023-06-28",FALSE,"Não liga","Tecnico","100,00");
@@ -82,10 +84,18 @@ processador VARCHAR(50) not null,
 gabinete varchar(50) not null
 );
 
-
-
 insert into tbmodelo(model, mem, mBoard, source, storage, sParalela,sSerial,redeLan, wifi, tipo, processador, gabinete) values("modelo","memoria","placaMae","fonteAlimenta","armazenamento","D25","DB9","lan","wifi","ThinClient", "CPU", "Gabinete");
 
+create table tbdefsol(
+idDefeito int primary key auto_increment,
+nserie varchar(20) ,
+defeito VARCHAR(100)DEFAULT "Verificar.",
+solucao VARCHAR(100)DEFAULT "Verificar.",
+foreign key (nserie) references tbEquip(nserie)
+);
+
+
+drop table tbdefsol;
 describe tbpedido;
 describe tbusuarios;
 describe tbclientes;
