@@ -47,7 +47,7 @@ public class DefSolDAO {
 
     public boolean editaDefeito(String nserie, String defeito, String solucao) {
         boolean sucesso = false;
-        String sql = "update tbdefsol set nserie=?, defeito=?, solucao=? where nserie=?";
+        String sql = "update tbdefsol set defeito=?, solucao=? where nserie=?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);           
@@ -58,6 +58,8 @@ public class DefSolDAO {
             if (adicionado > 0) {
                 sucesso = true;
                 conexao.close();
+            }else{
+                JOptionPane.showMessageDialog(null, "Erro ao editar Defeito/Solução: ");
             }
         } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao editar Defeito/Solução: " + e);

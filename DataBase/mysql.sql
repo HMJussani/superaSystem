@@ -42,6 +42,8 @@ foreign key (idOrdServ) references tbOrdServ(idOrdServ),
 foreign key (idcli) references tbclientes(idcli)
 );
 
+alter table tbEquip add patEquip varchar(20) not null;
+
 insert into tbEquip(nserie, idOrdServ, model, patEquip, idcli) values("nserie","3072023", "modelo", "patrimonio", "idcli");
 select * from tbEquip;
 
@@ -94,12 +96,14 @@ solucao VARCHAR(100)DEFAULT "Verificar.",
 foreign key (nserie) references tbEquip(nserie)
 );
 
-
+update tbdefsol set defeito="teste", solucao="teste2" where nserie="serie1";
+select * from tbdefsol;
 drop table tbdefsol;
 describe tbpedido;
 describe tbusuarios;
 describe tbclientes;
 describe tbcomponentes;
+describe tbEquip;
 select * from tbEquip;
 delete from tbEquip where nserie=?;
 select * from tbmodelo;
