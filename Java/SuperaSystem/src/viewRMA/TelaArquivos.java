@@ -1,12 +1,15 @@
 package viewRMA;
 
+import Bean.EquipOSBean;
 import Bean.OrdServBean;
+import DAO.EquipOsDAO;
 import DAO.OrdServDAO;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  * Tela de gestão de invetario
@@ -17,33 +20,62 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
 
     private int conta = 0;
 
-     private String setData() {
-        String padrao = "dd-MM-yyyy";
+    private String setData() {
+        String padrao = "yyyy-MM-dd";
         SimpleDateFormat dataPadrao = new SimpleDateFormat(padrao);
         return dataPadrao.format(new Date());
     }
-    
+
     public TelaArquivos() {
         initComponents();
-        //criaDir();
         txtLocalArquivo.setText(System.getProperty("user.home") + "\\Documents\\");
     }
 
-    private void criaDir(String dir) {
-        String path = System.getProperty("user.home") + "\\Documents\\" + dir;
-        if (!new File(path).exists()) {
-            new File(path).mkdir();
+    private boolean criaDir(String dir) {
+        boolean sucesso = false;
+        if (!new File(dir).exists()) {
+            new File(dir).mkdir();
+            if (new File(dir).exists()) {
+                sucesso = true;
+            }
         } else {
-            System.out.println("Pasta caminho já existe ...");
+            JOptionPane.showMessageDialog(null, "Pasta ou caminho já existe ...");
         }
-
+        return sucesso;
     }
 
-    private void getOrdSErv(String ordSErv) {
+    private String getOrdSErv(String ordSErv) {
+        String os = "";
         OrdServDAO ordemServico = new OrdServDAO();
         ArrayList<OrdServBean> osList = ordemServico.pesquisarOsbyCli(ordSErv);
-        txtOrdServ.setText(osList.get(0).getIdOrdServ());
+        if (!osList.isEmpty()) {
+            os = (osList.get(0).getIdOrdServ());
+        }
+        return os;
+    }
 
+    private ArrayList<String> getEquip(String idOrdServ) {
+        ArrayList<String> equips = new ArrayList<>();
+        EquipOsDAO equipDao = new EquipOsDAO();
+        ArrayList<EquipOSBean> equipList = equipDao.pesquisarProdutoBy("idOrdServ", idOrdServ);
+        if (!equipList.isEmpty()) {
+            for (int i = 0; i < equipList.size(); i++) {
+                equips.add(i, equipList.get(i).getPatEquip());
+            }
+        }
+        return equips;
+    }
+
+    private String getPath() {
+        JFileChooser file = new JFileChooser();
+        file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        String pathDir = null;
+        int i = file.showSaveDialog(null);
+        if (i == 0) {
+            File arquivo = file.getSelectedFile();
+            pathDir = arquivo.getPath()+ "\\";
+        }
+        return pathDir;
     }
 
     /**
@@ -62,6 +94,8 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         txtOrdServ = new javax.swing.JTextField();
         btnCriaDir = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        txtArqFormatado = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -112,6 +146,14 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel3.setText("Formato Arquivo");
+
+        txtArqFormatado.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtArqFormatadoKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -119,17 +161,21 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(6, 6, 6))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtLocalArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtOrdServ, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtLocalArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtArqFormatado, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnLocalizar)
                     .addComponent(btnCriaDir))
-                .addContainerGap(304, Short.MAX_VALUE))
+                .addGap(304, 304, 304))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,9 +188,13 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtOrdServ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtOrdServ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtArqFormatado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCriaDir))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -172,19 +222,29 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void btnLocalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizarActionPerformed
-        JFileChooser file = new JFileChooser();
-        file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int i = file.showSaveDialog(null);
-        if (i == 1) {
-            txtLocalArquivo.setText("");
-        } else {
-            File arquivo = file.getSelectedFile();
-            txtLocalArquivo.setText(arquivo.getPath());
-        }
+        txtLocalArquivo.setText(getPath());
     }//GEN-LAST:event_btnLocalizarActionPerformed
 
     private void btnCriaDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriaDirActionPerformed
-        // TODO add your handling code here:
+        String dir = txtLocalArquivo.getText() + txtArqFormatado.getText();
+        int nDir = getEquip(txtOrdServ.getText()).size();
+        if (!dir.isEmpty()) {
+            if (nDir > 1) {
+                JOptionPane.showMessageDialog(null, "Serão criados " + nDir + " sub diretórios.");
+                if (criaDir(dir)) {
+                    for (int i = 0; i < nDir; i++) {
+                        criaDir(dir + "\\" + getEquip(txtOrdServ.getText()).get(i));
+                    }
+                    JOptionPane.showMessageDialog(null, "Diretórios criados com sucesso.");
+                }
+            } else {
+                if (criaDir(dir)) {
+                    JOptionPane.showMessageDialog(null, "Diretório criado com sucesso.");
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Diretório não criado.");
+        }
     }//GEN-LAST:event_btnCriaDirActionPerformed
 
     private void txtOrdServKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOrdServKeyReleased
@@ -192,13 +252,18 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
         if (conta >= 3) {
             OrdServDAO ordemServico = new OrdServDAO();
             ArrayList<OrdServBean> osList = ordemServico.pesquisarOsbyCli(txtOrdServ.getText());
-            if(!osList.isEmpty()){
-                txtOrdServ.setText(osList.get(0).getIdOrdServ());
+            if (!osList.isEmpty()) {
+                txtArqFormatado.setText(osList.get(0).getIdOrdServ() + " - " + setData());
+                conta = 0;
             }
-            conta =0;
+
         }
 
     }//GEN-LAST:event_txtOrdServKeyReleased
+
+    private void txtArqFormatadoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtArqFormatadoKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtArqFormatadoKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -206,7 +271,9 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnLocalizar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField txtArqFormatado;
     private javax.swing.JTextField txtLocalArquivo;
     private javax.swing.JTextField txtOrdServ;
     // End of variables declaration//GEN-END:variables

@@ -28,70 +28,81 @@ public class TelaLogin extends javax.swing.JFrame {
     Connection conexao = null;
     PreparedStatement pst;
     ResultSet rs;
-     boolean sucesso = false;
+    boolean sucesso = false;
 
     private boolean conectado() {
-        JOptionPane.showMessageDialog(null,"Conectando ao Banco de dados...");
+        String[] choices = {"Dev Home", "Supera"};
+       String db = JOptionPane.showInputDialog(null, "Selecione o Banco de Dados:",
+                "Bancos de Dados Disponíveis", JOptionPane.QUESTION_MESSAGE, null,
+                choices,
+                choices[0]).toString();
+        String URL = "";
+        if (db.equals("Dev Home")) {
+            URL = "jdbc:mysql://192.168.1.15:3306/dbSupera";           
+        }else if(db.equals("Supera")){
+             URL = "jdbc:mysql://192.168.100.101:3306/dbSupera";
+        }
         try {
-            conexao = ConexaoDb.getConection();
-            
-            if (conexao ==null) {
-               return sucesso;
-            }else{
-                 sucesso = true;
+            conexao = ConexaoDb.getConection(URL);
+
+            if (conexao == null) {
+                return sucesso;
+            } else {
+                sucesso = true;
                 conexao.close();
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e); }
-        
+            JOptionPane.showMessageDialog(null, e);
+        }
+
         return sucesso;
     }
 
-    private void conecta(boolean sucesso) { 
-       if(sucesso){
-        UsuariosDAO userDao = new UsuariosDAO();
-        UsuariosBean usuario = new UsuariosBean();
-        String pass = new String(txtSenha.getPassword());
-        String user = txtUser.getText();
-        try {
-            if (userDao.checaUser(user, pass)) {
-                lblConectou.setText("Conectado!!");
-                lblConectou.setForeground(Color.green);
-                if (pass.equals("senha123")) {
-                    usuario.setPass(pass);
-                    usuario.setUser(user);
-                    JOptionPane.showMessageDialog(null, "Usuário logando com senha Padrão, Mude sua senha agora!");
-                    TelaTrocaSenha trocaSenha = new TelaTrocaSenha(this, true);
-                    trocaSenha.setVisible(true);
+    private void conecta(boolean sucesso) {
+        if (sucesso) {
+            UsuariosDAO userDao = new UsuariosDAO();
+            UsuariosBean usuario = new UsuariosBean();
+            String pass = new String(txtSenha.getPassword());
+            String user = txtUser.getText();
+            try {
+                if (userDao.checaUser(user, pass)) {
+                    lblConectou.setText("Conectado!!");
+                    lblConectou.setForeground(Color.green);
+                    if (pass.equals("senha123")) {
+                        usuario.setPass(pass);
+                        usuario.setUser(user);
+                        JOptionPane.showMessageDialog(null, "Usuário logando com senha Padrão, Mude sua senha agora!");
+                        TelaTrocaSenha trocaSenha = new TelaTrocaSenha(this, true);
+                        trocaSenha.setVisible(true);
+                    } else {
+                        checaPerfil(user);
+                    }
                 } else {
-                checaPerfil(user);
+                    lblConectou.setText("Não Conectado!!");
+                    lblConectou.setForeground(Color.black);
+                    JOptionPane.showMessageDialog(null, "Usuário ou senha inválidos!");
                 }
-            } else {
-                lblConectou.setText("Não Conectado!!");
-                lblConectou.setForeground(Color.black);
-                JOptionPane.showMessageDialog(null, "Usuário ou senha inválidos!");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex);
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
+        } else {
+            TelaPrincipal principal = new TelaPrincipal();
+            principal.setVisible(true);
+            TelaPrincipal.menRel.setEnabled(true);
+            TelaPrincipal.menCadUsu.setEnabled(true);
+            TelaPrincipal.lblUsuario.setText("Sem DB");
+            TelaPrincipal.lblUsuario.setForeground(Color.red);
+            this.dispose();
         }
-       }else{
-       TelaPrincipal principal = new TelaPrincipal();
-       principal.setVisible(true);
-       TelaPrincipal.menRel.setEnabled(true);
-       TelaPrincipal.menCadUsu.setEnabled(true);
-       TelaPrincipal.lblUsuario.setText("Sem DB");
-       TelaPrincipal.lblUsuario.setForeground(Color.red);
-       this.dispose();
-       }
     }
 
-    private void checaPerfil(String login){
-     String sql = "select * from tbusuarios where login =?";
+    private void checaPerfil(String login) {
+        String sql = "select * from tbusuarios where login =?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
-            pst.setString(1, login); 
+            pst.setString(1, login);
             rs = pst.executeQuery();
             if (rs.next()) {
                 String perfil = rs.getString(3);
@@ -103,30 +114,29 @@ public class TelaLogin extends javax.swing.JFrame {
                     TelaPrincipal.lblUsuario.setText(rs.getString(2));
                     TelaPrincipal.lblUsuario.setForeground(Color.red);
                     this.dispose();
-                } else {                    
+                } else {
                     TelaPrincipal principal = new TelaPrincipal();
                     principal.setVisible(true);
                     TelaPrincipal.lblUsuario.setText(rs.getString(2));
                     this.dispose();
                 }
-                }
+            }
         } catch (SQLException ex) {
-              JOptionPane.showMessageDialog(null, ex);
+            JOptionPane.showMessageDialog(null, ex);
         }
     }
-    
-    
+
     public TelaLogin() {
         initComponents();
-       // this.setIconImage(new ImageIcon(getClass().getResource("/imagem/Duke.png")).getImage()); //muda o icone padrao
+        // this.setIconImage(new ImageIcon(getClass().getResource("/imagem/Duke.png")).getImage()); //muda o icone padrao
         if (conectado()) {
             lblBanco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/dbConectou.png")));
- 
+
         } else {
-           // JOptionPane.showMessageDialog(null, "Não conectado com o Banco de Dados.");
-          // btnLogin.setEnabled(false);
-           txtSenha.setEnabled(false);
-           txtUser.setEnabled(false);
+            // JOptionPane.showMessageDialog(null, "Não conectado com o Banco de Dados.");
+            // btnLogin.setEnabled(false);
+            txtSenha.setEnabled(false);
+            txtUser.setEnabled(false);
         }
 
     }

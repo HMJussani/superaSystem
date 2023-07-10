@@ -126,6 +126,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         if (!defSolBean.isEmpty()) {
             txtDefeito.setText(defSolBean.get(0).getDefeito());
             txtServico.setText(defSolBean.get(0).getSolucao());
+        }else{
+            txtDefeito.setText("");
+            txtServico.setText("");
         }
     }
 
@@ -312,6 +315,11 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         tbEquip.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbEquipMouseClicked(evt);
+            }
+        });
+        tbEquip.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tbEquipKeyReleased(evt);
             }
         });
         jScrollPane4.setViewportView(tbEquip);
@@ -520,7 +528,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 796, Short.MAX_VALUE)
                 .addGap(14, 14, 14))
             .addGroup(layout.createSequentialGroup()
                 .addGap(179, 179, 179)
@@ -572,12 +580,11 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnOsAdicionarActionPerformed
 
     private void btnOsAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAlterarActionPerformed
-        getDados();
-        OrdServDAO ordemServico = new OrdServDAO();
+        getDados();        
         DefSolDAO defeitos = new DefSolDAO();
         int linha = tbEquip.getSelectedRow();
         String serial = tbEquip.getModel().getValueAt(linha, 2).toString();
-        if (ordemServico.editarOs(idOrdServ, defeito, dataAbertura, solucao, true, valor) && defeitos.editaDefeito(serial, defeito, solucao)) {
+        if (defeitos.editaDefeito(serial, defeito, solucao)) {
             JOptionPane.showMessageDialog(null, "Ordem se Serviço alterada com sucesso");
             limpar();
         }
@@ -625,7 +632,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         getDados();
         EquipOsDAO equipOs = new EquipOsDAO();
         DefSolDAO defSol = new DefSolDAO();
-        if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli) && defSol.novoDefeito(nserie, defeito, solucao)) {
+        if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli) && defSol.novoDefeito(nserie, "Verificar", "Verificar")) {
             JOptionPane.showMessageDialog(null, "Produto adicionando com sucesso");
             setarTabela(idcli);
         }
@@ -651,6 +658,10 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_txtNumOSKeyReleased
+
+    private void tbEquipKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbEquipKeyReleased
+        setarOs(tbEquip.getSelectedRow());
+    }//GEN-LAST:event_tbEquipKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdicionaEquip;

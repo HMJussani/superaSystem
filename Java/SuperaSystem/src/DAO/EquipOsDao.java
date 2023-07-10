@@ -72,6 +72,29 @@ public class EquipOsDAO {
         return equipamentoOS;
     }
 
+       public ArrayList<EquipOSBean> pesquisarProdutoBy(String arg, String valor) {
+        String sql = "select * from tbEquip where " + arg + "=? order by nserie;";
+        ArrayList<EquipOSBean> equipamentoOS = new ArrayList<>();
+        try {
+            conexao = ConexaoDb.getConection();
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, valor);
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                EquipOSBean equipOS = new EquipOSBean();
+                equipOS.setNserie(rs.getString("nserie"));
+                equipOS.setIdOrdServ(rs.getString("idOrdServ"));
+                equipOS.setModel(rs.getString("model"));
+                equipOS.setPatEquip(rs.getString("patEquip"));
+                equipamentoOS.add(equipOS);
+            }
+            conexao.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Pesquisando equipamentos: "+e);
+        }
+        return equipamentoOS;
+    }
+    
     public ArrayList<EquipOSBean> pesquisarProduto() {
         String sql = "select * from tbEquip";
         ArrayList<EquipOSBean> equipamentoOS = new ArrayList<>();
