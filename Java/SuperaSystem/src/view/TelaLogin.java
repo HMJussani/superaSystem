@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import Bean.UsuariosBean;
 import DAO.UsuariosDAO;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -31,19 +32,10 @@ public class TelaLogin extends javax.swing.JFrame {
     boolean sucesso = false;
 
     private boolean conectado() {
-        String[] choices = {"Dev Home", "Supera"};
-       String db = JOptionPane.showInputDialog(null, "Selecione o Banco de Dados:",
-                "Bancos de Dados Disponíveis", JOptionPane.QUESTION_MESSAGE, null,
-                choices,
-                choices[0]).toString();
-        String URL = "";
-        if (db.equals("Dev Home")) {
-            URL = "jdbc:mysql://192.168.1.15:3306/dbSupera";           
-        }else if(db.equals("Supera")){
-             URL = "jdbc:mysql://192.168.100.101:3306/dbSupera";
-        }
+       
+     JOptionPane.showMessageDialog(null, "Conectando ao Banco de Dados.");     
         try {
-            conexao = ConexaoDb.getConection(URL);
+            conexao = ConexaoDb.getConection();
 
             if (conexao == null) {
                 return sucesso;
@@ -128,7 +120,7 @@ public class TelaLogin extends javax.swing.JFrame {
 
     public TelaLogin() {
         initComponents();
-        // this.setIconImage(new ImageIcon(getClass().getResource("/imagem/Duke.png")).getImage()); //muda o icone padrao
+       this.setIconImage(new ImageIcon(getClass().getResource("/imagem/Duke.png")).getImage()); //muda o icone padrao
         if (conectado()) {
             lblBanco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/dbConectou.png")));
 

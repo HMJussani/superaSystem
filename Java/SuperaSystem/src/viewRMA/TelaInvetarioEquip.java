@@ -22,8 +22,8 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     String patEquip = null;
     String idcli = null;
     String idOrdServ = null;
+    Boolean garantia = false;
     ModelosDAO produtoDAO = new ModelosDAO();
-
     ClienteDAO clientes = new ClienteDAO();
 
     int conta = 0;
@@ -84,6 +84,11 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
         model = cbModel.getSelectedItem().toString();
         patEquip = txtPat.getText();
         idcli = txtIdCli.getText();
+         if(boxGarantia.isSelected()){
+            garantia=true;
+        }else{
+            garantia=false;
+        }
 
     }
 
@@ -115,6 +120,7 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         txtCliNome = new javax.swing.JTextField();
         cbModel = new javax.swing.JComboBox<>();
+        boxGarantia = new javax.swing.JCheckBox();
 
         setClosable(true);
         setIconifiable(true);
@@ -230,33 +236,12 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
 
         cbModel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Modelo" }));
 
+        boxGarantia.setText("Em garantia");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel15)
-                            .addComponent(jLabel11))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtSerie)
-                            .addComponent(txtPat)
-                            .addComponent(cbModel, javax.swing.GroupLayout.Alignment.TRAILING, 0, 229, Short.MAX_VALUE)
-                            .addComponent(txtOrdemServ)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(169, 169, 169)
-                        .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(361, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -268,12 +253,37 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
-                        .addComponent(txtCliNome)
+                        .addComponent(txtCliNome, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
                         .addGap(10, 10, 10)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(15, 15, 15))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel15)
+                            .addComponent(jLabel11))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(boxGarantia)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtSerie)
+                                .addComponent(txtPat)
+                                .addComponent(cbModel, javax.swing.GroupLayout.Alignment.TRAILING, 0, 229, Short.MAX_VALUE)
+                                .addComponent(txtOrdemServ))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(232, 232, 232)
+                        .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -312,12 +322,14 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(cbModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(boxGarantia)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(88, 88, 88))
+                .addGap(93, 93, 93))
         );
 
         jLabel1.getAccessibleContext().setAccessibleName("");
@@ -328,8 +340,8 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         getDados();
         EquipOsDAO equipOs = new EquipOsDAO();
-        if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli)) {
-            JOptionPane.showMessageDialog(null, "Produto adicionando com sucesso");
+        if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli, garantia)) {
+            JOptionPane.showMessageDialog(null, "Equipamento adicionando com sucesso");
             setarTabela(idcli);
         }
 
@@ -358,7 +370,7 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         getDados();
         EquipOsDAO equipOs = new EquipOsDAO();
-        if (equipOs.editarProduto(nserie, idOrdServ, model, patEquip, idcli)) {
+        if (equipOs.editarProduto(nserie, idOrdServ, model, patEquip, idcli, garantia)) {
             JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso");
             setarTabela(idcli);
         }
@@ -394,6 +406,7 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox boxGarantia;
     private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnRemover;

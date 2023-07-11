@@ -16,7 +16,7 @@ public class OrdServBean {
     private String idcli;
     private Date dataAbertura;
     private Date dataFechamento;
-    private Boolean garantia;
+    
     private String defeito;
     private String solucao;
     private Boolean aberta;
@@ -57,14 +57,6 @@ public class OrdServBean {
 
     public void setDataFechamento(Date dataFechamento) {
         this.dataFechamento = dataFechamento;
-    }
-
-    public Boolean getGarantia() {
-        return garantia;
-    }
-
-    public void setGarantia(Boolean garantia) {
-        this.garantia = garantia;
     }
 
     public String getDefeito() {

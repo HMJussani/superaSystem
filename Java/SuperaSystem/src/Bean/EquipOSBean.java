@@ -15,6 +15,7 @@ public class EquipOSBean {
    private String idOrdServ;
    private String model;  
    private String patEquip;
+   private Boolean garantia;
 
     public EquipOSBean() {
     }
@@ -57,6 +58,14 @@ public class EquipOSBean {
 
     public void setIdCli(String idCli) {
         this.idCli = idCli;
+    }
+
+    public Boolean getGarantia() {
+        return garantia;
+    }
+
+    public void setGarantia(Boolean garantia) {
+        this.garantia = garantia;
     }
   
    

@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import java.sql.*;
 import javax.management.JMRuntimeException;
+import javax.swing.ImageIcon;
 import viewRMA.TelaArquivos;
 import viewRMA.TelaOSAberta;
 
@@ -28,7 +29,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
      * Creates new form TelaPrincipal
      */
     public TelaPrincipal() {
-        initComponents();       
+        initComponents();  
+         this.setIconImage(new ImageIcon(getClass().getResource("/imagem/Duke.png")).getImage()); //muda o icone padrao
     }
 
     /**

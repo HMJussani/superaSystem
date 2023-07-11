@@ -29,19 +29,18 @@ public class OrdServDAO {
     java.sql.Connection conexao = ConexaoDb.getConection();
     ArrayList<OrdServBean> ordemServico = new ArrayList<>();
 
-    public boolean novaOs(String idOrdServ, String idcli, Date dataAbertura, Boolean garantia, String defeito, String tecnico, String valor) {
+    public boolean novaOs(String idOrdServ, String idcli, Date dataAbertura, String defeito, String tecnico, String valor) {
         boolean sucesso = false;
-        String sql = "insert into tbOrdServ (idOrdServ, idcli, dataAbertura, garantia, defeito, tecnico, valor)values(?,?,?,?,?,?,?)";
+        String sql = "insert into tbOrdServ (idOrdServ, idcli, dataAbertura, defeito, tecnico, valor)values(?,?,?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1, idOrdServ);
             pst.setString(2, idcli);
-            pst.setDate(3, (java.sql.Date) dataAbertura);
-            pst.setBoolean(4, garantia);
-            pst.setString(5, defeito);
-            pst.setString(6, tecnico);
-            pst.setString(7, valor);
+            pst.setDate(3, (java.sql.Date) dataAbertura);           
+            pst.setString(4, defeito);
+            pst.setString(5, tecnico);
+            pst.setString(6, valor);
 
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {
@@ -69,8 +68,7 @@ public class OrdServDAO {
                 OrdServBean os = new OrdServBean();
                 os.setIdOrdServ(rs.getString("idOrdServ"));
                 os.setDataAbertura(rs.getDate("dataAbertura"));
-                os.setDefeito(rs.getString("defeito"));
-                os.setGarantia(rs.getBoolean("garantia"));
+                os.setDefeito(rs.getString("defeito"));                
                 os.setTecnico(rs.getString("tecnico"));
                 os.setValor(rs.getString("valor"));
                 os.setIdcli(rs.getString("idcli"));
@@ -96,8 +94,7 @@ public class OrdServDAO {
                 OrdServBean os = new OrdServBean();
                 os.setIdOrdServ(rs.getString("idOrdServ"));
                 os.setDataAbertura(rs.getDate("dataAbertura"));
-                os.setDefeito(rs.getString("defeito"));
-                os.setGarantia(rs.getBoolean("garantia"));
+                os.setDefeito(rs.getString("defeito"));                
                 os.setTecnico(rs.getString("tecnico"));
                 os.setValor(rs.getString("valor"));
                 ordemServico.add(os);
@@ -122,8 +119,7 @@ public class OrdServDAO {
                 os.setIdcli(rs.getString("idcli"));
                 os.setIdOrdServ(rs.getString("idOrdServ"));
                 os.setDataAbertura(rs.getDate("dataAbertura"));
-                os.setDefeito(rs.getString("defeito"));
-                os.setGarantia(rs.getBoolean("garantia"));
+                os.setDefeito(rs.getString("defeito"));                
                 os.setTecnico(rs.getString("tecnico"));
                 os.setValor(rs.getString("valor"));
                 ordemServico.add(os);

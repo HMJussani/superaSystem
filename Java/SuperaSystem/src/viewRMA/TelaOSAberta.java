@@ -68,11 +68,15 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         patEquip = txtPat.getText();
         idcli = txtIDcli.getText();
         dataAbertura = getData();
-        garantia = false;
         tecnico = cbTecnico.getSelectedItem().toString();
         valor = txtOsValor.getText();
         defeito = txtDefeito.getText();
         solucao = txtServico.getText();
+        if (boxGarantia.isSelected()) {
+            garantia = true;
+        } else {
+            garantia = false;
+        }
 
     }
 
@@ -110,8 +114,22 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
     }
 
-    private void getOS(ArrayList<OrdServBean> ordServBean) {
-
+    private String getOS(String idcli) {
+        String ordemDeServico = "";
+        OrdServDAO ordemSErv = new OrdServDAO();
+        ArrayList<OrdServBean> os = ordemSErv.pesquisarOs(idcli);
+        int conta = 0;
+        for (int i = 0; i < os.size(); i++) {
+           // if (os.get(i).getAberta()) {
+                ordemDeServico += os.get(i).getIdOrdServ();
+                ordemDeServico += "\n";
+                conta++;
+          //  }
+        }
+        if (conta ==0) {
+            ordemDeServico = "Nenhuma ordem de serviço aberta para este cliente.";
+        }
+        return ordemDeServico;
     }
 
     private void setarOs(ArrayList<OrdServBean> ordemServico) {
@@ -126,7 +144,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         if (!defSolBean.isEmpty()) {
             txtDefeito.setText(defSolBean.get(0).getDefeito());
             txtServico.setText(defSolBean.get(0).getSolucao());
-        }else{
+        } else {
             txtDefeito.setText("");
             txtServico.setText("");
         }
@@ -183,6 +201,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         tbEquip = new javax.swing.JTable();
         jLabel15 = new javax.swing.JLabel();
         btnAdicionaEquip = new javax.swing.JButton();
+        boxGarantia = new javax.swing.JCheckBox();
         btnOsImprimir = new javax.swing.JButton();
         btnOsExcluir = new javax.swing.JButton();
         btnOsAlterar = new javax.swing.JButton();
@@ -296,6 +315,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
                 {null, null, null, null}
             },
             new String [] {
@@ -343,6 +365,8 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             }
         });
 
+        boxGarantia.setText("Garantia");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -355,8 +379,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbModel, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtContatoCli)
+                    .addComponent(txtContatoCli, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtIDcli, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
                     .addComponent(txtNumOS, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -373,15 +396,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                                 .addComponent(txtCliNome, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
                                 .addComponent(txtEmailCli))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtSerialNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(txtPat)
-                        .addGap(44, 44, 44)
+                        .addGap(406, 406, 406)
                         .addComponent(btnAdicionaEquip)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -391,7 +406,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbTecnico, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 337, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 310, Short.MAX_VALUE)
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txtOsValor, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -405,7 +420,19 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 656, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 656, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 656, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 656, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(cbModel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15)
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtSerialNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(txtPat)
+                                .addGap(10, 10, 10)
+                                .addComponent(boxGarantia)))))
                 .addGap(20, 20, 20))
         );
 
@@ -413,7 +440,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel14});
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cbModel, cbTecnico, txtContatoCli, txtIDcli, txtNumOS});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cbTecnico, txtContatoCli, txtIDcli, txtNumOS});
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtPat, txtSerialNumber});
 
@@ -456,12 +483,13 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                     .addComponent(jLabel13)
                     .addComponent(txtPat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAdicionaEquip))
+                    .addComponent(btnAdicionaEquip)
+                    .addComponent(boxGarantia))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel15)
@@ -528,7 +556,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 796, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
                 .addGap(14, 14, 14))
             .addGroup(layout.createSequentialGroup()
                 .addGap(179, 179, 179)
@@ -563,7 +591,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             ArrayList<ClientesBean> cliente = clientesDao.pesquisarCliente(txtCliNome.getText());
             if (!cliente.isEmpty()) {
                 getClientes(cliente);
-
+                JOptionPane.showMessageDialog(null, "Encontradas as ordems de serviço: \n" + getOS(cliente.get(0).getIdcli()));
                 conta = 0;
             }
         }
@@ -572,7 +600,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private void btnOsAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAdicionarActionPerformed
         getDados();
         OrdServDAO ordemServico = new OrdServDAO();
-        if (ordemServico.novaOs(idOrdServ, idcli, dataAbertura, garantia, defeito, tecnico, valor)) {
+        if (ordemServico.novaOs(idOrdServ, idcli, dataAbertura, defeito, tecnico, valor)) {
             JOptionPane.showMessageDialog(null, "Ordem de Serviço criada com sucesso");
         }
 
@@ -580,7 +608,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnOsAdicionarActionPerformed
 
     private void btnOsAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAlterarActionPerformed
-        getDados();        
+        getDados();
         DefSolDAO defeitos = new DefSolDAO();
         int linha = tbEquip.getSelectedRow();
         String serial = tbEquip.getModel().getValueAt(linha, 2).toString();
@@ -632,8 +660,8 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         getDados();
         EquipOsDAO equipOs = new EquipOsDAO();
         DefSolDAO defSol = new DefSolDAO();
-        if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli) && defSol.novoDefeito(nserie, "Verificar", "Verificar")) {
-            JOptionPane.showMessageDialog(null, "Produto adicionando com sucesso");
+        if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli, garantia) && defSol.novoDefeito(nserie, "Verificar", "Verificar")) {
+            JOptionPane.showMessageDialog(null, "Equipamento adicionando com sucesso");
             setarTabela(idcli);
         }
     }//GEN-LAST:event_btnAdicionaEquipActionPerformed
@@ -664,6 +692,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tbEquipKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox boxGarantia;
     private javax.swing.JButton btnAdicionaEquip;
     private javax.swing.JButton btnOsAdicionar;
     private javax.swing.JButton btnOsAlterar;

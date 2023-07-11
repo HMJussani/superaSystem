@@ -26,9 +26,9 @@ public class EquipOsDAO {
     ResultSet rs = null;
     Connection conexao = ConexaoDb.getConection();
 
-    public boolean adicionarEquipamento(String nserie, String idOrdServ, String model, String patEquip, String idcli) {
+    public boolean adicionarEquipamento(String nserie, String idOrdServ, String model, String patEquip, String idcli, Boolean garantia) {
         boolean sucesso = false;
-        String sql = "insert into tbEquip(nserie, idOrdServ, model, patEquip, idcli) values(?,?,?,?,?)";
+        String sql = "insert into tbEquip(nserie, idOrdServ, model, patEquip, idcli,garantia) values(?,?,?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -37,6 +37,7 @@ public class EquipOsDAO {
             pst.setString(3, model);
             pst.setString(4, patEquip);
             pst.setString(5, idcli);
+            pst.setBoolean(6, garantia);
 
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {
@@ -63,6 +64,7 @@ public class EquipOsDAO {
                 equipOS.setIdOrdServ(rs.getString("idOrdServ"));
                 equipOS.setModel(rs.getString("model"));
                 equipOS.setPatEquip(rs.getString("patEquip"));
+                equipOS.setGarantia(rs.getBoolean("garantia"));
                 equipamentoOS.add(equipOS);
             }
             conexao.close();
@@ -86,6 +88,7 @@ public class EquipOsDAO {
                 equipOS.setIdOrdServ(rs.getString("idOrdServ"));
                 equipOS.setModel(rs.getString("model"));
                 equipOS.setPatEquip(rs.getString("patEquip"));
+                equipOS.setGarantia(rs.getBoolean("garantia"));
                 equipamentoOS.add(equipOS);
             }
             conexao.close();
@@ -108,6 +111,7 @@ public class EquipOsDAO {
                 equipOS.setIdOrdServ(rs.getString("idOrdServ"));
                 equipOS.setModel(rs.getString("model"));
                 equipOS.setPatEquip(rs.getString("patEquip"));
+                equipOS.setGarantia(rs.getBoolean("garantia"));
                 equipamentoOS.add(equipOS);
             }
             conexao.close();
@@ -117,11 +121,11 @@ public class EquipOsDAO {
         return equipamentoOS;
     }
 
-    public boolean editarProduto(String nserie, String idOrdServ, String model, String patEquip, String idcli) {
+    public boolean editarProduto(String nserie, String idOrdServ, String model, String patEquip, String idcli, Boolean garantia) {
         boolean sucesso = false;
         int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            String sql = "update tbEquip set idOrdServ=?, model=?,  patEquip=?, idcli=? where nserie=?";
+            String sql = "update tbEquip set idOrdServ=?, model=?,  patEquip=?, idcli=?, garantia=? where nserie=?";
             try {
                 conexao = ConexaoDb.getConection();
                 pst = conexao.prepareStatement(sql);
@@ -129,7 +133,8 @@ public class EquipOsDAO {
                 pst.setString(2, model);
                 pst.setString(3, patEquip);
                 pst.setString(4, idcli);
-                pst.setString(5, nserie);
+                pst.setBoolean(5, garantia);
+                pst.setString(6, nserie);
                 int adicionado = pst.executeUpdate();
                 if (adicionado > 0) {
                     sucesso = true;
