@@ -15,10 +15,7 @@ public class OrdServBean {
     private String idOrdServ;
     private String idcli;
     private Date dataAbertura;
-    private Date dataFechamento;
-    
-    private String defeito;
-    private String solucao;
+    private Date dataFechamento; 
     private Boolean aberta;
     private String tecnico;
     private String valor;
@@ -57,22 +54,6 @@ public class OrdServBean {
 
     public void setDataFechamento(Date dataFechamento) {
         this.dataFechamento = dataFechamento;
-    }
-
-    public String getDefeito() {
-        return defeito;
-    }
-
-    public void setDefeito(String defeito) {
-        this.defeito = defeito;
-    }
-
-    public String getSolucao() {
-        return solucao;
-    }
-
-    public void setSolucao(String solucao) {
-        this.solucao = solucao;
     }
 
     public Boolean getAberta() {

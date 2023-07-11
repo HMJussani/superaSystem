@@ -5,17 +5,22 @@ use dbSupera;
 create table tbusuarios(
 iduser int primary key auto_increment,
 usuario varchar(50) not null,
-login varchar(20) not null unique,
-senha varchar(20) not null,
-perfil varchar(20) default 'Tecnico',
+login varchar(50) not null unique,
+senha varchar(50) not null,
+perfil varchar(10) default 'Tecnico',
 email varchar(50)not null default 'contato@contato.com'
 );
+
+
+drop table tbusuarios;
 
 alter table tbusuarios add email varchar(50)not null default 'contato@contato.com';
 
 
 insert into tbusuarios (iduser ,usuario ,login ,senha ,perfil)values(1,'Administrador', 'admin', 'admin', 'admin');
 insert into tbusuarios (iduser ,usuario ,login ,senha ,perfil)values(2,'Henrique Marega Jussani', 'hmjussani', '123', 'user');
+
+select * from tbusuarios where login ="admin" ;
 
 create table tbclientes(
 idcli VARCHAR(20) primary key,
@@ -42,7 +47,8 @@ foreign key (idOrdServ) references tbOrdServ(idOrdServ),
 foreign key (idcli) references tbclientes(idcli)
 );
 
-alter table tbEquip add patEquip varchar(20) not null;
+alter table tbEquip add garantia bool DEFAULT FALSE;
+
 
 insert into tbEquip(nserie, idOrdServ, model, patEquip, idcli) values("nserie","3072023", "modelo", "patrimonio", "idcli");
 select * from tbEquip;
@@ -52,16 +58,13 @@ idOrdServ VARCHAR(10) PRIMARY KEY,
 idcli VARCHAR(20) not null,
 dataAbertura DATE NOT NULL,
 dataFechamento DATE,
-garantia bool DEFAULT FALSE,
-defeito VARCHAR(100)DEFAULT "Verificar.",
-solucao VARCHAR(100)DEFAULT "Verificar.",
 aberta  boolean default true,
 tecnico varchar(30)NOT NULL,
 valor varchar(10),
 foreign key (idcli) references tbclientes(idcli)
 );
 
-
+alter table tbOrdServ drop solucao;
 
 select * from tbOrdServ;
 

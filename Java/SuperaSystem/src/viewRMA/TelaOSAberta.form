@@ -36,7 +36,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <Component id="jPanel1" pref="792" max="32767" attributes="0"/>
+              <Component id="jPanel1" pref="796" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
@@ -45,7 +45,7 @@
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="btnOsAlterar" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-              <Component id="btnOsExcluir" min="-2" max="-2" attributes="0"/>
+              <Component id="btnOsFinaliza" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="btnOsImprimir" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
@@ -60,7 +60,7 @@
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="btnOsAdicionar" max="32767" attributes="0"/>
                   <Component id="btnOsAlterar" max="32767" attributes="0"/>
-                  <Component id="btnOsExcluir" alignment="0" max="32767" attributes="0"/>
+                  <Component id="btnOsFinaliza" alignment="0" max="32767" attributes="0"/>
                   <Component id="btnOsImprimir" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -92,26 +92,18 @@
                       <Component id="txtIDcli" linkSize="4" alignment="0" pref="106" max="32767" attributes="0"/>
                       <Component id="txtNumOS" linkSize="4" alignment="0" pref="115" max="32767" attributes="0"/>
                   </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="2" attributes="0">
+                      <Component id="jLabel1" linkSize="3" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel2" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel14" linkSize="3" alignment="2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="2" attributes="0">
-                              <Component id="jLabel1" linkSize="3" alignment="2" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel2" alignment="2" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel14" linkSize="3" alignment="2" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtDataAbertura" min="-2" pref="94" max="-2" attributes="0"/>
-                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="txtCliNome" alignment="0" pref="401" max="32767" attributes="0"/>
-                                  <Component id="txtEmailCli" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="406" max="-2" attributes="0"/>
-                          <Component id="btnAdicionaEquip" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtDataAbertura" min="-2" pref="94" max="-2" attributes="0"/>
+                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="txtCliNome" alignment="0" pref="401" max="32767" attributes="0"/>
+                          <Component id="txtEmailCli" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -123,7 +115,7 @@
                           <Component id="jLabel9" linkSize="1" min="-2" pref="46" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="cbTecnico" linkSize="4" max="32767" attributes="0"/>
-                          <EmptySpace pref="310" max="32767" attributes="0"/>
+                          <EmptySpace pref="312" max="32767" attributes="0"/>
                           <Component id="jLabel10" min="-2" pref="62" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="txtOsValor" min="-2" pref="107" max="-2" attributes="0"/>
@@ -152,6 +144,8 @@
                                   <Component id="txtPat" linkSize="5" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                                   <Component id="boxGarantia" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="btnAdicionaEquip" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -405,31 +399,37 @@
             <Component class="javax.swing.JTable" name="tbEquip">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="7">
+                  <Table columnCount="5" rowCount="7">
                     <Column editable="false" title="Ordem de Servi&#xe7;o" type="java.lang.Object"/>
                     <Column editable="false" title="Patrim&#xf4;nio" type="java.lang.Object"/>
                     <Column editable="false" title="N&#xfa;mero de S&#xe9;rie" type="java.lang.Object"/>
                     <Column editable="false" title="Modelo" type="java.lang.Object"/>
+                    <Column editable="false" title="Garantia" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="1">
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="10" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="5" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="10" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="5" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="10" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="5" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="false">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="5" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -485,12 +485,12 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOsImprimirActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnOsExcluir">
+    <Component class="javax.swing.JButton" name="btnOsFinaliza">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/imagem/delete.png"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Excluir OS"/>
+        <Property name="toolTipText" type="java.lang.String" value="Finalizar OS"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Cursor em Forma de M&#xe3;o"/>
         </Property>
@@ -499,7 +499,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOsExcluirActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOsFinalizaActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnOsAlterar">

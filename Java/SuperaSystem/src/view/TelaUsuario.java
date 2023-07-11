@@ -143,6 +143,8 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
 
         jLabel6.setText("* Perfil");
 
+        txtUserId.setEditable(false);
+
         cboUserPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "admin", "user", "Tecnico", "Vendedor", "Comprador" }));
         cboUserPerfil.setSelectedIndex(2);
         cboUserPerfil.setToolTipText("");

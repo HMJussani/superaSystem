@@ -41,6 +41,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         txtDataAbertura.setText(setData());
         setTecnico();
         setModelo();
+        btnOsAdicionar.setEnabled(false);
     }
 
     private void setTecnico() {
@@ -95,15 +96,25 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private void setarTabela(String idCli) {
         DefaultTableModel model = (DefaultTableModel) tbEquip.getModel();
         model.setRowCount(0);
+        String garantia = "Não";
         EquipOsDAO equipOs = new EquipOsDAO();
-        ArrayList<EquipOSBean> equipList = equipOs.pesquisarProduto(idCli);
+        ArrayList<EquipOSBean> equipList = equipOs.pesquisarProdutoBy("idOrdServ", idCli);
         for (int i = 0; i < equipList.size(); i++) {
+            if (equipList.get(i).getGarantia()) {
+                garantia = "Sim";
+            }
             model.addRow(new Object[]{
                 equipList.get(i).getidOrdServ(),
                 equipList.get(i).getPatEquip(),
                 equipList.get(i).getNserie(),
-                equipList.get(i).getModel(),});
+                equipList.get(i).getModel(),
+                garantia});
         }
+    }
+
+    private void limpaTabela() {
+        DefaultTableModel model = (DefaultTableModel) tbEquip.getModel();
+        model.setRowCount(0);
     }
 
     private void getClientes(ArrayList<ClientesBean> clientesBean) {
@@ -120,13 +131,13 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         ArrayList<OrdServBean> os = ordemSErv.pesquisarOs(idcli);
         int conta = 0;
         for (int i = 0; i < os.size(); i++) {
-           // if (os.get(i).getAberta()) {
-                ordemDeServico += os.get(i).getIdOrdServ();
-                ordemDeServico += "\n";
-                conta++;
-          //  }
+            if (os.get(i).getAberta()) {
+            ordemDeServico += os.get(i).getIdOrdServ();
+            ordemDeServico += "\n";           
+            conta++;
+            }
         }
-        if (conta ==0) {
+        if (conta == 0) {
             ordemDeServico = "Nenhuma ordem de serviço aberta para este cliente.";
         }
         return ordemDeServico;
@@ -151,13 +162,15 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     }
 
     private void limpar() {
-        /*      
-        txtCliNome.setText(null);        
-        txtEquip.setText(null);
-        txtOsDef.setText(null);
-        txtServico.setText(null);
-        boxTecnico.setSelectedIndex(0);
-        txtOsValor.setText(null);   */
+        limpaTabela();
+        txtContatoCli.setText(null);
+        txtEmailCli.setText(null);
+        txtIDcli.setText(null);
+        txtDefeito.setText("Verificar");
+        txtServico.setText("Verificar");
+        cbTecnico.setSelectedIndex(0);
+        txtOsValor.setText(null);
+
     }
 
     /**
@@ -203,7 +216,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         btnAdicionaEquip = new javax.swing.JButton();
         boxGarantia = new javax.swing.JCheckBox();
         btnOsImprimir = new javax.swing.JButton();
-        btnOsExcluir = new javax.swing.JButton();
+        btnOsFinaliza = new javax.swing.JButton();
         btnOsAlterar = new javax.swing.JButton();
         btnOsAdicionar = new javax.swing.JButton();
 
@@ -312,20 +325,20 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
         tbEquip.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Ordem de Serviço", "Patrimônio", "Número de Série", "Modelo"
+                "Ordem de Serviço", "Patrimônio", "Número de Série", "Modelo", "Garantia"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -348,12 +361,15 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         tbEquip.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (tbEquip.getColumnModel().getColumnCount() > 0) {
             tbEquip.getColumnModel().getColumn(0).setResizable(false);
-            tbEquip.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tbEquip.getColumnModel().getColumn(0).setPreferredWidth(5);
             tbEquip.getColumnModel().getColumn(1).setResizable(false);
-            tbEquip.getColumnModel().getColumn(1).setPreferredWidth(10);
+            tbEquip.getColumnModel().getColumn(1).setPreferredWidth(5);
             tbEquip.getColumnModel().getColumn(2).setResizable(false);
-            tbEquip.getColumnModel().getColumn(2).setPreferredWidth(10);
+            tbEquip.getColumnModel().getColumn(2).setPreferredWidth(5);
             tbEquip.getColumnModel().getColumn(3).setResizable(false);
+            tbEquip.getColumnModel().getColumn(3).setPreferredWidth(50);
+            tbEquip.getColumnModel().getColumn(4).setResizable(false);
+            tbEquip.getColumnModel().getColumn(4).setPreferredWidth(5);
         }
 
         jLabel15.setText("Equipamentos");
@@ -382,22 +398,17 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                     .addComponent(txtContatoCli, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtIDcli, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
                     .addComponent(txtNumOS, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel14))
+                .addGap(5, 5, 5)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel14))
-                        .addGap(5, 5, 5)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDataAbertura, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtCliNome, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
-                                .addComponent(txtEmailCli))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(406, 406, 406)
-                        .addComponent(btnAdicionaEquip)))
+                    .addComponent(txtDataAbertura, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(txtCliNome, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+                        .addComponent(txtEmailCli)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -406,7 +417,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbTecnico, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 310, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 312, Short.MAX_VALUE)
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txtOsValor, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -432,7 +443,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                                 .addGap(10, 10, 10)
                                 .addComponent(txtPat)
                                 .addGap(10, 10, 10)
-                                .addComponent(boxGarantia)))))
+                                .addComponent(boxGarantia)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnAdicionaEquip)))))
                 .addGap(20, 20, 20))
         );
 
@@ -521,13 +534,13 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             }
         });
 
-        btnOsExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/delete.png"))); // NOI18N
-        btnOsExcluir.setToolTipText("Excluir OS");
-        btnOsExcluir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnOsExcluir.setPreferredSize(new java.awt.Dimension(80, 80));
-        btnOsExcluir.addActionListener(new java.awt.event.ActionListener() {
+        btnOsFinaliza.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/delete.png"))); // NOI18N
+        btnOsFinaliza.setToolTipText("Finalizar OS");
+        btnOsFinaliza.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnOsFinaliza.setPreferredSize(new java.awt.Dimension(80, 80));
+        btnOsFinaliza.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOsExcluirActionPerformed(evt);
+                btnOsFinalizaActionPerformed(evt);
             }
         });
 
@@ -556,7 +569,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 796, Short.MAX_VALUE)
                 .addGap(14, 14, 14))
             .addGroup(layout.createSequentialGroup()
                 .addGap(179, 179, 179)
@@ -564,7 +577,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 .addGap(20, 20, 20)
                 .addComponent(btnOsAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
-                .addComponent(btnOsExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnOsFinaliza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(btnOsImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -577,7 +590,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnOsAdicionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnOsAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnOsExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnOsFinaliza, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnOsImprimir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -593,6 +606,8 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 getClientes(cliente);
                 JOptionPane.showMessageDialog(null, "Encontradas as ordems de serviço: \n" + getOS(cliente.get(0).getIdcli()));
                 conta = 0;
+            } else {
+                limpar();
             }
         }
     }//GEN-LAST:event_txtCliNomeKeyReleased
@@ -600,7 +615,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private void btnOsAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAdicionarActionPerformed
         getDados();
         OrdServDAO ordemServico = new OrdServDAO();
-        if (ordemServico.novaOs(idOrdServ, idcli, dataAbertura, defeito, tecnico, valor)) {
+        if (ordemServico.novaOs(idOrdServ, idcli, dataAbertura,tecnico, valor)) {
             JOptionPane.showMessageDialog(null, "Ordem de Serviço criada com sucesso");
         }
 
@@ -614,18 +629,18 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         String serial = tbEquip.getModel().getValueAt(linha, 2).toString();
         if (defeitos.editaDefeito(serial, defeito, solucao)) {
             JOptionPane.showMessageDialog(null, "Ordem se Serviço alterada com sucesso");
-            limpar();
+            //limpar();
         }
     }//GEN-LAST:event_btnOsAlterarActionPerformed
 
-    private void btnOsExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsExcluirActionPerformed
+    private void btnOsFinalizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsFinalizaActionPerformed
         getDados();
         OrdServDAO ordemServico = new OrdServDAO();
-        if (ordemServico.excluirOs(fechada, idOrdServ)) {
+        if (ordemServico.editarOs(idOrdServ, dataAbertura, false, valor)) {
             limpar();
-            JOptionPane.showMessageDialog(null, "OS excluída com sucesso");
+            JOptionPane.showMessageDialog(null, "Ordem de serviços finalizada com sucesso");
         }
-    }//GEN-LAST:event_btnOsExcluirActionPerformed
+    }//GEN-LAST:event_btnOsFinalizaActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
 
@@ -658,11 +673,13 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private void btnAdicionaEquipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionaEquipActionPerformed
         setTecnico();
         getDados();
+        if(defeito.isEmpty())defeito = "Verificar";
+        if(solucao.isEmpty())solucao = "Verificar";
         EquipOsDAO equipOs = new EquipOsDAO();
         DefSolDAO defSol = new DefSolDAO();
-        if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli, garantia) && defSol.novoDefeito(nserie, "Verificar", "Verificar")) {
+        if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli, garantia) && defSol.novoDefeito(nserie, defeito, solucao)) {
             JOptionPane.showMessageDialog(null, "Equipamento adicionando com sucesso");
-            setarTabela(idcli);
+            setarTabela(idOrdServ);
         }
     }//GEN-LAST:event_btnAdicionaEquipActionPerformed
 
@@ -677,11 +694,13 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             ArrayList<OrdServBean> ordenList = ordemServico.pesquisarOsbyCli(txtNumOS.getText());
             if (!ordenList.isEmpty()) {
                 txtIDcli.setText(ordenList.get(0).getIdcli());
-                setarTabela(ordenList.get(0).getIdcli());
+                setarTabela(ordenList.get(0).getIdOrdServ());
                 cbTecnico.setSelectedItem(ordenList.get(0).getTecnico());
                 txtOsValor.setText(ordenList.get(0).getValor());
+                btnOsAdicionar.setEnabled(false);
                 conta = 0;
             } else {
+                btnOsAdicionar.setEnabled(true);
                 limpar();
             }
         }
@@ -696,7 +715,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnAdicionaEquip;
     private javax.swing.JButton btnOsAdicionar;
     private javax.swing.JButton btnOsAlterar;
-    private javax.swing.JButton btnOsExcluir;
+    private javax.swing.JButton btnOsFinaliza;
     private javax.swing.JButton btnOsImprimir;
     private javax.swing.JComboBox<String> cbModel;
     private javax.swing.JComboBox<String> cbTecnico;

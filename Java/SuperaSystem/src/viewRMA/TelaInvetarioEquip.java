@@ -23,7 +23,6 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     String idcli = null;
     String idOrdServ = null;
     Boolean garantia = false;
-    ModelosDAO produtoDAO = new ModelosDAO();
     ClienteDAO clientes = new ClienteDAO();
 
     int conta = 0;

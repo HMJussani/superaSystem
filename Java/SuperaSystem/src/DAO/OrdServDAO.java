@@ -29,18 +29,17 @@ public class OrdServDAO {
     java.sql.Connection conexao = ConexaoDb.getConection();
     ArrayList<OrdServBean> ordemServico = new ArrayList<>();
 
-    public boolean novaOs(String idOrdServ, String idcli, Date dataAbertura, String defeito, String tecnico, String valor) {
+    public boolean novaOs(String idOrdServ, String idcli, Date dataAbertura, String tecnico, String valor) {
         boolean sucesso = false;
-        String sql = "insert into tbOrdServ (idOrdServ, idcli, dataAbertura, defeito, tecnico, valor)values(?,?,?,?,?,?)";
+        String sql = "insert into tbOrdServ (idOrdServ, idcli, dataAbertura, tecnico, valor)values(?,?,?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1, idOrdServ);
             pst.setString(2, idcli);
-            pst.setDate(3, (java.sql.Date) dataAbertura);           
-            pst.setString(4, defeito);
-            pst.setString(5, tecnico);
-            pst.setString(6, valor);
+            pst.setDate(3, (java.sql.Date) dataAbertura);
+            pst.setString(4, tecnico);
+            pst.setString(5, valor);
 
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {
@@ -68,10 +67,11 @@ public class OrdServDAO {
                 OrdServBean os = new OrdServBean();
                 os.setIdOrdServ(rs.getString("idOrdServ"));
                 os.setDataAbertura(rs.getDate("dataAbertura"));
-                os.setDefeito(rs.getString("defeito"));                
+                os.setDataFechamento(rs.getDate("dataFechamento"));
                 os.setTecnico(rs.getString("tecnico"));
                 os.setValor(rs.getString("valor"));
                 os.setIdcli(rs.getString("idcli"));
+                os.setAberta(rs.getBoolean("aberta"));
                 ordemServico.add(os);
             }
 
@@ -94,9 +94,10 @@ public class OrdServDAO {
                 OrdServBean os = new OrdServBean();
                 os.setIdOrdServ(rs.getString("idOrdServ"));
                 os.setDataAbertura(rs.getDate("dataAbertura"));
-                os.setDefeito(rs.getString("defeito"));                
+                os.setDataFechamento(rs.getDate("dataFechamento"));
                 os.setTecnico(rs.getString("tecnico"));
                 os.setValor(rs.getString("valor"));
+                os.setAberta(rs.getBoolean("aberta"));
                 ordemServico.add(os);
             }
 
@@ -105,6 +106,7 @@ public class OrdServDAO {
         }
         return ordemServico;
     }
+
     public ArrayList<OrdServBean> pesquisarOsbyCli(String idOrdServ) {
         String sql = "SELECT * FROM tbOrdServ where idOrdServ = ?";
         try {
@@ -119,9 +121,10 @@ public class OrdServDAO {
                 os.setIdcli(rs.getString("idcli"));
                 os.setIdOrdServ(rs.getString("idOrdServ"));
                 os.setDataAbertura(rs.getDate("dataAbertura"));
-                os.setDefeito(rs.getString("defeito"));                
+                os.setDataFechamento(rs.getDate("dataFechamento"));
                 os.setTecnico(rs.getString("tecnico"));
                 os.setValor(rs.getString("valor"));
+                os.setAberta(rs.getBoolean("aberta"));
                 ordemServico.add(os);
             }
 
@@ -131,20 +134,18 @@ public class OrdServDAO {
         return ordemServico;
     }
 
-    public boolean editarOs(String idOrdServ, String defeito, Date dataFechamento, String solucao, boolean aberta, String valor) {
+    public boolean editarOs(String idOrdServ, Date dataFechamento, boolean aberta, String valor) {
         boolean sucesso = false;
-        String sql = "update tbOrdServ set dataFechamento=?, defeito=?, solucao=?, aberta=?, valor=? where idOrdServ=?";
+        String sql = "update tbOrdServ set dataFechamento=?, aberta=?, valor=? where idOrdServ=?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setDate(1, (java.sql.Date) dataFechamento);
-            pst.setString(2, defeito);
-            pst.setString(3, solucao);
-            pst.setBoolean(4, aberta);
-            pst.setString(5, valor);
-            pst.setString(6, idOrdServ);
+            pst.setBoolean(2, aberta);
+            pst.setString(3, valor);
+            pst.setString(4, idOrdServ);
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {
                 sucesso = true;
@@ -157,7 +158,6 @@ public class OrdServDAO {
         return sucesso;
     }
 
-  
     public boolean excluirOs(boolean finalizado, String idOrdServ) {
         boolean sucesso = false;
         conexao = ConexaoDb.getConection();
