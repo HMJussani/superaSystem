@@ -691,7 +691,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         conta++;
         if (conta >= 3) {
             OrdServDAO ordemServico = new OrdServDAO();
-            ArrayList<OrdServBean> ordenList = ordemServico.pesquisarOsbyCli(txtNumOS.getText());
+            ArrayList<OrdServBean> ordenList = ordemServico.pesquisarOsbyIdOs(txtNumOS.getText());
             if (!ordenList.isEmpty()) {
                 txtIDcli.setText(ordenList.get(0).getIdcli());
                 setarTabela(ordenList.get(0).getIdOrdServ());

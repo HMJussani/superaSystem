@@ -47,7 +47,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
     private String getOrdSErv(String ordSErv) {
         String os = "";
         OrdServDAO ordemServico = new OrdServDAO();
-        ArrayList<OrdServBean> osList = ordemServico.pesquisarOsbyCli(ordSErv);
+        ArrayList<OrdServBean> osList = ordemServico.pesquisarOsbyIdOs(ordSErv);
         if (!osList.isEmpty()) {
             os = (osList.get(0).getIdOrdServ());
         }
@@ -251,7 +251,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
         conta++;
         if (conta >= 3) {
             OrdServDAO ordemServico = new OrdServDAO();
-            ArrayList<OrdServBean> osList = ordemServico.pesquisarOsbyCli(txtOrdServ.getText());
+            ArrayList<OrdServBean> osList = ordemServico.pesquisarOsbyIdOs(txtOrdServ.getText());
             if (!osList.isEmpty()) {
                 txtArqFormatado.setText(osList.get(0).getIdOrdServ() + " - " + setData());
                 conta = 0;

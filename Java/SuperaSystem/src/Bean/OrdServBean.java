@@ -19,6 +19,7 @@ public class OrdServBean {
     private Boolean aberta;
     private String tecnico;
     private String valor;
+    private String nomeCli;
 
     public OrdServBean() {
 
@@ -78,6 +79,14 @@ public class OrdServBean {
 
     public void setValor(String valor) {
         this.valor = valor;
+    }
+
+    public String getNomeCli() {
+        return nomeCli;
+    }
+
+    public void setNomeCli(String nomeCli) {
+        this.nomeCli = nomeCli;
     }
 
 }

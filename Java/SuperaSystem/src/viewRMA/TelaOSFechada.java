@@ -9,6 +9,7 @@ import DAO.EquipOsDAO;
 import DAO.OrdServDAO;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class TelaOSFechada extends javax.swing.JInternalFrame {
@@ -28,37 +29,86 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
     private Date data_os = null;
     private int conta = 0;
 
-    private void setaTabelaEquipamento() {
+    private void setaTabelaEquipamento(String idOrdServ) {
         DefaultTableModel model = (DefaultTableModel) tblEquipamentos.getModel();
         model.setRowCount(0);
-        ArrayList<EquipOSBean> infoProd = infoProduto.pesquisarProduto();
+        ArrayList<EquipOSBean> infoProd = infoProduto.pesquisarProdutoBy("idOrdServ", idOrdServ);
 
         for (int i = 0; i < infoProd.size(); i++) {
             model.addRow(new Object[]{
                 infoProd.get(i).getNserie(),
-               // infoProd.get(i).getPatProd(),
+                infoProd.get(i).getPatEquip(),
                 infoProd.get(i).getModel()
             });
         }
     }
 
-    private void setaTabelaOs(String idcli) {
+    private void setaTabelaOs(String idOs) {
         DefaultTableModel model = (DefaultTableModel) tbOsCli.getModel();
         model.setRowCount(0);
-        ArrayList<OrdServBean> os = ordemSErv.pesquisarOs(idcli);
-
+        ArrayList<OrdServBean> os = ordemSErv.pesquisarOsbyIdOs(idOs);
+        String aberta = "Aberta";        
         for (int i = 0; i < os.size(); i++) {
+            if(!os.get(i).getAberta()){
+                aberta = "Finalizada";
+            }else{
+                aberta = "Aberta";
+            }
             model.addRow(new Object[]{
                 os.get(i).getIdOrdServ(),
-               // os.get(i).getPatProd(),
-               os.get(i).getAberta()
+                os.get(i).getNomeCli(),
+                aberta,
+                os.get(i).getDataAbertura(),
+                os.get(i).getDataFechamento()
             });
         }
     }
     
+     private void setaTabelaOsByCli(String idcli, String nomeCli) {
+        DefaultTableModel model = (DefaultTableModel) tbOsCli.getModel();
+        model.setRowCount(0);
+        ArrayList<OrdServBean> os = ordemSErv.pesquisarOs(idcli);
+        String aberta = "Aberta";        
+        for (int i = 0; i < os.size(); i++) {
+            if(!os.get(i).getAberta()){
+                aberta = "Finalizada";
+            }else{
+                aberta = "Aberta";
+            }
+            model.addRow(new Object[]{
+                os.get(i).getIdOrdServ(),
+                nomeCli,
+                aberta,
+                os.get(i).getDataAbertura(),
+                os.get(i).getDataFechamento()
+            });
+        }
+    }
+    
+     private void setaTabelaOs() {
+        DefaultTableModel model = (DefaultTableModel) tbOsCli.getModel();
+        model.setRowCount(0);
+        ArrayList<OrdServBean> os = ordemSErv.pesquisarOs();
+        String aberta = "Aberta";        
+        for (int i = 0; i < os.size(); i++) {
+            if(!os.get(i).getAberta()){
+                aberta = "Finalizada";
+            }else{
+                aberta = "Aberta";
+            }
+            model.addRow(new Object[]{
+                os.get(i).getIdOrdServ(),
+                os.get(i).getNomeCli(),
+                aberta,
+                os.get(i).getDataAbertura(),
+                os.get(i).getDataFechamento()
+            });
+        }
+    }
+
     public TelaOSFechada() {
         initComponents();
-        setaTabelaEquipamento();
+        setaTabelaOs();
     }
 
     private void setarIdCli() {
@@ -76,19 +126,24 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
         idcli = null;
     }
 
-    private void limpar() {
-        txtOs.setText(null);
-        txtData.setText(null);
-        txtCliPesquisar.setText(null);
-        ((DefaultTableModel) tblEquipamentos.getModel()).setRowCount(0);        
-        btnOsAdicionar.setEnabled(true);
-        btnOsPesquisar.setEnabled(true);
-        txtCliPesquisar.setEnabled(true);
-        tblEquipamentos.setVisible(true);
-        btnOsAlterar.setEnabled(false);
-        btnOsExcluir.setEnabled(false);
-        btnOsImprimir.setEnabled(false);
+     private String getOS(String idcli) {
+        String ordemDeServico = "";
+        OrdServDAO ordemSErv = new OrdServDAO();
+        ArrayList<OrdServBean> os = ordemSErv.pesquisarOs(idcli);
+        int conta = 0;
+        for (int i = 0; i < os.size(); i++) {
+            if (os.get(i).getAberta()) {
+            ordemDeServico += os.get(i).getIdOrdServ();
+            ordemDeServico += "\n";           
+            conta++;
+            }
+        }
+        if (conta == 0) {
+            ordemDeServico = "Nenhuma ordem de serviço aberta para este cliente.";
+        }
+        return ordemDeServico;
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -102,24 +157,17 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         txtOs = new javax.swing.JTextField();
-        txtData = new javax.swing.JTextField();
         txtCliPesquisar = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        txtOs1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblEquipamentos = new javax.swing.JTable();
-        btnOsAdicionar = new javax.swing.JButton();
-        btnOsPesquisar = new javax.swing.JButton();
-        btnOsAlterar = new javax.swing.JButton();
-        btnOsExcluir = new javax.swing.JButton();
         btnOsImprimir = new javax.swing.JButton();
-        btnInsertProd = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbOsCli = new javax.swing.JTable();
+        btnOsImprimir1 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -148,9 +196,11 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Cliente:");
 
-        jLabel2.setText("Data:");
-
-        txtData.setEditable(false);
+        txtOs.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtOsKeyReleased(evt);
+            }
+        });
 
         txtCliPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,7 +215,7 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
 
         jLabel11.setText("Nº OS:");
 
-        jLabel4.setText("Cód. Cliente:");
+        jCheckBox1.setText("Somente Ordem de Serviço Finalizadas");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -175,51 +225,41 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtOs1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtOs, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(21, 21, 21)
-                        .addComponent(txtCliPesquisar)))
+                        .addGap(10, 10, 10)
+                        .addComponent(txtCliPesquisar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBox1)
+                            .addComponent(txtOs, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel11))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtData, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtOs, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCliPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtOs1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(25, 25, 25))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11)
+                    .addComponent(txtOs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jCheckBox1)
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Equipamento"));
 
         tblEquipamentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
                 {null, null, null},
                 {null, null, null},
                 {null, null, null},
@@ -254,52 +294,9 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
                 .addGap(2, 2, 2))
         );
 
-        btnOsAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/create.png"))); // NOI18N
-        btnOsAdicionar.setToolTipText("Emitir OS");
-        btnOsAdicionar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnOsAdicionar.setPreferredSize(new java.awt.Dimension(80, 80));
-        btnOsAdicionar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOsAdicionarActionPerformed(evt);
-            }
-        });
-
-        btnOsPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/read.png"))); // NOI18N
-        btnOsPesquisar.setToolTipText("Pesquisar OS");
-        btnOsPesquisar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnOsPesquisar.setPreferredSize(new java.awt.Dimension(80, 80));
-        btnOsPesquisar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOsPesquisarActionPerformed(evt);
-            }
-        });
-
-        btnOsAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/update.png"))); // NOI18N
-        btnOsAlterar.setToolTipText("Editar OS");
-        btnOsAlterar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnOsAlterar.setEnabled(false);
-        btnOsAlterar.setPreferredSize(new java.awt.Dimension(80, 80));
-        btnOsAlterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOsAlterarActionPerformed(evt);
-            }
-        });
-
-        btnOsExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/delete.png"))); // NOI18N
-        btnOsExcluir.setToolTipText("Excluir OS");
-        btnOsExcluir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnOsExcluir.setEnabled(false);
-        btnOsExcluir.setPreferredSize(new java.awt.Dimension(80, 80));
-        btnOsExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOsExcluirActionPerformed(evt);
-            }
-        });
-
         btnOsImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/print.png"))); // NOI18N
         btnOsImprimir.setToolTipText("Imprimir OS");
         btnOsImprimir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnOsImprimir.setEnabled(false);
         btnOsImprimir.setPreferredSize(new java.awt.Dimension(80, 80));
         btnOsImprimir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -307,57 +304,82 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
             }
         });
 
-        btnInsertProd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/pc.png"))); // NOI18N
-        btnInsertProd.setToolTipText("Inserir Equipamento");
-        btnInsertProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnInsertProd.setPreferredSize(new java.awt.Dimension(80, 80));
-        btnInsertProd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInsertProdActionPerformed(evt);
-            }
-        });
-
         tbOsCli.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Número OS", "Cliente", "Status", "Data Abertura", "Data Fechamento"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbOsCli.setColumnSelectionAllowed(true);
+        tbOsCli.getTableHeader().setReorderingAllowed(false);
+        tbOsCli.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbOsCliMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbOsCli);
+        tbOsCli.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (tbOsCli.getColumnModel().getColumnCount() > 0) {
+            tbOsCli.getColumnModel().getColumn(0).setResizable(false);
+            tbOsCli.getColumnModel().getColumn(1).setResizable(false);
+            tbOsCli.getColumnModel().getColumn(2).setResizable(false);
+            tbOsCli.getColumnModel().getColumn(3).setResizable(false);
+            tbOsCli.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        btnOsImprimir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/read.png"))); // NOI18N
+        btnOsImprimir1.setToolTipText("Imprimir OS");
+        btnOsImprimir1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnOsImprimir1.setPreferredSize(new java.awt.Dimension(80, 80));
+        btnOsImprimir1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOsImprimir1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(115, 115, 115)
-                        .addComponent(btnOsAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnOsPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnInsertProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnOsAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 20, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnOsExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnOsImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
-            .addComponent(jScrollPane2)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 806, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnOsImprimir1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnOsImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(354, 354, 354))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -367,18 +389,12 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 210, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnInsertProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnOsImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnOsAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnOsExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnOsAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnOsPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18))
+                    .addComponent(btnOsImprimir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOsImprimir1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         setBounds(0, 0, 822, 695);
@@ -386,48 +402,21 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
 
     private void txtCliPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCliPesquisarKeyReleased
         conta++;
-        if (conta >= 3) {
-            ArrayList<ClientesBean> cliente = clientes.pesquisarCliente(txtCliPesquisar.getText());
-            if (!cliente.isEmpty()) {
-                txtCliPesquisar.setText(cliente.get(0).getNomecli());
-                setaTabelaOs(cliente.get(0).getIdcli());
-                conta =0;
+        if (conta >= 3) { 
+            ClienteDAO clientes = new ClienteDAO();
+           ArrayList<ClientesBean> cliente = clientes.pesquisarCliente(txtCliPesquisar.getText());
+            if (!cliente.isEmpty()) {               
+                JOptionPane.showMessageDialog(null, "Encontradas as ordems de serviço abertas: \n" + getOS(cliente.get(0).getIdcli()));
+                setaTabelaOsByCli(cliente.get(0).getIdcli(), cliente.get(0).getNomecli());
+                conta = 0;
             }
-            //limpar();
+          
         }
     }//GEN-LAST:event_txtCliPesquisarKeyReleased
 
     private void tblEquipamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEquipamentosMouseClicked
         setarIdCli();
     }//GEN-LAST:event_tblEquipamentosMouseClicked
-
-    private void btnOsAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAdicionarActionPerformed
-
-    }//GEN-LAST:event_btnOsAdicionarActionPerformed
-
-    private void btnOsPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsPesquisarActionPerformed
-        btnOsAdicionar.setEnabled(false);
-        btnOsPesquisar.setEnabled(false);
-        txtCliPesquisar.setEnabled(false);
-        tblEquipamentos.setVisible(false);
-        btnOsAlterar.setEnabled(true);
-        btnOsExcluir.setEnabled(true);
-        btnOsImprimir.setEnabled(true);
-    }//GEN-LAST:event_btnOsPesquisarActionPerformed
-
-    private void btnOsAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAlterarActionPerformed
-        //if(editarOs()){
-        //JOptionPane.showMessageDialog(null, "OS alterada com sucesso");
-        //limpar();
-        //  }
-    }//GEN-LAST:event_btnOsAlterarActionPerformed
-
-    private void btnOsExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsExcluirActionPerformed
-        // if(excluirOs(cboOsSit.getSelectedItem().toString(), txtOs.getText())){
-        // limpar();
-        //  JOptionPane.showMessageDialog(null, "OS excluída com sucesso");
-        //  }
-    }//GEN-LAST:event_btnOsExcluirActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
 
@@ -441,22 +430,38 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
         // imprimirOs();
     }//GEN-LAST:event_btnOsImprimirActionPerformed
 
-    private void btnInsertProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertProdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnInsertProdActionPerformed
+    private void tbOsCliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOsCliMouseClicked
+        int linha = tbOsCli.getSelectedRow();
+        String idOs = (String) tbOsCli.getValueAt(linha, 0);
+        setaTabelaEquipamento(idOs);
+    }//GEN-LAST:event_tbOsCliMouseClicked
+
+    private void txtOsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOsKeyReleased
+        conta++;
+        if (conta >= 3) {            
+            ArrayList<OrdServBean> os = ordemSErv.pesquisarOsbyIdOs(txtOs.getText());
+            if (!os.isEmpty()) {
+                txtCliPesquisar.setText(os.get(0).getNomeCli());
+                setaTabelaOs(os.get(0).getIdOrdServ());
+                conta = 0;
+            }
+        
+        }
+    }//GEN-LAST:event_txtOsKeyReleased
+
+    private void btnOsImprimir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsImprimir1ActionPerformed
+       setaTabelaOs();
+       txtCliPesquisar.setText("");
+       txtOs.setText("");
+    }//GEN-LAST:event_btnOsImprimir1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnInsertProd;
-    private javax.swing.JButton btnOsAdicionar;
-    private javax.swing.JButton btnOsAlterar;
-    private javax.swing.JButton btnOsExcluir;
     private javax.swing.JButton btnOsImprimir;
-    private javax.swing.JButton btnOsPesquisar;
+    private javax.swing.JButton btnOsImprimir1;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -464,8 +469,6 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
     private javax.swing.JTable tbOsCli;
     private javax.swing.JTable tblEquipamentos;
     private javax.swing.JTextField txtCliPesquisar;
-    private javax.swing.JTextField txtData;
     private javax.swing.JTextField txtOs;
-    private javax.swing.JTextField txtOs1;
     // End of variables declaration//GEN-END:variables
 }

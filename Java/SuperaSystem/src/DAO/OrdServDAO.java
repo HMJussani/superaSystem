@@ -27,7 +27,7 @@ public class OrdServDAO {
     PreparedStatement pst = null;
     ResultSet rs = null;
     java.sql.Connection conexao = ConexaoDb.getConection();
-    ArrayList<OrdServBean> ordemServico = new ArrayList<>();
+   
 
     public boolean novaOs(String idOrdServ, String idcli, Date dataAbertura, String tecnico, String valor) {
         boolean sucesso = false;
@@ -56,7 +56,8 @@ public class OrdServDAO {
     }
 
     public ArrayList<OrdServBean> pesquisarOs() {
-        String sql = "SELECT * FROM tbOrdServ";
+        String sql = "SELECT * from tbOrdServ join tbclientes on tbOrdServ.idcli = tbclientes.idcli;";
+         ArrayList<OrdServBean> ordemServico = new ArrayList<>();
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -72,6 +73,7 @@ public class OrdServDAO {
                 os.setValor(rs.getString("valor"));
                 os.setIdcli(rs.getString("idcli"));
                 os.setAberta(rs.getBoolean("aberta"));
+                os.setNomeCli(rs.getString("nomecli"));
                 ordemServico.add(os);
             }
 
@@ -82,7 +84,8 @@ public class OrdServDAO {
     }
 
     public ArrayList<OrdServBean> pesquisarOs(String idCli) {
-        String sql = "SELECT * FROM tbOrdServ where idcli = ?";
+        String sql = "select * from tbOrdServ where idcli = ?";
+         ArrayList<OrdServBean> ordemServico = new ArrayList<>();
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -97,7 +100,7 @@ public class OrdServDAO {
                 os.setDataFechamento(rs.getDate("dataFechamento"));
                 os.setTecnico(rs.getString("tecnico"));
                 os.setValor(rs.getString("valor"));
-                os.setAberta(rs.getBoolean("aberta"));
+                os.setAberta(rs.getBoolean("aberta"));                
                 ordemServico.add(os);
             }
 
@@ -107,8 +110,9 @@ public class OrdServDAO {
         return ordemServico;
     }
 
-    public ArrayList<OrdServBean> pesquisarOsbyCli(String idOrdServ) {
-        String sql = "SELECT * FROM tbOrdServ where idOrdServ = ?";
+    public ArrayList<OrdServBean> pesquisarOsbyIdOs(String idOrdServ) {
+        String sql = "select * from tbOrdServ join tbclientes on tbOrdServ.idcli = tbclientes.idcli where idOrdServ = ?";
+         ArrayList<OrdServBean> ordemServico = new ArrayList<>();
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -125,6 +129,7 @@ public class OrdServDAO {
                 os.setTecnico(rs.getString("tecnico"));
                 os.setValor(rs.getString("valor"));
                 os.setAberta(rs.getBoolean("aberta"));
+                os.setNomeCli(rs.getString("nomecli"));
                 ordemServico.add(os);
             }
 
