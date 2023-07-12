@@ -1,5 +1,6 @@
 package viewRMA;
 
+import Acessorios.Arquivos;
 import Bean.EquipOSBean;
 import Bean.OrdServBean;
 import DAO.EquipOsDAO;
@@ -19,30 +20,15 @@ import javax.swing.JOptionPane;
 public class TelaArquivos extends javax.swing.JInternalFrame {
 
     private int conta = 0;
+    Arquivos arquivos = new Arquivos();
 
-    private String setData() {
-        String padrao = "yyyy-MM-dd";
-        SimpleDateFormat dataPadrao = new SimpleDateFormat(padrao);
-        return dataPadrao.format(new Date());
-    }
 
     public TelaArquivos() {
         initComponents();
         txtLocalArquivo.setText(System.getProperty("user.home") + "\\Documents\\");
     }
 
-    private boolean criaDir(String dir) {
-        boolean sucesso = false;
-        if (!new File(dir).exists()) {
-            new File(dir).mkdir();
-            if (new File(dir).exists()) {
-                sucesso = true;
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Pasta ou caminho já existe ...");
-        }
-        return sucesso;
-    }
+    
 
     private String getOrdSErv(String ordSErv) {
         String os = "";
@@ -66,17 +52,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
         return equips;
     }
 
-    private String getPath() {
-        JFileChooser file = new JFileChooser();
-        file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        String pathDir = null;
-        int i = file.showSaveDialog(null);
-        if (i == 0) {
-            File arquivo = file.getSelectedFile();
-            pathDir = arquivo.getPath()+ "\\";
-        }
-        return pathDir;
-    }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -222,7 +198,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void btnLocalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizarActionPerformed
-        txtLocalArquivo.setText(getPath());
+        txtLocalArquivo.setText(arquivos.getPath());
     }//GEN-LAST:event_btnLocalizarActionPerformed
 
     private void btnCriaDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriaDirActionPerformed
@@ -231,14 +207,14 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
         if (!dir.isEmpty()) {
             if (nDir > 1) {
                 JOptionPane.showMessageDialog(null, "Serão criados " + nDir + " sub diretórios.");
-                if (criaDir(dir)) {
+                if (arquivos.criaDir(dir)) {
                     for (int i = 0; i < nDir; i++) {
-                        criaDir(dir + "\\" + getEquip(txtOrdServ.getText()).get(i));
+                        arquivos.criaDir(dir + "\\" + getEquip(txtOrdServ.getText()).get(i));
                     }
                     JOptionPane.showMessageDialog(null, "Diretórios criados com sucesso.");
                 }
             } else {
-                if (criaDir(dir)) {
+                if (arquivos.criaDir(dir)) {
                     JOptionPane.showMessageDialog(null, "Diretório criado com sucesso.");
                 }
             }
@@ -253,7 +229,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
             OrdServDAO ordemServico = new OrdServDAO();
             ArrayList<OrdServBean> osList = ordemServico.pesquisarOsbyIdOs(txtOrdServ.getText());
             if (!osList.isEmpty()) {
-                txtArqFormatado.setText(osList.get(0).getIdOrdServ() + " - " + setData());
+                txtArqFormatado.setText(osList.get(0).getIdOrdServ() + " - " + arquivos.setData());
                 conta = 0;
             }
 

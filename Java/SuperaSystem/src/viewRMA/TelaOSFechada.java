@@ -1,32 +1,23 @@
 package viewRMA;
 
+import Acessorios.CriaPdf;
 import Bean.ClientesBean;
+import Bean.DefSolBean;
 import Bean.EquipOSBean;
-import Bean.ModelosBean;
 import Bean.OrdServBean;
 import DAO.ClienteDAO;
+import DAO.DefSolDAO;
 import DAO.EquipOsDAO;
 import DAO.OrdServDAO;
 import java.util.ArrayList;
-import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class TelaOSFechada extends javax.swing.JInternalFrame {
 
-    EquipOsDAO infoProduto = new EquipOsDAO();
-    private String tipo = null;
-    private String situacao = null;
-    private String equipamento = null;
-    private String defeito = null;
-    private String servico = null;
-    private String tecnico = null;
-    private String valor = null;
-    private String idcli = null;
-    private ArrayList<ModelosBean> equipamentos = null;
-    ClienteDAO clientes = new ClienteDAO();
+    EquipOsDAO infoProduto = new EquipOsDAO();    
     OrdServDAO ordemSErv = new OrdServDAO();
-    private Date data_os = null;
+    DefSolDAO defSolDao = new DefSolDAO();
     private int conta = 0;
 
     private void setaTabelaEquipamento(String idOrdServ) {
@@ -111,20 +102,15 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
         setaTabelaOs();
     }
 
-    private void setarIdCli() {
+    private void getEquip() {
         int setar = tblEquipamentos.getSelectedRow();
+        String nserie = tblEquipamentos.getValueAt(setar, 0).toString();
+        ArrayList<DefSolBean> equip = defSolDao.listaDefeitos(nserie);
+        String defeito = equip.get(0).getDefeito();
+        String solucao = equip.get(0).getSolucao();
+        JOptionPane.showMessageDialog(null,"Defeito: " +defeito +"\nSolução: " + solucao);
     }
 
-    private void getDados() {
-        tipo = null;
-        situacao = null;
-        equipamento = null;
-        defeito = null;
-        servico = null;
-        tecnico = null;
-        valor = null;
-        idcli = null;
-    }
 
      private String getOS(String idcli) {
         String ordemDeServico = "";
@@ -160,7 +146,6 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
         txtOs = new javax.swing.JTextField();
         txtCliPesquisar = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblEquipamentos = new javax.swing.JTable();
@@ -215,8 +200,6 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
 
         jLabel11.setText("Nº OS:");
 
-        jCheckBox1.setText("Somente Ordem de Serviço Finalizadas");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -231,10 +214,8 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox1)
-                            .addComponent(txtOs, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(txtOs, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 283, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -248,9 +229,7 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
                     .addComponent(txtOs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jCheckBox1)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Equipamento"));
@@ -344,6 +323,11 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
                 tbOsCliMouseClicked(evt);
             }
         });
+        tbOsCli.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tbOsCliKeyPressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbOsCli);
         tbOsCli.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (tbOsCli.getColumnModel().getColumnCount() > 0) {
@@ -415,7 +399,7 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCliPesquisarKeyReleased
 
     private void tblEquipamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEquipamentosMouseClicked
-        setarIdCli();
+        getEquip();
     }//GEN-LAST:event_tblEquipamentosMouseClicked
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
@@ -427,7 +411,9 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCliPesquisarActionPerformed
 
     private void btnOsImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsImprimirActionPerformed
-        // imprimirOs();
+        CriaPdf ordServPdf = new CriaPdf();
+        String num_os = JOptionPane.showInputDialog("Número da OS");
+        ordServPdf.criaPdf(num_os, "");
     }//GEN-LAST:event_btnOsImprimirActionPerformed
 
     private void tbOsCliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOsCliMouseClicked
@@ -455,11 +441,16 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
        txtOs.setText("");
     }//GEN-LAST:event_btnOsImprimir1ActionPerformed
 
+    private void tbOsCliKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbOsCliKeyPressed
+        int linha = tbOsCli.getSelectedRow();
+        String idOs = (String) tbOsCli.getValueAt(linha, 0);
+        setaTabelaEquipamento(idOs);
+    }//GEN-LAST:event_tbOsCliKeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOsImprimir;
     private javax.swing.JButton btnOsImprimir1;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JPanel jPanel1;

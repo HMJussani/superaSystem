@@ -27,7 +27,6 @@ public class OrdServDAO {
     PreparedStatement pst = null;
     ResultSet rs = null;
     java.sql.Connection conexao = ConexaoDb.getConection();
-   
 
     public boolean novaOs(String idOrdServ, String idcli, Date dataAbertura, String tecnico, String valor) {
         boolean sucesso = false;
@@ -57,7 +56,7 @@ public class OrdServDAO {
 
     public ArrayList<OrdServBean> pesquisarOs() {
         String sql = "SELECT * from tbOrdServ join tbclientes on tbOrdServ.idcli = tbclientes.idcli;";
-         ArrayList<OrdServBean> ordemServico = new ArrayList<>();
+        ArrayList<OrdServBean> ordemServico = new ArrayList<>();
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -85,7 +84,7 @@ public class OrdServDAO {
 
     public ArrayList<OrdServBean> pesquisarOs(String idCli) {
         String sql = "select * from tbOrdServ where idcli = ?";
-         ArrayList<OrdServBean> ordemServico = new ArrayList<>();
+        ArrayList<OrdServBean> ordemServico = new ArrayList<>();
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -100,7 +99,7 @@ public class OrdServDAO {
                 os.setDataFechamento(rs.getDate("dataFechamento"));
                 os.setTecnico(rs.getString("tecnico"));
                 os.setValor(rs.getString("valor"));
-                os.setAberta(rs.getBoolean("aberta"));                
+                os.setAberta(rs.getBoolean("aberta"));
                 ordemServico.add(os);
             }
 
@@ -112,7 +111,7 @@ public class OrdServDAO {
 
     public ArrayList<OrdServBean> pesquisarOsbyIdOs(String idOrdServ) {
         String sql = "select * from tbOrdServ join tbclientes on tbOrdServ.idcli = tbclientes.idcli where idOrdServ = ?";
-         ArrayList<OrdServBean> ordemServico = new ArrayList<>();
+        ArrayList<OrdServBean> ordemServico = new ArrayList<>();
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -191,15 +190,17 @@ public class OrdServDAO {
     /**
      * Método responsável pela impressão da Ordem de Serviço com JasperReports
      */
-    private void imprimirOs() {
-        conexao = ConexaoDb.getConection();
+    private void imprimirOs(String idcli) {
+
         int confirma = JOptionPane.showConfirmDialog(null, "Confirma a impressão desta OS?", "Atenção", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
             try {
+                OrdServDAO ordemDervico = new OrdServDAO();
+                ArrayList<OrdServBean> os = ordemDervico.pesquisarOs(idcli);
                 HashMap filtro = new HashMap();
-                // filtro.put("os", Integer.parseInt(txtOs.getText()));
-                //  JasperPrint print = JasperFillManager.fillReport(getClass().getResourceAsStream("/reports/os.jasper"), filtro, conexao);
-                //  JasperViewer.viewReport(print, false);
+                filtro.put("Ordem Serviço: ", os.get(0).getIdOrdServ());
+               // JasperPrint print = JasperFillManager.fillReport(getClass().getResourceAsStream("/reports/os.jasper"), filtro, conexao);
+               // JasperViewer.viewReport(print, false);
                 conexao.close();
             } catch (NumberFormatException | SQLException e) {
                 JOptionPane.showMessageDialog(null, e);

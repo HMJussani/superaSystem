@@ -166,8 +166,8 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         txtContatoCli.setText(null);
         txtEmailCli.setText(null);
         txtIDcli.setText(null);
-        txtDefeito.setText("Verificar");
-        txtServico.setText("Verificar");
+        txtDefeito.setText("");
+        txtServico.setText("");
         cbTecnico.setSelectedIndex(0);
         txtOsValor.setText(null);
 
@@ -638,6 +638,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         OrdServDAO ordemServico = new OrdServDAO();
         if (ordemServico.editarOs(idOrdServ, dataAbertura, false, valor)) {
             limpar();
+            txtNumOS.setText("");
             JOptionPane.showMessageDialog(null, "Ordem de serviços finalizada com sucesso");
         }
     }//GEN-LAST:event_btnOsFinalizaActionPerformed
