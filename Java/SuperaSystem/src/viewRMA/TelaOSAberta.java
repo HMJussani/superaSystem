@@ -1,5 +1,6 @@
 package viewRMA;
 
+import Acessorios.Arquivos;
 import Bean.ClientesBean;
 import Bean.DefSolBean;
 import Bean.EquipOSBean;
@@ -33,12 +34,12 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private String valor = null;
     private String solucao = null;
     ClienteDAO clientesDao = new ClienteDAO();
-
+    Arquivos arquivo = new Arquivos();
     private int conta = 0;
 
     public TelaOSAberta() {
         initComponents();
-        txtDataAbertura.setText(setData());
+        txtDataAbertura.setText(arquivo.setData());
         setTecnico();
         setModelo();
         btnOsAdicionar.setEnabled(false);
@@ -81,14 +82,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
     }
 
-    private String setData() {
-        String padrao = "dd-MM-yyyy";
-        SimpleDateFormat dataPadrao = new SimpleDateFormat(padrao);
-        return dataPadrao.format(new Date());
-    }
-
     private java.sql.Date getData() {
-
         java.sql.Date data = new java.sql.Date(new java.util.Date().getTime());
         return data;
     }
@@ -636,7 +630,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private void btnOsFinalizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsFinalizaActionPerformed
         getDados();
         OrdServDAO ordemServico = new OrdServDAO();
-        if (ordemServico.editarOs(idOrdServ, dataAbertura, false, valor)) {
+        if (ordemServico.editarOs(idOrdServ, getData(), false, valor)) {
             limpar();
             txtNumOS.setText("");
             JOptionPane.showMessageDialog(null, "Ordem de serviços finalizada com sucesso");

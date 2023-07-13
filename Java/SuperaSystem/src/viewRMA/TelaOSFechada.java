@@ -59,7 +59,7 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
         DefaultTableModel model = (DefaultTableModel) tbOsCli.getModel();
         model.setRowCount(0);
         ArrayList<OrdServBean> os = ordemSErv.pesquisarOs(idcli);
-        String aberta = "Aberta";        
+        String aberta = "Aberta";         
         for (int i = 0; i < os.size(); i++) {
             if(!os.get(i).getAberta()){
                 aberta = "Finalizada";
