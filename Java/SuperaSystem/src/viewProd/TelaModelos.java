@@ -259,6 +259,11 @@ public class TelaModelos extends javax.swing.JInternalFrame {
                 tbEquipMouseClicked(evt);
             }
         });
+        tbEquip.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tbEquipKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbEquip);
         tbEquip.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (tbEquip.getColumnModel().getColumnCount() > 0) {
@@ -341,8 +346,8 @@ public class TelaModelos extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(txtModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11)
@@ -430,6 +435,10 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private void tbEquipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbEquipMouseClicked
         setarCampos();
     }//GEN-LAST:event_tbEquipMouseClicked
+
+    private void tbEquipKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbEquipKeyReleased
+       setarCampos();
+    }//GEN-LAST:event_tbEquipKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

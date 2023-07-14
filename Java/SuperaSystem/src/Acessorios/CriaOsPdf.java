@@ -4,7 +4,10 @@
  */
 package Acessorios;
 
+import Bean.EquipOSBean;
 import Bean.OrdServBean;
+import DAO.EquipOsDAO;
+import DAO.OrdServDAO;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -31,25 +34,29 @@ import java.util.ArrayList;
  *
  * @author RMA
  */
-public class CriaPdf {
+public class CriaOsPdf {
 
-    private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
-    private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 7, Font.NORMAL, BaseColor.RED);
-    private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
-    private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+    private Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+    private Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 7, Font.NORMAL, BaseColor.RED);
+    private Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
+    private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+    OrdServDAO ordemServ = new OrdServDAO();
+    EquipOsDAO equipDAO = new EquipOsDAO();
+    Arquivos arquivo = new Arquivos();
 
-    public void criaPdf(String arquivo, String path) {
+    public void criaPdf(String osId, String path) {
         if (path.isEmpty()) {
             path = System.getProperty("user.home") + "\\Documents\\";
         }
         Document arquivoPdf = new Document();
         try {
-            PdfWriter.getInstance(arquivoPdf, new FileOutputStream(path + arquivo + ".pdf"));
+            PdfWriter.getInstance(arquivoPdf, new FileOutputStream(path + osId + ".pdf"));
             arquivoPdf.open();
             arquivoPdf.setPageSize(PageSize.A4);
-            metaDatos(arquivoPdf, arquivo);
+            metaDatos(arquivoPdf, osId);
             tituloPagina(arquivoPdf);
-            corpoDoc1(arquivoPdf);
+            listaOs(arquivoPdf, osId);
+            listaEquip(arquivoPdf, osId);
             rodaPe(arquivoPdf);
         } catch (DocumentException de) {
             System.err.println(de.getMessage());
@@ -57,6 +64,30 @@ public class CriaPdf {
             System.err.println(ioe.getMessage());
         }
         arquivoPdf.close();
+    }
+
+    public void relatorioOs(String nomeArquivo, String path, String opcao) {
+        if (path.isEmpty()) {
+            path = System.getProperty("user.home") + "\\Documents\\";
+        }
+
+        Document arquivoPdf = new Document();
+        try {
+            PdfWriter.getInstance(arquivoPdf, new FileOutputStream(path + nomeArquivo + ".pdf"));
+            arquivoPdf.open();
+            arquivoPdf.setPageSize(PageSize.A4);
+            metaDatos(arquivoPdf, nomeArquivo);
+            tituloPagina(arquivoPdf);
+            listaOs(arquivoPdf);            
+            rodaPe(arquivoPdf);
+        } catch (DocumentException de) {
+            System.err.println(de.getMessage());
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        } finally {
+            arquivoPdf.close();
+        }
+
     }
 
     private void metaDatos(Document document, String title) throws DocumentException {
@@ -67,7 +98,7 @@ public class CriaPdf {
         document.addAuthor("Henrique Marega Jussani");
     }
 
-    private static void tituloPagina(Document document) throws DocumentException {
+    private void tituloPagina(Document document) throws DocumentException {
         Paragraph paragrafo = new Paragraph();
         linhaBranco(1);
         paragrafo.add(new Paragraph("Supera RMA ", catFont));
@@ -75,7 +106,7 @@ public class CriaPdf {
         document.add(paragrafo);
     }
 
-    private static void rodaPe(Document document) throws DocumentException {
+    private void rodaPe(Document document) throws DocumentException {
         Paragraph paragrafo = new Paragraph();
         paragrafo.add(new Paragraph(
                 "Relatório gerado por: " + System.getProperty("user.name") + ", " + new Date(), smallBold));
@@ -86,7 +117,7 @@ public class CriaPdf {
         document.add(paragrafo);
     }
 
-    private static void corpoDoc(Document document) throws DocumentException {
+    private void corpoDoc(Document document) throws DocumentException {
         Anchor anchor = new Anchor("First Chapter", catFont);
         anchor.setName("First Chapter");
         Chapter catPart = new Chapter(new Paragraph(anchor), 1);
@@ -117,12 +148,31 @@ public class CriaPdf {
         document.add(catPart);
     }
 
-    private static void corpoDoc1(Document document) throws DocumentException {
+    private void listaOs(Document document, String osId) throws DocumentException {
         document.add(new Paragraph(" "));
-        criaTabela(document);
+        ArrayList<OrdServBean> ordServ = ordemServ.pesquisarOsbyIdOs(osId);
+        if (!ordServ.isEmpty()) {
+            osTabela(document, ordServ);
+        }
     }
 
-    private static void criaTabela(Document document) //, ArrayList<OrdServBean> ordServ
+    private void listaOs(Document document) throws DocumentException {
+        document.add(new Paragraph(" "));
+        ArrayList<OrdServBean> ordServ = ordemServ.pesquisarOs();
+        if (!ordServ.isEmpty()) {
+            osTabela(document, ordServ);
+        }
+    }
+
+    private void listaEquip(Document document, String osId) throws DocumentException{
+        document.add(new Paragraph(" "));
+        ArrayList<EquipOSBean> equip = equipDAO.pesquisarProdutoBy("idOrdServ", osId);
+        if (!equip.isEmpty()) {
+            equipTabela(document, equip);
+        }
+    }
+    
+    private void osTabela(Document document, ArrayList<OrdServBean> ordServ)
             throws BadElementException, DocumentException {
         PdfPTable table = new PdfPTable(4);
 
@@ -130,29 +180,68 @@ public class CriaPdf {
         // t.setPadding(4);
         // t.setSpacing(4);
         // t.setBorderWidth(1);
-        PdfPCell c1 = new PdfPCell(new Phrase("Coluna 1"));
+        PdfPCell c1 = new PdfPCell(new Phrase("Ordem de Serviço"));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
-        c1 = new PdfPCell(new Phrase("Coluna 2"));
+        c1 = new PdfPCell(new Phrase("Cliente"));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
-        c1 = new PdfPCell(new Phrase("Coluna 3"));
+        c1 = new PdfPCell(new Phrase("Data de Abertura"));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
-        c1 = new PdfPCell(new Phrase("Coluna 4"));
+        c1 = new PdfPCell(new Phrase("Estado"));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
         table.setHeaderRows(1);
-        for (int j = 0; j < 3; j++) {
-            for (int i = 0; i < 4; i++) {
-                table.addCell("linha " +(j+1));
+        for (int j = 0; j < ordServ.size(); j++) {
+            String status = "Aberta";
+            table.addCell(ordServ.get(j).getIdOrdServ());
+            table.addCell(ordServ.get(j).getNomeCli());
+            table.addCell(ordServ.get(j).getDataAbertura().toString());
+            if (ordServ.get(j).getAberta()) {
+                status = "Fechada";
             }
+            table.addCell(status);
+
         }
         document.add(table);
 
     }
 
-    private static void criarLista(Section subCatPart, ArrayList<String> lista) {
+    private void equipTabela(Document document, ArrayList<EquipOSBean> equipOs)
+            throws BadElementException, DocumentException {
+        PdfPTable table = new PdfPTable(4);
+
+        // t.setBorderColor(BaseColor.GRAY);
+        // t.setPadding(4);
+        // t.setSpacing(4);
+        // t.setBorderWidth(1);
+        PdfPCell c1 = new PdfPCell(new Phrase("Patrimônio"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+        c1 = new PdfPCell(new Phrase("Número de Serie"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+        c1 = new PdfPCell(new Phrase("Modelo"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+        c1 = new PdfPCell(new Phrase("Estado"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+        table.setHeaderRows(1);
+        for (int j = 0; j < equipOs.size(); j++) {
+            String status = "Aberta";
+            table.addCell(equipOs.get(j).getPatEquip());
+            table.addCell(equipOs.get(j).getNserie());
+            table.addCell(equipOs.get(j).getModel());
+            table.addCell(status);
+
+        }
+        document.add(table);
+
+    }
+
+    private void criarLista(Section subCatPart, ArrayList<String> lista) {
         List list = new List(true, false, 10);
         for (String itens : lista) {
             list.add(new ListItem(itens));
@@ -160,7 +249,7 @@ public class CriaPdf {
         subCatPart.add(list);
     }
 
-    private static void linhaBranco(int number) {
+    private void linhaBranco(int number) {
         Paragraph paragraph = new Paragraph();
         for (int i = 0; i < number; i++) {
             paragraph.add(new Paragraph(" "));
@@ -188,4 +277,5 @@ public class CriaPdf {
         document.add(paragraph);
         document.newPage();
     }
+
 }

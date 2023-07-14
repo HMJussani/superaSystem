@@ -1,6 +1,7 @@
 package viewRMA;
 
-import Acessorios.CriaPdf;
+import Acessorios.Arquivos;
+import Acessorios.CriaOsPdf;
 import Bean.ClientesBean;
 import Bean.DefSolBean;
 import Bean.EquipOSBean;
@@ -15,10 +16,11 @@ import javax.swing.table.DefaultTableModel;
 
 public class TelaOSFechada extends javax.swing.JInternalFrame {
 
-    EquipOsDAO infoProduto = new EquipOsDAO();    
+    EquipOsDAO infoProduto = new EquipOsDAO();
     OrdServDAO ordemSErv = new OrdServDAO();
     DefSolDAO defSolDao = new DefSolDAO();
     private int conta = 0;
+    private String idOs;
 
     private void setaTabelaEquipamento(String idOrdServ) {
         DefaultTableModel model = (DefaultTableModel) tblEquipamentos.getModel();
@@ -38,11 +40,11 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
         DefaultTableModel model = (DefaultTableModel) tbOsCli.getModel();
         model.setRowCount(0);
         ArrayList<OrdServBean> os = ordemSErv.pesquisarOsbyIdOs(idOs);
-        String aberta = "Aberta";        
+        String aberta = "Aberta";
         for (int i = 0; i < os.size(); i++) {
-            if(!os.get(i).getAberta()){
+            if (!os.get(i).getAberta()) {
                 aberta = "Finalizada";
-            }else{
+            } else {
                 aberta = "Aberta";
             }
             model.addRow(new Object[]{
@@ -54,16 +56,16 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
             });
         }
     }
-    
-     private void setaTabelaOsByCli(String idcli, String nomeCli) {
+
+    private void setaTabelaOsByCli(String idcli, String nomeCli) {
         DefaultTableModel model = (DefaultTableModel) tbOsCli.getModel();
         model.setRowCount(0);
         ArrayList<OrdServBean> os = ordemSErv.pesquisarOs(idcli);
-        String aberta = "Aberta";         
+        String aberta = "Aberta";
         for (int i = 0; i < os.size(); i++) {
-            if(!os.get(i).getAberta()){
+            if (!os.get(i).getAberta()) {
                 aberta = "Finalizada";
-            }else{
+            } else {
                 aberta = "Aberta";
             }
             model.addRow(new Object[]{
@@ -75,16 +77,16 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
             });
         }
     }
-    
-     private void setaTabelaOs() {
+
+    private void setaTabelaOs() {
         DefaultTableModel model = (DefaultTableModel) tbOsCli.getModel();
         model.setRowCount(0);
         ArrayList<OrdServBean> os = ordemSErv.pesquisarOs();
-        String aberta = "Aberta";        
+        String aberta = "Aberta";
         for (int i = 0; i < os.size(); i++) {
-            if(!os.get(i).getAberta()){
+            if (!os.get(i).getAberta()) {
                 aberta = "Finalizada";
-            }else{
+            } else {
                 aberta = "Aberta";
             }
             model.addRow(new Object[]{
@@ -100,6 +102,7 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
     public TelaOSFechada() {
         initComponents();
         setaTabelaOs();
+        //btnOsImprimir.setEnabled(false);
     }
 
     private void getEquip() {
@@ -108,26 +111,34 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
         ArrayList<DefSolBean> equip = defSolDao.listaDefeitos(nserie);
         String defeito = equip.get(0).getDefeito();
         String solucao = equip.get(0).getSolucao();
-        JOptionPane.showMessageDialog(null,"Defeito: " +defeito +"\nSolução: " + solucao);
+        JOptionPane.showMessageDialog(null, "Defeito: " + defeito + "\nSolução: " + solucao);
     }
 
-
-     private String getOS(String idcli) {
+    private String getOS(String idcli) {
         String ordemDeServico = "";
         OrdServDAO ordemSErv = new OrdServDAO();
         ArrayList<OrdServBean> os = ordemSErv.pesquisarOs(idcli);
         int conta = 0;
         for (int i = 0; i < os.size(); i++) {
             if (os.get(i).getAberta()) {
-            ordemDeServico += os.get(i).getIdOrdServ();
-            ordemDeServico += "\n";           
-            conta++;
+                ordemDeServico += os.get(i).getIdOrdServ();
+                ordemDeServico += "\n";
+                conta++;
             }
         }
         if (conta == 0) {
             ordemDeServico = "Nenhuma ordem de serviço aberta para este cliente.";
         }
         return ordemDeServico;
+    }
+
+    private Boolean imprimirOs(String num_os, String path) {
+        Boolean sucesso = false;
+        ArrayList<OrdServBean> os = ordemSErv.pesquisarOsbyIdOs(idOs);
+        CriaOsPdf ordServPdf = new CriaOsPdf();
+        ordServPdf.criaPdf(num_os, path);
+        sucesso = true;
+        return sucesso;
     }
     
 
@@ -152,7 +163,7 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
         btnOsImprimir = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbOsCli = new javax.swing.JTable();
-        btnOsImprimir1 = new javax.swing.JButton();
+        btnOsLocalizar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -338,13 +349,13 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
             tbOsCli.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        btnOsImprimir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/read.png"))); // NOI18N
-        btnOsImprimir1.setToolTipText("Imprimir OS");
-        btnOsImprimir1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnOsImprimir1.setPreferredSize(new java.awt.Dimension(80, 80));
-        btnOsImprimir1.addActionListener(new java.awt.event.ActionListener() {
+        btnOsLocalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/read.png"))); // NOI18N
+        btnOsLocalizar.setToolTipText("Imprimir OS");
+        btnOsLocalizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnOsLocalizar.setPreferredSize(new java.awt.Dimension(80, 80));
+        btnOsLocalizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOsImprimir1ActionPerformed(evt);
+                btnOsLocalizarActionPerformed(evt);
             }
         });
 
@@ -360,7 +371,7 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 806, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnOsImprimir1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnOsLocalizar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnOsImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(354, 354, 354))
@@ -377,7 +388,7 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnOsImprimir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOsImprimir1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnOsLocalizar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -386,15 +397,15 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
 
     private void txtCliPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCliPesquisarKeyReleased
         conta++;
-        if (conta >= 3) { 
+        if (conta >= 3) {
             ClienteDAO clientes = new ClienteDAO();
-           ArrayList<ClientesBean> cliente = clientes.pesquisarCliente(txtCliPesquisar.getText());
-            if (!cliente.isEmpty()) {               
+            ArrayList<ClientesBean> cliente = clientes.pesquisarCliente(txtCliPesquisar.getText());
+            if (!cliente.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Encontradas as ordems de serviço abertas: \n" + getOS(cliente.get(0).getIdcli()));
                 setaTabelaOsByCli(cliente.get(0).getIdcli(), cliente.get(0).getNomecli());
                 conta = 0;
             }
-          
+
         }
     }//GEN-LAST:event_txtCliPesquisarKeyReleased
 
@@ -411,35 +422,39 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCliPesquisarActionPerformed
 
     private void btnOsImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsImprimirActionPerformed
-        CriaPdf ordServPdf = new CriaPdf();
+        Arquivos arquivo = new Arquivos();
         String num_os = JOptionPane.showInputDialog("Número da OS");
-        ordServPdf.criaPdf(num_os, "");
+        String path = arquivo.getPath();
+        if (idOs.isEmpty())idOs = num_os;       
+        imprimirOs(idOs, path);
+        btnOsImprimir.setEnabled(false);
     }//GEN-LAST:event_btnOsImprimirActionPerformed
 
     private void tbOsCliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOsCliMouseClicked
         int linha = tbOsCli.getSelectedRow();
-        String idOs = (String) tbOsCli.getValueAt(linha, 0);
+        idOs = (String) tbOsCli.getValueAt(linha, 0);
         setaTabelaEquipamento(idOs);
+        btnOsImprimir.setEnabled(true);
     }//GEN-LAST:event_tbOsCliMouseClicked
 
     private void txtOsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOsKeyReleased
         conta++;
-        if (conta >= 3) {            
+        if (conta >= 3) {
             ArrayList<OrdServBean> os = ordemSErv.pesquisarOsbyIdOs(txtOs.getText());
             if (!os.isEmpty()) {
                 txtCliPesquisar.setText(os.get(0).getNomeCli());
                 setaTabelaOs(os.get(0).getIdOrdServ());
                 conta = 0;
             }
-        
+
         }
     }//GEN-LAST:event_txtOsKeyReleased
 
-    private void btnOsImprimir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsImprimir1ActionPerformed
-       setaTabelaOs();
-       txtCliPesquisar.setText("");
-       txtOs.setText("");
-    }//GEN-LAST:event_btnOsImprimir1ActionPerformed
+    private void btnOsLocalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsLocalizarActionPerformed
+        setaTabelaOs();
+        txtCliPesquisar.setText("");
+        txtOs.setText("");
+    }//GEN-LAST:event_btnOsLocalizarActionPerformed
 
     private void tbOsCliKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbOsCliKeyPressed
         int linha = tbOsCli.getSelectedRow();
@@ -449,7 +464,7 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOsImprimir;
-    private javax.swing.JButton btnOsImprimir1;
+    private javax.swing.JButton btnOsLocalizar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;

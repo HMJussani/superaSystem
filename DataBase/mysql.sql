@@ -61,7 +61,7 @@ valor varchar(10),
 foreign key (idcli) references tbclientes(idcli)
 );
 
-
+select * from tbOrdServ;
 
 select idOrdServ, dataAbertura, dataFechamento, aberta, nomecli from tbOrdServ join tbclientes on tbOrdServ.idcli = tbclientes.idcli where idOrdServ ="3072023";
 

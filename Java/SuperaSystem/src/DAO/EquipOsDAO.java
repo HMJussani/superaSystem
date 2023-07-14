@@ -64,6 +64,7 @@ public class EquipOsDAO {
                 equipOS.setIdOrdServ(rs.getString("idOrdServ"));
                 equipOS.setModel(rs.getString("model"));
                 equipOS.setPatEquip(rs.getString("patEquip"));
+                equipOS.setIdCli(rs.getString("idcli"));
                 equipOS.setGarantia(rs.getBoolean("garantia"));
                 equipamentoOS.add(equipOS);
             }
@@ -88,6 +89,7 @@ public class EquipOsDAO {
                 equipOS.setIdOrdServ(rs.getString("idOrdServ"));
                 equipOS.setModel(rs.getString("model"));
                 equipOS.setPatEquip(rs.getString("patEquip"));
+                equipOS.setIdCli(rs.getString("idcli"));
                 equipOS.setGarantia(rs.getBoolean("garantia"));
                 equipamentoOS.add(equipOS);
             }
@@ -111,6 +113,7 @@ public class EquipOsDAO {
                 equipOS.setIdOrdServ(rs.getString("idOrdServ"));
                 equipOS.setModel(rs.getString("model"));
                 equipOS.setPatEquip(rs.getString("patEquip"));
+                equipOS.setIdCli(rs.getString("idcli"));
                 equipOS.setGarantia(rs.getBoolean("garantia"));
                 equipamentoOS.add(equipOS);
             }
