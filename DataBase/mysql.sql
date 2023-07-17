@@ -68,10 +68,15 @@ model varchar(50) not null,
 patEquip varchar(20) NOT NULL,
 idcli VARCHAR(20) not null,
 garantia bool DEFAULT FALSE,
+analizado bool default false,
 foreign key (model) references tbmodelo(model),
 foreign key (idOrdServ) references tbOrdServ(idOrdServ),
 foreign key (idcli) references tbclientes(idcli)
 );
+
+#alter table tbEquip add analizado bool default false;
+update tbEquip set analizado = true;
+select * from tbEquip;
 
 create table tbdefsol(
 idDefeito int primary key auto_increment,

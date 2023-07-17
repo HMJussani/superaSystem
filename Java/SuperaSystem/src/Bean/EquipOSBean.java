@@ -16,6 +16,7 @@ public class EquipOSBean {
    private String model;  
    private String patEquip;
    private Boolean garantia;
+   private Boolean analizado;
 
     public EquipOSBean() {
     }
@@ -66,6 +67,14 @@ public class EquipOSBean {
 
     public void setGarantia(Boolean garantia) {
         this.garantia = garantia;
+    }
+
+    public Boolean getAnalizado() {
+        return analizado;
+    }
+
+    public void setAnalizado(Boolean analizado) {
+        this.analizado = analizado;
     }
   
    

@@ -198,7 +198,7 @@ public class CriaOsPdf {
             table.addCell(ordServ.get(j).getIdOrdServ());
             table.addCell(ordServ.get(j).getNomeCli());
             table.addCell(ordServ.get(j).getDataAbertura().toString());
-            if (ordServ.get(j).getAberta()) {
+            if (!ordServ.get(j).getAberta()) {
                 status = "Fechada";
             }
             table.addCell(status);
@@ -230,10 +230,11 @@ public class CriaOsPdf {
         table.addCell(c1);
         table.setHeaderRows(1);
         for (int j = 0; j < equipOs.size(); j++) {
-            String status = "Aberta";
+            String status = "Analizando";
             table.addCell(equipOs.get(j).getPatEquip());
             table.addCell(equipOs.get(j).getNserie());
             table.addCell(equipOs.get(j).getModel());
+            if(equipOs.get(j).getAnalizado())status="Resolvido";
             table.addCell(status);
 
         }

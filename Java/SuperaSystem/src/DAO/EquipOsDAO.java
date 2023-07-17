@@ -66,6 +66,7 @@ public class EquipOsDAO {
                 equipOS.setPatEquip(rs.getString("patEquip"));
                 equipOS.setIdCli(rs.getString("idcli"));
                 equipOS.setGarantia(rs.getBoolean("garantia"));
+                equipOS.setAnalizado(rs.getBoolean("analizado"));
                 equipamentoOS.add(equipOS);
             }
             conexao.close();
@@ -91,6 +92,7 @@ public class EquipOsDAO {
                 equipOS.setPatEquip(rs.getString("patEquip"));
                 equipOS.setIdCli(rs.getString("idcli"));
                 equipOS.setGarantia(rs.getBoolean("garantia"));
+                equipOS.setAnalizado(rs.getBoolean("analizado"));
                 equipamentoOS.add(equipOS);
             }
             conexao.close();
@@ -115,6 +117,7 @@ public class EquipOsDAO {
                 equipOS.setPatEquip(rs.getString("patEquip"));
                 equipOS.setIdCli(rs.getString("idcli"));
                 equipOS.setGarantia(rs.getBoolean("garantia"));
+                equipOS.setAnalizado(rs.getBoolean("analizado"));
                 equipamentoOS.add(equipOS);
             }
             conexao.close();
@@ -124,11 +127,11 @@ public class EquipOsDAO {
         return equipamentoOS;
     }
 
-    public boolean editarProduto(String nserie, String idOrdServ, String model, String patEquip, String idcli, Boolean garantia) {
+    public boolean editarProduto(String nserie, String idOrdServ, String model, String patEquip, String idcli, Boolean garantia, Boolean analizado) {
         boolean sucesso = false;
         int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            String sql = "update tbEquip set idOrdServ=?, model=?,  patEquip=?, idcli=?, garantia=? where nserie=?";
+            String sql = "update tbEquip set idOrdServ=?, model=?,  patEquip=?, idcli=?, garantia=?, analizado=? where nserie=?";
             try {
                 conexao = ConexaoDb.getConection();
                 pst = conexao.prepareStatement(sql);
@@ -137,7 +140,8 @@ public class EquipOsDAO {
                 pst.setString(3, patEquip);
                 pst.setString(4, idcli);
                 pst.setBoolean(5, garantia);
-                pst.setString(6, nserie);
+                pst.setBoolean(6, analizado);
+                pst.setString(7, nserie);
                 int adicionado = pst.executeUpdate();
                 if (adicionado > 0) {
                     sucesso = true;

@@ -1,6 +1,5 @@
 package viewRMA;
 
-import Acessorios.Arquivos;
 import Bean.ClientesBean;
 import Bean.EquipOSBean;
 import Bean.ModelosBean;
@@ -25,6 +24,7 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     String idcli = null;
     String idOrdServ = null;
     Boolean garantia = false;
+    Boolean analizado = false;
     ClienteDAO clientes = new ClienteDAO();
 
     int conta = 0;
@@ -42,86 +42,97 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
 
         for (int i = 0; i < modelList.size(); i++) {
             String modelo = modelList.get(i).getModel().toString();
-            cbModel.addItem(modelo);
+           // cbModel.addItem(modelo);
         }
     }
 
     private void setarCampos() {
-        int setar = tbProd.getSelectedRow();
-        txtOrdemServ.setText(tbProd.getModel().getValueAt(setar, 0).toString());
-        txtSerie.setText(tbProd.getModel().getValueAt(setar, 2).toString());
-        txtPat.setText(tbProd.getModel().getValueAt(setar, 1).toString());
-        for (int i = 0; i < cbModel.getItemCount(); i++) {
-            if (cbModel.getItemAt(i).equals(tbProd.getModel().getValueAt(setar, 3).toString())) {
-                cbModel.setSelectedIndex(i);
-            }
-        }
+     //   int setar = tbProd.getSelectedRow();
+     //   txtOrdemServ.setText(tbProd.getModel().getValueAt(setar, 0).toString());
+    //    txtSerie.setText(tbProd.getModel().getValueAt(setar, 2).toString());
+     //   txtPat.setText(tbProd.getModel().getValueAt(setar, 1).toString());
+    //    for (int i = 0; i < cbModel.getItemCount(); i++) {
+    //        if (cbModel.getItemAt(i).equals(tbProd.getModel().getValueAt(setar, 3).toString())) {
+    //            cbModel.setSelectedIndex(i);
+    //        }
+    //    }
 
     }
 
     private void setarTabela(String idCli) {
         DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
         model.setRowCount(0);
+        String estado = "Analizando";
         EquipOsDAO equipOs = new EquipOsDAO();
         ArrayList<EquipOSBean> equipList = equipOs.pesquisarProduto(idCli);
         for (int i = 0; i < equipList.size(); i++) {
+            if(equipList.get(i).getAnalizado())estado = "Resolvido";
             model.addRow(new Object[]{
-                equipList.get(i).getidOrdServ(), // ordensServico.get(i).
+                equipList.get(i).getidOrdServ(), 
                 equipList.get(i).getPatEquip(),
                 equipList.get(i).getNserie(),
-                equipList.get(i).getModel(),});
+                equipList.get(i).getModel(),
+                estado});
         }
     }
 
     private void setarTabela() {
         DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
         model.setRowCount(0);
+        String estado = "Analizando";
         EquipOsDAO equipOs = new EquipOsDAO();
         ArrayList<EquipOSBean> equipList = equipOs.pesquisarProduto();
         for (int i = 0; i < equipList.size(); i++) {
+             if(equipList.get(i).getAnalizado())estado = "Resolvido";
             model.addRow(new Object[]{
-                equipList.get(i).getidOrdServ(), // ordensServico.get(i).
+                equipList.get(i).getidOrdServ(), 
                 equipList.get(i).getPatEquip(),
                 equipList.get(i).getNserie(),
-                equipList.get(i).getModel(),});
+                equipList.get(i).getModel(),
+                estado});
         }
     }
 
     private void setarTabelaBySerie(String nserie) {
         DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
         model.setRowCount(0);
+        String estado = "Analizando";
         EquipOsDAO equipOs = new EquipOsDAO();
         ArrayList<EquipOSBean> equipList = equipOs.pesquisarProdutoBy("nserie", nserie);
         for (int i = 0; i < equipList.size(); i++) {
+            if(equipList.get(i).getAnalizado())estado = "Resolvido";
             model.addRow(new Object[]{
-                equipList.get(i).getidOrdServ(), // ordensServico.get(i).
+                equipList.get(i).getidOrdServ(), 
                 equipList.get(i).getPatEquip(),
                 equipList.get(i).getNserie(),
-                equipList.get(i).getModel(),});
+                equipList.get(i).getModel(),
+                estado
+                
+            });
         }
     }
 
     private void limpar() {
-        txtOrdemServ.setText("");
-        txtSerie.setText("");
-        txtPat.setText("");
-        cbModel.setSelectedIndex(0);
+       // txtOrdemServ.setText("");
+       // txtSerie.setText("");
+      //  txtPat.setText("");
+      //  cbModel.setSelectedIndex(0);
         DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
         model.setRowCount(0);
     }
 
     private void getDados() {
-        idOrdServ = txtOrdemServ.getText();
-        nserie = txtSerie.getText();
-        model = cbModel.getSelectedItem().toString();
-        patEquip = txtPat.getText();
+       // idOrdServ = txtOrdemServ.getText();
+       // nserie = txtSerie.getText();
+      //  model = cbModel.getSelectedItem().toString();
+      //  patEquip = txtPat.getText();
         idcli = txtIdCli.getText();
         
-        if (boxGarantia.isSelected()) {
-            garantia = true;
-        } else {
-            garantia = false;
-        }
+       // if (boxGarantia.isSelected()) {
+      //      garantia = true;
+      //  } else {
+      //      garantia = false;
+      //  }
 
     }
 
@@ -135,27 +146,18 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        btnRemover = new javax.swing.JButton();
-        txtPat = new javax.swing.JTextField();
-        btnAlterar = new javax.swing.JButton();
-        btnAdicionar = new javax.swing.JButton();
+        btnPesquisa = new javax.swing.JButton();
         txtIdCli = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbProd = new javax.swing.JTable();
-        jLabel7 = new javax.swing.JLabel();
-        txtSerie = new javax.swing.JTextField();
-        jLabel11 = new javax.swing.JLabel();
-        txtOrdemServ = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtCliNome = new javax.swing.JTextField();
-        cbModel = new javax.swing.JComboBox<>();
-        boxGarantia = new javax.swing.JCheckBox();
         jLabel13 = new javax.swing.JLabel();
         txtLocalizaSerie = new javax.swing.JTextField();
         btnImprimir = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        txtLocalizaPat = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -183,33 +185,13 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
         jLabel1.setText("Pesquisa Cliente");
         jLabel1.setToolTipText("");
 
-        btnRemover.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/delete.png"))); // NOI18N
-        btnRemover.setToolTipText("Excluir Equipamento");
-        btnRemover.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnRemover.setPreferredSize(new java.awt.Dimension(80, 80));
-        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+        btnPesquisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/read.png"))); // NOI18N
+        btnPesquisa.setToolTipText("Pesquisa");
+        btnPesquisa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPesquisa.setPreferredSize(new java.awt.Dimension(80, 80));
+        btnPesquisa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRemoverActionPerformed(evt);
-            }
-        });
-
-        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/update.png"))); // NOI18N
-        btnAlterar.setToolTipText("Editar Equipamento");
-        btnAlterar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnAlterar.setPreferredSize(new java.awt.Dimension(80, 80));
-        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAlterarActionPerformed(evt);
-            }
-        });
-
-        btnAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/create.png"))); // NOI18N
-        btnAdicionar.setToolTipText("Adicionar Equipamento");
-        btnAdicionar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnAdicionar.setPreferredSize(new java.awt.Dimension(80, 80));
-        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAdicionarActionPerformed(evt);
+                btnPesquisaActionPerformed(evt);
             }
         });
 
@@ -226,21 +208,33 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
         };
         tbProd.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Ordem Serviço", "Patrimônio", "Número de Série", "Modelo"
+                "Ordem Serviço", "Patrimônio", "Número de Série", "Modelo", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -263,18 +257,15 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
         tbProd.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (tbProd.getColumnModel().getColumnCount() > 0) {
             tbProd.getColumnModel().getColumn(0).setResizable(false);
+            tbProd.getColumnModel().getColumn(0).setPreferredWidth(10);
             tbProd.getColumnModel().getColumn(1).setResizable(false);
+            tbProd.getColumnModel().getColumn(1).setPreferredWidth(10);
             tbProd.getColumnModel().getColumn(2).setResizable(false);
+            tbProd.getColumnModel().getColumn(2).setPreferredWidth(10);
             tbProd.getColumnModel().getColumn(3).setResizable(false);
+            tbProd.getColumnModel().getColumn(4).setResizable(false);
+            tbProd.getColumnModel().getColumn(4).setPreferredWidth(10);
         }
-
-        jLabel7.setText("Modelo");
-
-        jLabel11.setText("Número de Serie");
-
-        jLabel12.setText("Patrimônio");
-
-        jLabel15.setText("Ordem de Serviço");
 
         jLabel2.setText("Código Cliente");
         jLabel2.setToolTipText("");
@@ -289,10 +280,6 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
                 txtCliNomeKeyReleased(evt);
             }
         });
-
-        cbModel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Modelo" }));
-
-        boxGarantia.setText("Em garantia");
 
         jLabel13.setText("Número de Serie");
 
@@ -312,6 +299,14 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel14.setText("Patrimônio");
+
+        txtLocalizaPat.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtLocalizaPatKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -323,51 +318,37 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtIdCli, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtLocalizaSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIdCli, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtLocalizaSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(txtCliNome)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(txtCliNome)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtLocalizaPat, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 798, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel15)
-                            .addComponent(jLabel11))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(boxGarantia)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtSerie)
-                                .addComponent(txtPat)
-                                .addComponent(cbModel, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtOrdemServ, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(261, 261, 261)
+                        .addComponent(btnPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49)
+                        .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(232, 232, 232)
-                .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(198, 198, 198))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtIdCli, txtLocalizaSerie});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel13, jLabel14, jLabel2, jLabel3});
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel13, jLabel2});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtIdCli, txtLocalizaPat, txtLocalizaSerie});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -381,55 +362,27 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtIdCli, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtLocalizaSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtOrdemServ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel12)
-                    .addComponent(txtPat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(cbModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(boxGarantia)
-                .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnImprimir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAdicionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnRemover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(93, 93, 93))
+                    .addComponent(jLabel13)
+                    .addComponent(txtLocalizaPat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(83, 83, 83))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtIdCli, txtLocalizaSerie});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtIdCli, txtLocalizaPat, txtLocalizaSerie});
 
         jLabel1.getAccessibleContext().setAccessibleName("");
 
         setBounds(0, 0, 822, 695);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        getDados();
-        EquipOsDAO equipOs = new EquipOsDAO();
-        if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli, garantia)) {
-            JOptionPane.showMessageDialog(null, "Equipamento adicionando com sucesso");
-            setarTabela(idcli);
-        }
-
-    }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void txtIdCliKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdCliKeyReleased
         conta++;
@@ -451,23 +404,9 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
         setarCampos();
     }//GEN-LAST:event_tbProdMouseClicked
 
-    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        getDados();
-        EquipOsDAO equipOs = new EquipOsDAO();
-        if (equipOs.editarProduto(nserie, idOrdServ, model, patEquip, idcli, garantia)) {
-            JOptionPane.showMessageDialog(null, "Informações atualizadas com sucesso");
-            setarTabela(idcli);
-        }
-    }//GEN-LAST:event_btnAlterarActionPerformed
-
-    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        getDados();
-        EquipOsDAO equipOs = new EquipOsDAO();
-        if (equipOs.excluirProduto(nserie)) {
-            JOptionPane.showMessageDialog(null, "Equipamento removido com sucesso");
-            setarTabela(idcli);
-        }
-    }//GEN-LAST:event_btnRemoverActionPerformed
+    private void btnPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaActionPerformed
+        setarTabela();        
+    }//GEN-LAST:event_btnPesquisaActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
 
@@ -512,29 +451,24 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtLocalizaSerieKeyReleased
 
+    private void txtLocalizaPatKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLocalizaPatKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtLocalizaPatKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox boxGarantia;
-    private javax.swing.JButton btnAdicionar;
-    private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnImprimir;
-    private javax.swing.JButton btnRemover;
-    private javax.swing.JComboBox<String> cbModel;
+    private javax.swing.JButton btnPesquisa;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbProd;
     private javax.swing.JTextField txtCliNome;
     private javax.swing.JTextField txtIdCli;
+    private javax.swing.JTextField txtLocalizaPat;
     private javax.swing.JTextField txtLocalizaSerie;
-    private javax.swing.JTextField txtOrdemServ;
-    private javax.swing.JTextField txtPat;
-    private javax.swing.JTextField txtSerie;
     // End of variables declaration//GEN-END:variables
 }

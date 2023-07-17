@@ -20,7 +20,7 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
     OrdServDAO ordemSErv = new OrdServDAO();
     DefSolDAO defSolDao = new DefSolDAO();
     private int conta = 0;
-    private String idOs;
+    private String idOs = "";
 
     private void setaTabelaEquipamento(String idOrdServ) {
         DefaultTableModel model = (DefaultTableModel) tblEquipamentos.getModel();
@@ -135,12 +135,16 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
     private Boolean imprimirOs(String num_os, String path) {
         Boolean sucesso = false;
         ArrayList<OrdServBean> os = ordemSErv.pesquisarOsbyIdOs(idOs);
-        CriaOsPdf ordServPdf = new CriaOsPdf();
-        ordServPdf.criaPdf(num_os, path);
-        sucesso = true;
+        if (os.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ordem de serviço não encontrada.");
+        } else {
+            CriaOsPdf ordServPdf = new CriaOsPdf();
+            ordServPdf.criaPdf(num_os, path);
+            sucesso = true;
+
+        }
         return sucesso;
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -423,11 +427,15 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
 
     private void btnOsImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsImprimirActionPerformed
         Arquivos arquivo = new Arquivos();
-        String num_os = JOptionPane.showInputDialog("Número da OS");
+        if (idOs.isEmpty()) {
+            idOs = JOptionPane.showInputDialog("Digite o número da OS");
+        }
         String path = arquivo.getPath();
-        if (idOs.isEmpty())idOs = num_os;       
-        imprimirOs(idOs, path);
-        btnOsImprimir.setEnabled(false);
+        if (imprimirOs(idOs, path)) {
+            JOptionPane.showMessageDialog(null, "Ordem de serviço gerada com sucesso.");
+          idOs = "";
+        }
+
     }//GEN-LAST:event_btnOsImprimirActionPerformed
 
     private void tbOsCliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOsCliMouseClicked
