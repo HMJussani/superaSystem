@@ -56,10 +56,7 @@ public class ClienteDAO {
         }
         return sucesso;
     }
-
-    /**
-     * Método responsável pela pesquisa de clientes pelo nome com filtro
-     */
+   
     public ArrayList<ClientesBean> pesquisarCliente(String nomecli) {
         ArrayList<ClientesBean> clienteList = new ArrayList<>();
         String sql = "SELECT * FROM tbclientes where nomecli=?;";       
@@ -87,6 +84,33 @@ public class ClienteDAO {
         return clienteList;
     }
 
+    public ArrayList<ClientesBean> pesquisarCliente(String arg, String valor) {
+        ArrayList<ClientesBean> clienteList = new ArrayList<>();
+        String sql = "SELECT * FROM tbclientes where " + arg +"=?;";       
+        try {
+            conexao = ConexaoDb.getConection();
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, valor);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                ClientesBean cliente = new ClientesBean();
+                cliente.setIdcli(rs.getString("idcli"));
+                cliente.setNomecli(rs.getString("nomecli"));
+                cliente.setContatocli(rs.getString("contatocli"));
+                cliente.setEndcli(rs.getString("endcli"));
+                cliente.setTelcli(rs.getString("telcli"));
+                cliente.setEmailcli(rs.getString("emailcli"));
+                cliente.setCidadecli(rs.getString("cidadecli"));
+                cliente.setEstadocli(rs.getString("estadocli"));
+                clienteList.add(cliente);
+            }
+            conexao.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return clienteList;
+    }
+    
     public ArrayList<ClientesBean> pesquisarCliente() {
         ArrayList<ClientesBean> clienteList = new ArrayList<>();
         String sql = "select * from tbclientes";

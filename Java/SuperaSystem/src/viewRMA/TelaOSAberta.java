@@ -16,6 +16,7 @@ import DAO.UsuariosDAO;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -132,7 +133,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             }
         }
         if (conta == 0) {
-            ordemDeServico = "Nenhuma ordem de serviço aberta para este cliente.";
+            ordemDeServico = "zero";
         }
         return ordemDeServico;
     }
@@ -598,7 +599,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             ArrayList<ClientesBean> cliente = clientesDao.pesquisarCliente(txtCliNome.getText());
             if (!cliente.isEmpty()) {
                 getClientes(cliente);
+                if(!getOS(cliente.get(0).getIdcli()).equals("zero")){
                 JOptionPane.showMessageDialog(null, "Encontradas as ordems de serviço: \n" + getOS(cliente.get(0).getIdcli()));
+                }
                 conta = 0;
             } else {
                 limpar();
@@ -646,7 +649,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCliNomeActionPerformed
 
     private void btnOsImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsImprimirActionPerformed
-        // imprimirOs();
+        JOptionPane.showMessageDialog(null, " Ainda em construção...", "Não implementado ", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource("/imagem/robo.png")));
     }//GEN-LAST:event_btnOsImprimirActionPerformed
 
     private void cbTecnicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTecnicoActionPerformed

@@ -1,5 +1,6 @@
 package viewRMA;
 
+import Acessorios.Arquivos;
 import Bean.ClientesBean;
 import Bean.EquipOSBean;
 import Bean.ModelosBean;
@@ -7,6 +8,7 @@ import DAO.ClienteDAO;
 import DAO.EquipOsDAO;
 import DAO.ModelosDAO;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,6 +32,7 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     public TelaInvetarioEquip() {
         initComponents();
         setModelo();
+        setarTabela();
 
     }
 
@@ -50,7 +53,7 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
         txtPat.setText(tbProd.getModel().getValueAt(setar, 1).toString());
         for (int i = 0; i < cbModel.getItemCount(); i++) {
             if (cbModel.getItemAt(i).equals(tbProd.getModel().getValueAt(setar, 3).toString())) {
-                cbModel.setSelectedIndex(i);                
+                cbModel.setSelectedIndex(i);
             }
         }
 
@@ -69,8 +72,22 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
                 equipList.get(i).getModel(),});
         }
     }
-    
-        private void setarTabelaBySerie(String nserie) {
+
+    private void setarTabela() {
+        DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
+        model.setRowCount(0);
+        EquipOsDAO equipOs = new EquipOsDAO();
+        ArrayList<EquipOSBean> equipList = equipOs.pesquisarProduto();
+        for (int i = 0; i < equipList.size(); i++) {
+            model.addRow(new Object[]{
+                equipList.get(i).getidOrdServ(), // ordensServico.get(i).
+                equipList.get(i).getPatEquip(),
+                equipList.get(i).getNserie(),
+                equipList.get(i).getModel(),});
+        }
+    }
+
+    private void setarTabelaBySerie(String nserie) {
         DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
         model.setRowCount(0);
         EquipOsDAO equipOs = new EquipOsDAO();
@@ -89,6 +106,8 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
         txtSerie.setText("");
         txtPat.setText("");
         cbModel.setSelectedIndex(0);
+        DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
+        model.setRowCount(0);
     }
 
     private void getDados() {
@@ -97,10 +116,11 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
         model = cbModel.getSelectedItem().toString();
         patEquip = txtPat.getText();
         idcli = txtIdCli.getText();
-         if(boxGarantia.isSelected()){
-            garantia=true;
-        }else{
-            garantia=false;
+        
+        if (boxGarantia.isSelected()) {
+            garantia = true;
+        } else {
+            garantia = false;
         }
 
     }
@@ -414,14 +434,14 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     private void txtIdCliKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdCliKeyReleased
         conta++;
         if (conta >= 3) {
-            ArrayList<ClientesBean> clienteOs = clientes.pesquisarCliente(txtIdCli.getText());
+            ArrayList<ClientesBean> clienteOs = clientes.pesquisarCliente("idcli",txtIdCli.getText());
             if (!clienteOs.isEmpty()) {
-                txtCliNome.setText(clienteOs.get(0).getIdcli());
-                setarTabela(txtIdCli.getText());
+                txtCliNome.setText(clienteOs.get(0).getNomecli());
+                setarTabela(clienteOs.get(0).getIdcli());
                 conta = 0;
-
             } else {
                 limpar();
+                setarTabela();
             }
         }
 
@@ -461,9 +481,9 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
                 txtIdCli.setText(clienteOs.get(0).getIdcli());
                 setarTabela(clienteOs.get(0).getIdcli());
                 conta = 0;
-
             } else {
                 limpar();
+                setarTabela();
             }
         }
     }//GEN-LAST:event_txtCliNomeKeyReleased
@@ -473,7 +493,8 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tbProdKeyReleased
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-        // imprimirOs();
+       JOptionPane.showMessageDialog(null, " Ainda em construção...", "Não implementado ", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource("/imagem/robo.png")));
+        
     }//GEN-LAST:event_btnImprimirActionPerformed
 
     private void txtLocalizaSerieKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLocalizaSerieKeyReleased
@@ -482,12 +503,11 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
             EquipOsDAO equipOs = new EquipOsDAO();
             ArrayList<EquipOSBean> equip = equipOs.pesquisarProdutoBy("nserie", txtLocalizaSerie.getText());
             if (!equip.isEmpty()) {
-                setarTabelaBySerie(equip.get(0).getNserie());
+                setarTabelaBySerie(equip.get(0).getNserie());               
                 conta = 0;
-
             } else {
-                //JOptionPane.showMessageDialog(null, "Número de Série não encontrado.");
                 limpar();
+                setarTabela();
             }
         }
     }//GEN-LAST:event_txtLocalizaSerieKeyReleased
