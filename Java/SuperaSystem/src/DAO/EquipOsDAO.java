@@ -45,38 +45,12 @@ public class EquipOsDAO {
                 conexao.close();
             }
         } catch (HeadlessException | SQLException e) {
-            JOptionPane.showMessageDialog(null, "Adicionando equipamentos:" +e);
+            JOptionPane.showMessageDialog(null, "Adicionando equipamentos:" + e);
         }
         return sucesso;
     }
 
-    public ArrayList<EquipOSBean> pesquisarProduto(String idcli) {
-        String sql = "select * from tbEquip where idcli=?";
-        ArrayList<EquipOSBean> equipamentoOS = new ArrayList<>();
-        try {
-            conexao = ConexaoDb.getConection();
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, idcli);
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                EquipOSBean equipOS = new EquipOSBean();
-                equipOS.setNserie(rs.getString("nserie"));
-                equipOS.setIdOrdServ(rs.getString("idOrdServ"));
-                equipOS.setModel(rs.getString("model"));
-                equipOS.setPatEquip(rs.getString("patEquip"));
-                equipOS.setIdCli(rs.getString("idcli"));
-                equipOS.setGarantia(rs.getBoolean("garantia"));
-                equipOS.setAnalizado(rs.getBoolean("analizado"));
-                equipamentoOS.add(equipOS);
-            }
-            conexao.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-        return equipamentoOS;
-    }
-
-       public ArrayList<EquipOSBean> pesquisarProdutoBy(String arg, String valor) {
+    public ArrayList<EquipOSBean> pesquisarProdutoBy(String arg, String valor) {
         String sql = "select * from tbEquip where " + arg + "=? order by nserie;";
         ArrayList<EquipOSBean> equipamentoOS = new ArrayList<>();
         try {
@@ -97,11 +71,11 @@ public class EquipOsDAO {
             }
             conexao.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Pesquisando equipamentos: "+e);
+            JOptionPane.showMessageDialog(null, "Pesquisando equipamentos: " + e);
         }
         return equipamentoOS;
     }
-    
+
     public ArrayList<EquipOSBean> pesquisarProduto() {
         String sql = "select * from tbEquip";
         ArrayList<EquipOSBean> equipamentoOS = new ArrayList<>();
@@ -127,32 +101,49 @@ public class EquipOsDAO {
         return equipamentoOS;
     }
 
-    public boolean editarProduto(String nserie, String idOrdServ, String model, String patEquip, String idcli, Boolean garantia, Boolean analizado) {
+    public boolean editarProduto(String nserie, String model, String patEquip, Boolean garantia) {
         boolean sucesso = false;
         int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            String sql = "update tbEquip set idOrdServ=?, model=?,  patEquip=?, idcli=?, garantia=?, analizado=? where nserie=?";
+            String sql = "update tbEquip set  model=?,  patEquip=?, garantia=? where nserie=?";
             try {
                 conexao = ConexaoDb.getConection();
                 pst = conexao.prepareStatement(sql);
-                pst.setString(1, idOrdServ);
-                pst.setString(2, model);
-                pst.setString(3, patEquip);
-                pst.setString(4, idcli);
-                pst.setBoolean(5, garantia);
-                pst.setBoolean(6, analizado);
-                pst.setString(7, nserie);
+                pst.setString(1, model);
+                pst.setString(2, patEquip);
+                pst.setBoolean(3, garantia);
+                pst.setString(4, nserie);
                 int adicionado = pst.executeUpdate();
                 if (adicionado > 0) {
                     sucesso = true;
                     conexao.close();
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Alteração não realizada.");
                 }
             } catch (HeadlessException | SQLException e) {
                 JOptionPane.showMessageDialog(null, e);
             }
 
+        }
+        return sucesso;
+    }
+
+    public boolean finalizarAnalise(String nserie) {
+        boolean sucesso = false;
+        String sql = "update tbEquip set  analizado=true where nserie=?";
+        try {
+            conexao = ConexaoDb.getConection();
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, nserie);
+            int adicionado = pst.executeUpdate();
+            if (adicionado > 0) {
+                sucesso = true;
+                conexao.close();
+            } else {
+                JOptionPane.showMessageDialog(null, "Alteração não realizada.");
+            }
+        } catch (HeadlessException | SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
         }
         return sucesso;
     }
@@ -170,7 +161,7 @@ public class EquipOsDAO {
                 if (apagado > 0) {
                     sucesso = true;
                     conexao.close();
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Exclusão não realizada.Equipamento não encontrado.");
                 }
             } catch (SQLIntegrityConstraintViolationException e1) {

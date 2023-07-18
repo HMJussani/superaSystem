@@ -74,8 +74,9 @@ foreign key (idOrdServ) references tbOrdServ(idOrdServ),
 foreign key (idcli) references tbclientes(idcli)
 );
 
-#alter table tbEquip add analizado bool default false;
-update tbEquip set analizado = true;
+alter table tbEquip add analizado bool default false;
+
+update tbEquip set analizado = false;
 select * from tbEquip;
 
 create table tbdefsol(

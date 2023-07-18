@@ -59,14 +59,18 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
 
     }
 
-    private void setarTabela(String idCli) {
+    private void setarTabela(String arg, String valor) {
         DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
         model.setRowCount(0);
         String estado = "Analizando";
         EquipOsDAO equipOs = new EquipOsDAO();
-        ArrayList<EquipOSBean> equipList = equipOs.pesquisarProduto(idCli);
+        ArrayList<EquipOSBean> equipList = equipOs.pesquisarProdutoBy(arg, valor);
         for (int i = 0; i < equipList.size(); i++) {
-            if(equipList.get(i).getAnalizado())estado = "Resolvido";
+           if(equipList.get(i).getAnalizado()){
+                estado = "Resolvido";
+            }else{
+                estado = "Analizando";
+            }
             model.addRow(new Object[]{
                 equipList.get(i).getidOrdServ(), 
                 equipList.get(i).getPatEquip(),
@@ -83,7 +87,11 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
         EquipOsDAO equipOs = new EquipOsDAO();
         ArrayList<EquipOSBean> equipList = equipOs.pesquisarProduto();
         for (int i = 0; i < equipList.size(); i++) {
-             if(equipList.get(i).getAnalizado())estado = "Resolvido";
+              if(equipList.get(i).getAnalizado()){
+                estado = "Resolvido";
+            }else{
+                estado = "Analizando";
+            }
             model.addRow(new Object[]{
                 equipList.get(i).getidOrdServ(), 
                 equipList.get(i).getPatEquip(),
@@ -92,26 +100,6 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
                 estado});
         }
     }
-
-    private void setarTabelaBySerie(String nserie) {
-        DefaultTableModel model = (DefaultTableModel) tbProd.getModel();
-        model.setRowCount(0);
-        String estado = "Analizando";
-        EquipOsDAO equipOs = new EquipOsDAO();
-        ArrayList<EquipOSBean> equipList = equipOs.pesquisarProdutoBy("nserie", nserie);
-        for (int i = 0; i < equipList.size(); i++) {
-            if(equipList.get(i).getAnalizado())estado = "Resolvido";
-            model.addRow(new Object[]{
-                equipList.get(i).getidOrdServ(), 
-                equipList.get(i).getPatEquip(),
-                equipList.get(i).getNserie(),
-                equipList.get(i).getModel(),
-                estado
-                
-            });
-        }
-    }
-
     private void limpar() {
        // txtOrdemServ.setText("");
        // txtSerie.setText("");
@@ -301,6 +289,11 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
 
         jLabel14.setText("Patrimônio");
 
+        txtLocalizaPat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtLocalizaPatActionPerformed(evt);
+            }
+        });
         txtLocalizaPat.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtLocalizaPatKeyReleased(evt);
@@ -387,10 +380,13 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     private void txtIdCliKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdCliKeyReleased
         conta++;
         if (conta >= 3) {
+            txtCliNome.setText("");
+            txtLocalizaPat.setText("");
+            txtLocalizaSerie.setText("");
             ArrayList<ClientesBean> clienteOs = clientes.pesquisarCliente("idcli",txtIdCli.getText());
             if (!clienteOs.isEmpty()) {
                 txtCliNome.setText(clienteOs.get(0).getNomecli());
-                setarTabela(clienteOs.get(0).getIdcli());
+                setarTabela("idCli",clienteOs.get(0).getIdcli());
                 conta = 0;
             } else {
                 limpar();
@@ -415,10 +411,13 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     private void txtCliNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCliNomeKeyReleased
         conta++;
         if (conta >= 3) {
+            txtLocalizaPat.setText("");
+            txtLocalizaSerie.setText("");
+            txtIdCli.setText("");
             ArrayList<ClientesBean> clienteOs = clientes.pesquisarCliente(txtCliNome.getText());
             if (!clienteOs.isEmpty()) {
                 txtIdCli.setText(clienteOs.get(0).getIdcli());
-                setarTabela(clienteOs.get(0).getIdcli());
+                setarTabela("idCli",clienteOs.get(0).getIdcli());
                 conta = 0;
             } else {
                 limpar();
@@ -439,10 +438,14 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     private void txtLocalizaSerieKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLocalizaSerieKeyReleased
         conta++;
         if (conta >= 3) {
+            txtLocalizaPat.setText("");
+            txtIdCli.setText("");
+            txtCliNome.setText("");
             EquipOsDAO equipOs = new EquipOsDAO();
             ArrayList<EquipOSBean> equip = equipOs.pesquisarProdutoBy("nserie", txtLocalizaSerie.getText());
             if (!equip.isEmpty()) {
-                setarTabelaBySerie(equip.get(0).getNserie());               
+                setarTabela("nserie", txtLocalizaSerie.getText()); 
+                
                 conta = 0;
             } else {
                 limpar();
@@ -452,8 +455,26 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtLocalizaSerieKeyReleased
 
     private void txtLocalizaPatKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLocalizaPatKeyReleased
-        // TODO add your handling code here:
+        conta++;
+        if (conta >= 3) {
+            txtLocalizaSerie.setText("");
+            txtIdCli.setText("");
+            txtCliNome.setText("");
+            EquipOsDAO equipOs = new EquipOsDAO();
+            ArrayList<EquipOSBean> equip = equipOs.pesquisarProdutoBy("patEquip", txtLocalizaPat.getText());
+            if (!equip.isEmpty()) {                
+                setarTabela("patEquip", txtLocalizaPat.getText());                 
+                conta = 0;
+            } else {
+                limpar();
+                setarTabela();
+            }
+        }
     }//GEN-LAST:event_txtLocalizaPatKeyReleased
+
+    private void txtLocalizaPatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLocalizaPatActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtLocalizaPatActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

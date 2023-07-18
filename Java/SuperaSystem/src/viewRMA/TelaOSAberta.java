@@ -32,7 +32,6 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private String tecnico = null;
     private String valor = null;
     private String solucao = null;
-    ClienteDAO clientesDao = new ClienteDAO();
     Arquivos arquivo = new Arquivos();
     private int conta = 0;
 
@@ -93,10 +92,17 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         EquipOsDAO equipOs = new EquipOsDAO();
         ArrayList<EquipOSBean> equipList = equipOs.pesquisarProdutoBy("idOrdServ", idCli);
         for (int i = 0; i < equipList.size(); i++) {
-            if (equipList.get(i).getGarantia())garantia = "Sim";            
-            if(equipList.get(i).getAnalizado())estado = "Resolvido";
+            if (equipList.get(i).getGarantia()) {
+                garantia = "Sim";
+            } else {
+                garantia = "Não";
+            }
+            if (equipList.get(i).getAnalizado()) {
+                estado = "Resolvido";
+            } else {
+                estado = "Analizando";
+            }
             model.addRow(new Object[]{
-                equipList.get(i).getidOrdServ(),
                 equipList.get(i).getPatEquip(),
                 equipList.get(i).getNserie(),
                 equipList.get(i).getModel(),
@@ -118,6 +124,16 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
     }
 
+    private void getClientes(String idcli) {
+        ClienteDAO clientesDao = new ClienteDAO();
+        ArrayList<ClientesBean> clientesBean = clientesDao.pesquisarCliente("idcli", idcli);
+        txtContatoCli.setText(clientesBean.get(0).getContatocli());
+        txtEmailCli.setText(clientesBean.get(0).getEmailcli());
+        txtCliNome.setText(clientesBean.get(0).getNomecli());
+        txtIDcli.setText(clientesBean.get(0).getIdcli());
+
+    }
+
     private String getOS(String idcli) {
         String ordemDeServico = "";
         OrdServDAO ordemSErv = new OrdServDAO();
@@ -125,9 +141,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         int conta = 0;
         for (int i = 0; i < os.size(); i++) {
             if (os.get(i).getAberta()) {
-            ordemDeServico += os.get(i).getIdOrdServ();
-            ordemDeServico += "\n";           
-            conta++;
+                ordemDeServico += os.get(i).getIdOrdServ();
+                ordemDeServico += "\n";
+                conta++;
             }
         }
         if (conta == 0) {
@@ -144,7 +160,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
     private void setarOs(int linha) {
         DefSolDAO defSolDAO = new DefSolDAO();
-        ArrayList<DefSolBean> defSolBean = defSolDAO.listaDefeitos(tbEquip.getValueAt(linha, 2).toString());
+        ArrayList<DefSolBean> defSolBean = defSolDAO.listaDefeitos(tbEquip.getValueAt(linha, 1).toString());
         if (!defSolBean.isEmpty()) {
             txtDefeito.setText(defSolBean.get(0).getDefeito());
             txtServico.setText(defSolBean.get(0).getSolucao());
@@ -152,26 +168,13 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             txtDefeito.setText("");
             txtServico.setText("");
         }
-        
-        if(tbEquip.getValueAt(linha, 5).equals("Resolvido")){
+
+        if (tbEquip.getValueAt(linha, 4).equals("Resolvido")) {
             btnEditarEquip.setEnabled(false);
-            cbModel.setEnabled(false);
-            txtPat.setEnabled(false);
-            txtSerialNumber.setEnabled(false);
-            txtDefeito.setEnabled(false);
-            txtServico.setEnabled(false);           
-            boxGarantia.setEnabled(false);
+        } else {
+            btnEditarEquip.setEnabled(true);
         }
-        else{
-           btnEditarEquip.setEnabled(true);
-            cbModel.setEnabled(true);
-            txtPat.setEnabled(true);
-            txtSerialNumber.setEnabled(true);
-            txtDefeito.setEnabled(true);
-            txtServico.setEnabled(true);            
-            boxGarantia.setEnabled(true);
-        }
-        
+
     }
 
     private void limpar() {
@@ -183,6 +186,17 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         txtServico.setText("");
         cbTecnico.setSelectedIndex(0);
         txtOsValor.setText(null);
+    }
+
+    private void setarCampos(int linha) {
+        txtSerialNumber.setText(tbEquip.getValueAt(linha, 1).toString());
+        txtPat.setText(tbEquip.getValueAt(linha, 0).toString());
+        cbModel.setSelectedItem(tbEquip.getValueAt(linha, 2).toString());
+        if (tbEquip.getValueAt(linha, 2).toString().equals("Sim")) {
+            boxGarantia.setSelected(true);
+        } else {
+            boxGarantia.setSelected(false);
+        }
 
     }
 
@@ -338,20 +352,20 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
         tbEquip.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Ordem de Serviço", "Patrimônio", "Número de Série", "Modelo", "Garantia", "Estado"
+                "Patrimônio", "Número de Série", "Modelo", "Garantia", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -378,13 +392,11 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             tbEquip.getColumnModel().getColumn(1).setResizable(false);
             tbEquip.getColumnModel().getColumn(1).setPreferredWidth(5);
             tbEquip.getColumnModel().getColumn(2).setResizable(false);
-            tbEquip.getColumnModel().getColumn(2).setPreferredWidth(5);
+            tbEquip.getColumnModel().getColumn(2).setPreferredWidth(50);
             tbEquip.getColumnModel().getColumn(3).setResizable(false);
-            tbEquip.getColumnModel().getColumn(3).setPreferredWidth(50);
+            tbEquip.getColumnModel().getColumn(3).setPreferredWidth(5);
             tbEquip.getColumnModel().getColumn(4).setResizable(false);
             tbEquip.getColumnModel().getColumn(4).setPreferredWidth(5);
-            tbEquip.getColumnModel().getColumn(5).setResizable(false);
-            tbEquip.getColumnModel().getColumn(5).setPreferredWidth(5);
         }
 
         btnAdicionaEquip.setText("Adicionar");
@@ -396,7 +408,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
         boxGarantia.setText("Garantia");
 
-        btnEditarEquip.setText("Editar");
+        btnEditarEquip.setText("Finalizar");
         btnEditarEquip.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarEquipActionPerformed(evt);
@@ -414,7 +426,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbTecnico, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 312, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txtOsValor, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -510,7 +522,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                             .addComponent(jLabel14))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                         .addComponent(txtCliNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(20, 20, 20)
                         .addComponent(txtEmailCli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -593,7 +605,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 796, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
                 .addGap(14, 14, 14))
             .addGroup(layout.createSequentialGroup()
                 .addGap(179, 179, 179)
@@ -625,11 +637,12 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private void txtCliNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCliNomeKeyReleased
         conta++;
         if (conta >= 3) {
+            ClienteDAO clientesDao = new ClienteDAO();
             ArrayList<ClientesBean> cliente = clientesDao.pesquisarCliente(txtCliNome.getText());
             if (!cliente.isEmpty()) {
                 getClientes(cliente);
-                if(!getOS(cliente.get(0).getIdcli()).equals("zero")){
-                JOptionPane.showMessageDialog(null, "Encontradas as ordems de serviço: \n" + getOS(cliente.get(0).getIdcli()));
+                if (!getOS(cliente.get(0).getIdcli()).equals("zero")) {
+                    JOptionPane.showMessageDialog(null, "Encontradas as ordems de serviço: \n" + getOS(cliente.get(0).getIdcli()));
                 }
                 conta = 0;
             } else {
@@ -641,7 +654,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private void btnOsAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAdicionarActionPerformed
         getDados();
         OrdServDAO ordemServico = new OrdServDAO();
-        if (ordemServico.novaOs(idOrdServ, idcli, dataAbertura,tecnico, valor)) {
+        if (ordemServico.novaOs(idOrdServ, idcli, dataAbertura, tecnico, valor)) {
             JOptionPane.showMessageDialog(null, "Ordem de Serviço criada com sucesso");
             btnOsAdicionar.setEnabled(false);
         }
@@ -701,8 +714,12 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private void btnAdicionaEquipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionaEquipActionPerformed
         setTecnico();
         getDados();
-        if(defeito.isEmpty())defeito = "Verificar";
-        if(solucao.isEmpty())solucao = "Verificar";
+        if (defeito.isEmpty()) {
+            defeito = "Verificar";
+        }
+        if (solucao.isEmpty()) {
+            solucao = "Verificar";
+        }
         EquipOsDAO equipOs = new EquipOsDAO();
         DefSolDAO defSol = new DefSolDAO();
         if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli, garantia) && defSol.novoDefeito(nserie, defeito, solucao)) {
@@ -713,6 +730,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
     private void tbEquipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbEquipMouseClicked
         setarOs(tbEquip.getSelectedRow());
+        setarCampos(tbEquip.getSelectedRow());
     }//GEN-LAST:event_tbEquipMouseClicked
 
     private void txtNumOSKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumOSKeyReleased
@@ -721,10 +739,10 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             OrdServDAO ordemServico = new OrdServDAO();
             ArrayList<OrdServBean> ordenList = ordemServico.pesquisarOsbyIdOs(txtNumOS.getText());
             if (!ordenList.isEmpty()) {
-                txtIDcli.setText(ordenList.get(0).getIdcli());
                 setarTabela(ordenList.get(0).getIdOrdServ());
                 cbTecnico.setSelectedItem(ordenList.get(0).getTecnico());
                 txtOsValor.setText(ordenList.get(0).getValor());
+                getClientes(ordenList.get(0).getIdcli());
                 btnOsAdicionar.setEnabled(false);
                 conta = 0;
             } else {
@@ -736,10 +754,24 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
     private void tbEquipKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbEquipKeyReleased
         setarOs(tbEquip.getSelectedRow());
+        setarCampos(tbEquip.getSelectedRow());
     }//GEN-LAST:event_tbEquipKeyReleased
 
     private void btnEditarEquipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarEquipActionPerformed
-        // TODO add your handling code here:
+        getDados();
+        int confirma = JOptionPane.showConfirmDialog(null, "Finalizar a análise deste equipamento?", "Finalizar Análise", JOptionPane.YES_NO_OPTION);
+        if (confirma == JOptionPane.YES_OPTION) {
+            EquipOsDAO equipDAO = new EquipOsDAO();
+            if (equipDAO.finalizarAnalise(nserie)) {
+                JOptionPane.showMessageDialog(null, "Análise concluída com sucesso");
+                setarTabela(idOrdServ);
+            } else {
+                if (equipDAO.editarProduto(nserie, model, patEquip, garantia)) {
+                    JOptionPane.showMessageDialog(null, "Análise concluída com sucesso");
+                    setarTabela(idOrdServ);
+                }
+            }
+        }
     }//GEN-LAST:event_btnEditarEquipActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
