@@ -60,7 +60,7 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
     private void setaTabelaOsByCli(String idcli, String nomeCli) {
         DefaultTableModel model = (DefaultTableModel) tbOsCli.getModel();
         model.setRowCount(0);
-        ArrayList<OrdServBean> os = ordemSErv.pesquisarOs(idcli);
+        ArrayList<OrdServBean> os = ordemSErv.pesquisarOsBy("idcli",idcli);
         String aberta = "Aberta";
         for (int i = 0; i < os.size(); i++) {
             if (!os.get(i).getAberta()) {
@@ -117,7 +117,7 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
     private String getOS(String idcli) {
         String ordemDeServico = "";
         OrdServDAO ordemSErv = new OrdServDAO();
-        ArrayList<OrdServBean> os = ordemSErv.pesquisarOs(idcli);
+        ArrayList<OrdServBean> os = ordemSErv.pesquisarOsBy("idcli",idcli);
         int conta = 0;
         for (int i = 0; i < os.size(); i++) {
             if (os.get(i).getAberta()) {

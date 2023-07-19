@@ -5,14 +5,13 @@ import Acessorios.CriaOsPdf;
 import viewRMA.TelaOSFechada;
 import viewProd.TelaModelos;
 import viewRMA.TelaInvetarioEquip;
-import conectaBancoDados.ConexaoDb;
 import java.text.DateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import java.sql.*;
-import javax.management.JMRuntimeException;
 import javax.swing.ImageIcon;
 import viewRMA.TelaArquivos;
+import viewRMA.TelaInvetarioOs;
 import viewRMA.TelaOSAberta;
 
 /**
@@ -308,24 +307,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menRelCliActionPerformed
 
     private void menRelSerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menRelSerActionPerformed
-        String[] itens = {"Todos", "Abertas", "Fechadas"};
-        String opcao = (String) JOptionPane.showInputDialog(null, "Oque quer imprimir?", "Ordens de Serviço",
-                JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
-        CriaOsPdf os = new CriaOsPdf();
-        Arquivos arquivos = new Arquivos();
-        switch (opcao) {
-            case "Todos":
-                String arquivo = "relatorio_OS_" + arquivos.setData();
-                String path = "";
-                os.relatorioOs(arquivo, path, opcao);
-                break;
-            case "Abertas":
-                JOptionPane.showMessageDialog(null, " Ainda em construção...", "Não implementado ", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource("/imagem/robo.png")));
-                break;
-            case "Fechadas":
-                JOptionPane.showMessageDialog(null, " Ainda em construção...", "Não implementado ", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource("/imagem/robo.png")));
-                break;
-        }
+       TelaInvetarioOs invetarioOs = new TelaInvetarioOs();
+       invetarioOs.setVisible(true);
+       desktop.add(invetarioOs);
     }//GEN-LAST:event_menRelSerActionPerformed
 
     private void menSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menSairMouseClicked

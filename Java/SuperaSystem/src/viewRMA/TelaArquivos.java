@@ -1,15 +1,12 @@
 package viewRMA;
 
 import Acessorios.Arquivos;
+import Acessorios.CriarTxt;
 import Bean.EquipOSBean;
 import Bean.OrdServBean;
 import DAO.EquipOsDAO;
 import DAO.OrdServDAO;
-import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,13 +19,10 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
     private int conta = 0;
     Arquivos arquivos = new Arquivos();
 
-
     public TelaArquivos() {
         initComponents();
         txtLocalArquivo.setText(System.getProperty("user.home") + "\\Documents\\");
     }
-
-    
 
     private String getOrdSErv(String ordSErv) {
         String os = "";
@@ -52,8 +46,6 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
         return equips;
     }
 
-   
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -72,6 +64,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
         btnCriaDir = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         txtArqFormatado = new javax.swing.JTextField();
+        btnTxtSeven = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -130,11 +123,18 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
             }
         });
 
+        btnTxtSeven.setText("TXT Seven");
+        btnTxtSeven.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTxtSevenActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -144,13 +144,16 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtLocalArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtOrdServ, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtArqFormatado, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnLocalizar)
-                    .addComponent(btnCriaDir))
+                    .addComponent(btnTxtSeven)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtLocalArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtOrdServ, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtArqFormatado, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnLocalizar)
+                            .addComponent(btnCriaDir))))
                 .addGap(304, 304, 304))
         );
         jPanel1Layout.setVerticalGroup(
@@ -161,16 +164,18 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(txtLocalArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLocalizar))
-                .addGap(18, 18, 18)
+                .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtOrdServ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtArqFormatado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCriaDir))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
+                .addComponent(btnTxtSeven)
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -187,7 +192,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(454, Short.MAX_VALUE))
+                .addContainerGap(374, Short.MAX_VALUE))
         );
 
         setBounds(0, 0, 822, 695);
@@ -204,17 +209,22 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
     private void btnCriaDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriaDirActionPerformed
         String dir = txtLocalArquivo.getText() + txtArqFormatado.getText();
         int nDir = getEquip(txtOrdServ.getText()).size();
+        CriarTxt txtSeven = new CriarTxt();
         if (!dir.isEmpty()) {
             if (nDir > 1) {
                 JOptionPane.showMessageDialog(null, "Serão criados " + nDir + " sub diretórios.");
                 if (arquivos.criaDir(dir)) {
                     for (int i = 0; i < nDir; i++) {
                         arquivos.criaDir(dir + "\\" + getEquip(txtOrdServ.getText()).get(i));
+                    
                     }
                     JOptionPane.showMessageDialog(null, "Diretórios criados com sucesso.");
                 }
             } else {
                 if (arquivos.criaDir(dir)) {
+                    
+                    txtSeven.criarTxt(dir, getEquip(txtOrdServ.getText()).toString());
+
                     JOptionPane.showMessageDialog(null, "Diretório criado com sucesso.");
                 }
             }
@@ -241,10 +251,18 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtArqFormatadoKeyReleased
 
+    private void btnTxtSevenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTxtSevenActionPerformed
+
+        String path = txtLocalArquivo.getText() + txtArqFormatado.getText();
+        CriarTxt txtSeven = new CriarTxt();
+        txtSeven.criarTxt(path, "teste");
+    }//GEN-LAST:event_btnTxtSevenActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCriaDir;
     private javax.swing.JButton btnLocalizar;
+    private javax.swing.JButton btnTxtSeven;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

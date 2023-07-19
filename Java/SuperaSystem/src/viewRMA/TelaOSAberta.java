@@ -40,7 +40,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         txtDataAbertura.setText(arquivo.setData());
         setTecnico();
         setModelo();
-        btnOsAdicionar.setEnabled(false);
+        //btnOsAdicionar.setEnabled(false);
     }
 
     private void setTecnico() {
@@ -137,7 +137,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private String getOS(String idcli) {
         String ordemDeServico = "";
         OrdServDAO ordemSErv = new OrdServDAO();
-        ArrayList<OrdServBean> os = ordemSErv.pesquisarOs(idcli);
+        ArrayList<OrdServBean> os = ordemSErv.pesquisarOsBy("idcli",idcli);
         int conta = 0;
         for (int i = 0; i < os.size(); i++) {
             if (os.get(i).getAberta()) {
@@ -285,6 +285,12 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         txtDataAbertura.setEditable(false);
 
         jLabel11.setText("Número OS");
+
+        txtIDcli.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIDcliKeyReleased(evt);
+            }
+        });
 
         jLabel4.setText("Cód. Cliente");
 
@@ -522,7 +528,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                             .addComponent(jLabel14))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                         .addComponent(txtCliNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(20, 20, 20)
                         .addComponent(txtEmailCli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -605,7 +611,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 796, Short.MAX_VALUE)
                 .addGap(14, 14, 14))
             .addGroup(layout.createSequentialGroup()
                 .addGap(179, 179, 179)
@@ -666,7 +672,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         getDados();
         DefSolDAO defeitos = new DefSolDAO();
         int linha = tbEquip.getSelectedRow();
-        String serial = tbEquip.getModel().getValueAt(linha, 2).toString();
+        String serial = tbEquip.getModel().getValueAt(linha, 1).toString();
         if (defeitos.editaDefeito(serial, defeito, solucao)) {
             JOptionPane.showMessageDialog(null, "Ordem se Serviço alterada com sucesso");
             //limpar();
@@ -767,12 +773,29 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 setarTabela(idOrdServ);
             } else {
                 if (equipDAO.editarProduto(nserie, model, patEquip, garantia)) {
-                    JOptionPane.showMessageDialog(null, "Análise concluída com sucesso");
+                    JOptionPane.showMessageDialog(null, "Alterações salvas com sucesso");
                     setarTabela(idOrdServ);
                 }
             }
         }
     }//GEN-LAST:event_btnEditarEquipActionPerformed
+
+    private void txtIDcliKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIDcliKeyReleased
+         conta++;
+        if (conta >= 3) {
+            ClienteDAO clientesDao = new ClienteDAO();
+            ArrayList<ClientesBean> cliente = clientesDao.pesquisarCliente("idcli",txtIDcli.getText() );
+            if (!cliente.isEmpty()) {
+                getClientes(cliente);
+                if (!getOS(cliente.get(0).getIdcli()).equals("zero")) {
+                    JOptionPane.showMessageDialog(null, "Encontradas as ordems de serviço: \n" + getOS(cliente.get(0).getIdcli()));
+                }
+                conta = 0;
+            } else {
+                limpar();
+            }
+        }
+    }//GEN-LAST:event_txtIDcliKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox boxGarantia;

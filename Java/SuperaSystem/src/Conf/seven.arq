@@ -1,0 +1,40 @@
+   
+1.DESCRIÇÕES DAS PEÇAS INTERNAS
+- PLACA MÃE: PCWare IPX1800E2
+- PROCESSADOR: Intel Celeron J1800
+- MEMÓRIA: Teikon 2GB DDR3L SO-DIMM
+- PICO: IOASPOW ADD-DIP ver:1.2 84W
+- ARMAZENAMENTO: Samsung SSD SM841N Sata 2.5" 128GB
+- S.O: WINDOWS 7 PROFISSIONAL OEM - original de fabrica
+- EXPANSÕES: 2x Serial, 1x PCIe TXIC 1xRJ45 (DW-RTL8111-4 VER.B)
+
+2.TESTE
+- BURN IN TESTE: não, placa mãe danificada.
+- CARREGAMENTO S.O: não.
+- FONTE ALIMENTAÇÂO: Fonte adaptador OK.
+- HD/SSD: saúde 48%, tempo ligado desconhecido TBW 30.88Gb.
+- MEMORIA RAM: testada em outra placa mãe, OK.
+- REDE: testada em outra placa mãe, OK.
+ 
+3.ORÇAMENTO
+- PLACA MÃE: sim *devido às caracteristicas do projeto somente cotar IPX1800E2 ou IPX1800G2
+- PROCESSADOR: onboard
+- MEMÓRIA: não
+- PICO: Nao
+- ARMAZENAMENTO: Sim
+- S.O: Regravar
+- EXPANSÕES: Não
+- CABO SERIAL: Nao
+- CABO PARALELO: Nao
+- KIT GABINETE: Nao
+- KIT PAINEL: Sim
+- MANUTENÇÃO: Sim
+
+Diagnóstico: 
+- A placa mãe não liga. Defeito eletrônico. Substituir placa mãe.
+- Indicador de saúde em 48%, a unidade de armazenamento SSD apresenta setores com lentidão para leitura e gravação de dados. Recomenda-se a substituição preventiva.
+- Led´s do painel não ascendem. Substituir Kit Painel. 
+- Realizada limpeza e testes nos demais componentes de hardware.
+- Todos os demais componentes foram testados e não apresentaram problemas. 
+ ";
+*/
