@@ -54,8 +54,8 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
     private void getDados(String ordServ, String patEquip) {
         EquipOsDAO equipDao = new EquipOsDAO();
         tecnico = getOrdSErv(ordServ);
-        model = equipDao.pesquisarProdutoBy("patEquip", patEquip).get(0).getModel();
-        nserie = equipDao.pesquisarProdutoBy("patEquip", patEquip).get(0).getNserie();
+        model = equipDao.pesquisarProdutoBy("idOrdServ", ordServ).get(0).getModel();
+        nserie = equipDao.pesquisarProdutoBy("idOrdServ", ordServ).get(0).getNserie();
         idOrdServ = ordServ;
         pat = patEquip;
     }

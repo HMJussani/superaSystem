@@ -102,8 +102,13 @@ foreign key (nserie) references tbEquip(nserie)
 
 #insert into tbmodelo(model, mem, mBoard, source, storage, sParalela,sSerial,redeLan, wifi, tipo, processador, gabinete) values("modelo","memoria","placaMae","fonteAlimenta","armazenamento","D25","DB9","lan","wifi","ThinClient", "CPU", "Gabinete");
 
-#update tbdefsol set defeito="teste", solucao="teste2" where nserie="serie1";
-select * from tbdefsol;
+#update tbdefsol set defeito="teste", solucao="teste2" where nserie="30909";
+
+select * from tbEquip where nserie="17763";
+update tbEquip set idOrdServ = "27905" where nserie = "8823";
+
+insert into tbdefsol (nserie, defeito, solucao)values("30909","Defeito","Solucao");
+
 #drop table tbdefsol;
 #describe tbpedido;
 #describe tbusuarios;
