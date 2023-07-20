@@ -1,6 +1,6 @@
 package view;
 
-import Acessorios.Arquivos;
+import Acessorios.Acessorios;
 import Acessorios.CriaOsPdf;
 import viewRMA.TelaOSFechada;
 import viewProd.TelaModelos;

@@ -42,7 +42,7 @@ public class CriaOsPdf {
     private Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
     OrdServDAO ordemServ = new OrdServDAO();
     EquipOsDAO equipDAO = new EquipOsDAO();
-    Arquivos arquivo = new Arquivos();
+    Acessorios arquivo = new Acessorios();
 
     public void criaPdf(String osId, String path) {
         if (path.isEmpty()) {

@@ -1,6 +1,6 @@
 package viewRMA;
 
-import Acessorios.Arquivos;
+import Acessorios.Acessorios;
 import Acessorios.CriaOsPdf;
 import Bean.ClientesBean;
 import Bean.EquipOSBean;
@@ -415,7 +415,7 @@ public class TelaInvetarioOs extends javax.swing.JInternalFrame {
         String opcao = (String) JOptionPane.showInputDialog(null, "Oque quer imprimir?", "Ordens de Serviço",
                 JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
         CriaOsPdf os = new CriaOsPdf();
-        Arquivos arquivos = new Arquivos();
+        Acessorios arquivos = new Acessorios();
         switch (opcao) {
             case "Todos":
                 String arquivo = "relatorio_OS_" + arquivos.setData();

@@ -1,6 +1,6 @@
 package viewRMA;
 
-import Acessorios.Arquivos;
+import Acessorios.Acessorios;
 import Acessorios.CriaOsPdf;
 import Bean.ClientesBean;
 import Bean.DefSolBean;
@@ -426,7 +426,7 @@ public class TelaOSFechada extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCliPesquisarActionPerformed
 
     private void btnOsImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsImprimirActionPerformed
-        Arquivos arquivo = new Arquivos();
+        Acessorios arquivo = new Acessorios();
         if (idOs.isEmpty()) {
             idOs = JOptionPane.showInputDialog("Digite o número da OS");
         }

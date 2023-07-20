@@ -1,6 +1,6 @@
 package viewRMA;
 
-import Acessorios.Arquivos;
+import Acessorios.Acessorios;
 import Acessorios.CriarTxt;
 import Bean.EquipOSBean;
 import Bean.OrdServBean;
@@ -17,7 +17,12 @@ import javax.swing.JOptionPane;
 public class TelaArquivos extends javax.swing.JInternalFrame {
 
     private int conta = 0;
-    Arquivos arquivos = new Arquivos();
+    String idOrdServ = null;
+    String model = null;
+    String pat = null;
+    String nserie = null;
+    String tecnico = null;
+    Acessorios acessorios = new Acessorios();
 
     public TelaArquivos() {
         initComponents();
@@ -25,11 +30,11 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
     }
 
     private String getOrdSErv(String ordSErv) {
-        String os = "";
+        String os = null;
         OrdServDAO ordemServico = new OrdServDAO();
         ArrayList<OrdServBean> osList = ordemServico.pesquisarOsbyIdOs(ordSErv);
         if (!osList.isEmpty()) {
-            os = (osList.get(0).getIdOrdServ());
+            os = osList.get(0).getTecnico();            
         }
         return os;
     }
@@ -44,6 +49,15 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
             }
         }
         return equips;
+    }
+
+    private void getDados(String ordServ, String patEquip) {
+        EquipOsDAO equipDao = new EquipOsDAO();
+        tecnico = getOrdSErv(ordServ);
+        model = equipDao.pesquisarProdutoBy("patEquip", patEquip).get(0).getModel();
+        nserie = equipDao.pesquisarProdutoBy("patEquip", patEquip).get(0).getNserie();
+        idOrdServ = ordServ;
+        pat = patEquip;
     }
 
     /**
@@ -64,6 +78,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
         btnCriaDir = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         txtArqFormatado = new javax.swing.JTextField();
+        btnTxtBurn = new javax.swing.JButton();
         btnTxtSeven = new javax.swing.JButton();
 
         setClosable(true);
@@ -123,6 +138,13 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
             }
         });
 
+        btnTxtBurn.setText("TXT BrurnTest");
+        btnTxtBurn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTxtBurnActionPerformed(evt);
+            }
+        });
+
         btnTxtSeven.setText("TXT Seven");
         btnTxtSeven.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,24 +160,31 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(6, 6, 6))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnTxtSeven)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(6, 6, 6))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtLocalArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtOrdServ, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtArqFormatado, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnLocalizar)
-                            .addComponent(btnCriaDir))))
+                            .addComponent(txtArqFormatado, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnTxtBurn)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnTxtSeven)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnCriaDir)))
+                .addGap(18, 18, 18)
+                .addComponent(btnLocalizar)
                 .addGap(304, 304, 304))
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCriaDir, btnTxtBurn, btnTxtSeven});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -168,14 +197,16 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtOrdServ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
+                .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtArqFormatado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCriaDir))
-                .addGap(20, 20, 20)
-                .addComponent(btnTxtSeven)
-                .addContainerGap(71, Short.MAX_VALUE))
+                    .addComponent(txtArqFormatado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTxtBurn)
+                    .addComponent(btnCriaDir)
+                    .addComponent(btnTxtSeven))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -203,28 +234,23 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void btnLocalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizarActionPerformed
-        txtLocalArquivo.setText(arquivos.getPath());
+        txtLocalArquivo.setText(acessorios.getPath());
     }//GEN-LAST:event_btnLocalizarActionPerformed
 
     private void btnCriaDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriaDirActionPerformed
         String dir = txtLocalArquivo.getText() + txtArqFormatado.getText();
         int nDir = getEquip(txtOrdServ.getText()).size();
-        CriarTxt txtSeven = new CriarTxt();
         if (!dir.isEmpty()) {
             if (nDir > 1) {
                 JOptionPane.showMessageDialog(null, "Serão criados " + nDir + " sub diretórios.");
-                if (arquivos.criaDir(dir)) {
+                if (acessorios.criaDir(dir)) {
                     for (int i = 0; i < nDir; i++) {
-                        arquivos.criaDir(dir + "\\" + getEquip(txtOrdServ.getText()).get(i));
-                    
+                        acessorios.criaDir(dir + "\\" + getEquip(txtOrdServ.getText()).get(i));
                     }
                     JOptionPane.showMessageDialog(null, "Diretórios criados com sucesso.");
                 }
             } else {
-                if (arquivos.criaDir(dir)) {
-                    
-                    txtSeven.criarTxt(dir, getEquip(txtOrdServ.getText()).toString());
-
+                if (acessorios.criaDir(dir)) {
                     JOptionPane.showMessageDialog(null, "Diretório criado com sucesso.");
                 }
             }
@@ -239,10 +265,12 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
             OrdServDAO ordemServico = new OrdServDAO();
             ArrayList<OrdServBean> osList = ordemServico.pesquisarOsbyIdOs(txtOrdServ.getText());
             if (!osList.isEmpty()) {
-                txtArqFormatado.setText(osList.get(0).getIdOrdServ() + " - " + arquivos.setData());
+                txtArqFormatado.setText(osList.get(0).getIdOrdServ() + " - " + acessorios.setData());
                 conta = 0;
+            }else{
+                txtArqFormatado.setText(txtLocalArquivo.getText() + " - " + acessorios.setData());
             }
-
+            
         }
 
     }//GEN-LAST:event_txtOrdServKeyReleased
@@ -251,17 +279,46 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtArqFormatadoKeyReleased
 
-    private void btnTxtSevenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTxtSevenActionPerformed
+    private void btnTxtBurnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTxtBurnActionPerformed
 
-        String path = txtLocalArquivo.getText() + txtArqFormatado.getText();
         CriarTxt txtSeven = new CriarTxt();
-        txtSeven.criarTxt(path, "teste");
+        String dir = txtLocalArquivo.getText() + txtArqFormatado.getText();
+        int nDir = getEquip(txtOrdServ.getText()).size();
+        if (!dir.isEmpty()) {
+            if (nDir > 1) {
+                JOptionPane.showMessageDialog(null, "Serão criados " + nDir + " sub diretórios.");
+                if (acessorios.criaDir(dir)) {
+                    for (int i = 0; i < nDir; i++) {
+                        String path = (dir + "\\" + getEquip(txtOrdServ.getText()).get(i));
+                        getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(i));
+                        txtSeven.criarBurnTxt(path, idOrdServ, model, pat, nserie, tecnico);
+                    }
+                    JOptionPane.showMessageDialog(null, "Arquivos criados com sucesso.");
+                }
+            } else {
+                if (acessorios.criaDir(dir)) {
+                    String path = (dir + "\\" + getEquip(txtOrdServ.getText()).get(0));
+                        getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(0));
+                        txtSeven.criarBurnTxt(path, idOrdServ, model, pat, nserie, tecnico);
+                    JOptionPane.showMessageDialog(null, "Arquivo criado com sucesso.");
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Arquivo não criado.");
+        }
+
+
+    }//GEN-LAST:event_btnTxtBurnActionPerformed
+
+    private void btnTxtSevenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTxtSevenActionPerformed
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnTxtSevenActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCriaDir;
     private javax.swing.JButton btnLocalizar;
+    private javax.swing.JButton btnTxtBurn;
     private javax.swing.JButton btnTxtSeven;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

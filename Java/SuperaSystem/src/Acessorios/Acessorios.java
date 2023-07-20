@@ -14,9 +14,9 @@ import javax.swing.JOptionPane;
  *
  * @author RMA
  */
-public class Arquivos {
+public class Acessorios {
 
-    public boolean criaDir(String dir) {
+    public boolean criaNovoDir(String dir) {
         boolean sucesso = false;
         if (!new File(dir).exists()) {
             new File(dir).mkdir();
@@ -25,6 +25,17 @@ public class Arquivos {
             }
         } else {
             JOptionPane.showMessageDialog(null, "Pasta ou caminho já existe ...");
+        }
+        return sucesso;
+    }
+
+    public boolean criaDir(String dir) {
+        boolean sucesso = false;
+        if (!new File(dir).exists()) {
+            new File(dir).mkdir();
+        }
+        if (new File(dir).exists()) {
+            sucesso = true;
         }
         return sucesso;
     }

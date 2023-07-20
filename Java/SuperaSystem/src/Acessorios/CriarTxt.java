@@ -38,7 +38,34 @@ public class CriarTxt {
                 System.out.println("Erro" + e);
             }
         }
-       
+
+    }
+
+    public Boolean criarBurnTxt(String path, String idOrdServ, String model, String patEquip, String nserie, String tecnico) {
+        Boolean sucesso = false;
+        if (criaDir(path)) {
+            File arq = new File(path + "\\" + patEquip + ".txt");
+            try {
+                if ((arq.exists())) {
+                    int existe = JOptionPane.showConfirmDialog(null, "O Arquivo já existe. Sobrescrever?",
+                            "Arquivo existente", JOptionPane.YES_NO_OPTION);
+                    if (existe == JOptionPane.YES_OPTION) {
+                        arq.delete();
+                        arq.createNewFile();
+                        escreverq(arq, idOrdServ, model, patEquip, nserie, tecnico);
+                        sucesso = true;
+                    }
+                    return false;
+                } else {
+                    arq.createNewFile();
+                    escreverq(arq, idOrdServ, model, patEquip, nserie, tecnico);
+                    sucesso = true;
+                }
+            } catch (IOException e) {
+                System.out.println("Erro ao criar TXT: " + e);
+            }
+        }
+        return sucesso;
     }
 
     private boolean criaDir(String dir) {
@@ -51,15 +78,29 @@ public class CriarTxt {
         }
         return sucesso;
     }
-    
-    private void escreverq(String content, File file) throws IOException {
+
+    private void escreverq(File file, String idOrdServ, String model, String patEquip, String nserie, String tecnico) throws IOException {
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
-        BufferedWriter bw = new BufferedWriter(fw);       
-        bw.write(content);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write("Pedido: " + idOrdServ);
+        bw.write("\n");
+        bw.write("Modelo: " + model);
+        bw.write("\n");
+        bw.write("Patrimonio: " + patEquip);
+        bw.write("\n");
+        bw.write("Serial: " + nserie);
+        bw.write("\n");
+        bw.write("Tecnico: " + tecnico);
+        bw.write("\n");
+        bw.write("Testes padrao de funcionamento referentes ao equipamento : " + patEquip);
         bw.close();
     }
-    
 
+    private void escreverq(String arq, File file) throws IOException {
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(arq);
+        bw.close();
+    }
 
-   
 }

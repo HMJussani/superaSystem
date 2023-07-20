@@ -1,6 +1,6 @@
 package viewRMA;
 
-import Acessorios.Arquivos;
+import Acessorios.Acessorios;
 import Bean.ClientesBean;
 import Bean.DefSolBean;
 import Bean.EquipOSBean;
@@ -32,7 +32,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private String tecnico = null;
     private String valor = null;
     private String solucao = null;
-    Arquivos arquivo = new Arquivos();
+    Acessorios arquivo = new Acessorios();
     private int conta = 0;
 
     public TelaOSAberta() {
