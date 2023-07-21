@@ -51,11 +51,11 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
         return equips;
     }
 
-    private void getDados(String ordServ, String patEquip) {
+    private void getDados(String ordServ, String patEquip, int i) {
         EquipOsDAO equipDao = new EquipOsDAO();
         tecnico = getOrdSErv(ordServ);
-        model = equipDao.pesquisarProdutoBy("idOrdServ", ordServ).get(0).getModel();
-        nserie = equipDao.pesquisarProdutoBy("idOrdServ", ordServ).get(0).getNserie();
+        model = equipDao.pesquisarProdutoBy("idOrdServ", ordServ).get(i).getModel();
+        nserie = equipDao.pesquisarProdutoBy("idOrdServ", ordServ).get(i).getNserie();
         idOrdServ = ordServ;
         pat = patEquip;
     }
@@ -290,7 +290,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
                 if (acessorios.criaDir(dir)) {
                     for (int i = 0; i < nDir; i++) {
                         String path = (dir + "\\" + getEquip(txtOrdServ.getText()).get(i));
-                        getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(i));
+                        getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(i),i);
                         txtSeven.criarBurnTxt(path, idOrdServ, model, pat, nserie, tecnico);
                     }
                     JOptionPane.showMessageDialog(null, "Arquivos criados com sucesso.");
@@ -298,7 +298,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
             } else {
                 if (acessorios.criaDir(dir)) {
                     String path = (dir + "\\" + getEquip(txtOrdServ.getText()).get(0));
-                        getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(0));
+                        getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(0),0);
                         txtSeven.criarBurnTxt(path, idOrdServ, model, pat, nserie, tecnico);
                     JOptionPane.showMessageDialog(null, "Arquivo criado com sucesso.");
                 }

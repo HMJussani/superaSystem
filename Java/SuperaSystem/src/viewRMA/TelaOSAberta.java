@@ -1,6 +1,8 @@
 package viewRMA;
 
 import Acessorios.Acessorios;
+import Acessorios.CriaOsPdf;
+import Acessorios.CriarTxt;
 import Bean.ClientesBean;
 import Bean.DefSolBean;
 import Bean.EquipOSBean;
@@ -79,6 +81,15 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         }
 
     }
+    
+    private void getDados(String ordServ, int i) {
+        EquipOsDAO equipDao = new EquipOsDAO();
+        tecnico = cbTecnico.getSelectedItem().toString();
+        model = equipDao.pesquisarProdutoBy("idOrdServ", ordServ).get(i).getModel();
+        nserie = equipDao.pesquisarProdutoBy("idOrdServ", ordServ).get(i).getNserie();
+        idOrdServ = ordServ;
+        patEquip = equipDao.pesquisarProdutoBy("idOrdServ", ordServ).get(i).getPatEquip();
+    }
 
     private java.sql.Date getData() {
         java.sql.Date data = new java.sql.Date(new java.util.Date().getTime());
@@ -137,7 +148,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private String getOS(String idcli) {
         String ordemDeServico = "";
         OrdServDAO ordemSErv = new OrdServDAO();
-        ArrayList<OrdServBean> os = ordemSErv.pesquisarOsBy("idcli",idcli);
+        ArrayList<OrdServBean> os = ordemSErv.pesquisarOsBy("idcli", idcli);
         int conta = 0;
         for (int i = 0; i < os.size(); i++) {
             if (os.get(i).getAberta()) {
@@ -152,10 +163,59 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         return ordemDeServico;
     }
 
-    private void setarOs(ArrayList<OrdServBean> ordemServico) {
+    private void imprimirOs() {
+        String[] itens = {"Seven", "BurnTest", "PDF"};
+        Object opcao = (String) JOptionPane.showInputDialog(null, "Oque quer imprimir?", "Ordens de Serviço",
+                JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
+        System.out.println();
+        if (opcao == null) {
+            opcao = "vazio";
+        }
+        switch (opcao.toString()) {
+            case "Seven":
+                JOptionPane.showMessageDialog(null, " Ainda em construção...", "Não implementado ", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource("/imagem/robo.png")));
+                break;
+            case "BurnTest":
+                getDados();
+                burnTestTxt(idOrdServ);
+                break;
+            case "PDF":
+                JOptionPane.showMessageDialog(null, " Ainda em construção...", "Não implementado ", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource("/imagem/robo.png")));
+                break;
+            default:
+                break;
+        }
+    }
 
-        cbTecnico.setSelectedIndex(0);
-        txtOsValor.setText(ordemServico.get(0).getValor());
+    private void burnTestTxt(String idOrdServ) {
+        CriarTxt txtburn = new CriarTxt();
+        String dir = arquivo.getPath() + "\\" + idOrdServ;
+        EquipOsDAO equipOs = new EquipOsDAO();
+        ArrayList<EquipOSBean> equipList = equipOs.pesquisarProdutoBy("idOrdServ", idOrdServ);
+        int nDir = equipList.size();
+        if (!dir.isEmpty()) {
+            if (nDir > 1) {
+                JOptionPane.showMessageDialog(null, "Serão criados " + nDir + " sub diretórios.");
+                if (arquivo.criaDir(dir)) {
+                    for (int i = 0; i < nDir; i++) {
+                        String path = (dir + "\\" + equipList.get(i).getNserie());
+                        getDados(idOrdServ,i);
+                        txtburn.criarBurnTxt(path, idOrdServ, model, patEquip, nserie, tecnico);
+                    }
+                    JOptionPane.showMessageDialog(null, "Arquivos criados com sucesso.");
+                }
+            } else {
+                if (arquivo.criaDir(dir)) {
+                    String path = (dir + "\\" + equipList.get(0).getNserie());
+                    getDados();
+                    txtburn.criarBurnTxt(path, idOrdServ, model, patEquip, nserie, tecnico);
+                    JOptionPane.showMessageDialog(null, "Arquivo criado com sucesso.");
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Arquivo não criado.");
+        }
+          
     }
 
     private void setarOs(int linha) {
@@ -665,7 +725,6 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             btnOsAdicionar.setEnabled(false);
         }
 
-
     }//GEN-LAST:event_btnOsAdicionarActionPerformed
 
     private void btnOsAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAlterarActionPerformed
@@ -698,7 +757,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCliNomeActionPerformed
 
     private void btnOsImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsImprimirActionPerformed
-        JOptionPane.showMessageDialog(null, " Ainda em construção...", "Não implementado ", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource("/imagem/robo.png")));
+        imprimirOs();
     }//GEN-LAST:event_btnOsImprimirActionPerformed
 
     private void cbTecnicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTecnicoActionPerformed
@@ -781,10 +840,10 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEditarEquipActionPerformed
 
     private void txtIDcliKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIDcliKeyReleased
-         conta++;
+        conta++;
         if (conta >= 3) {
             ClienteDAO clientesDao = new ClienteDAO();
-            ArrayList<ClientesBean> cliente = clientesDao.pesquisarCliente("idcli",txtIDcli.getText() );
+            ArrayList<ClientesBean> cliente = clientesDao.pesquisarCliente("idcli", txtIDcli.getText());
             if (!cliente.isEmpty()) {
                 getClientes(cliente);
                 if (!getOS(cliente.get(0).getIdcli()).equals("zero")) {

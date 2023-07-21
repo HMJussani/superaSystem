@@ -412,15 +412,16 @@ public class TelaInvetarioOs extends javax.swing.JInternalFrame {
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
         String[] itens = {"Todos", "Abertas", "Fechadas"};
-        String opcao = (String) JOptionPane.showInputDialog(null, "Oque quer imprimir?", "Ordens de Serviço",
+        Object opcao = JOptionPane.showInputDialog(null, "Oque quer imprimir?", "Ordens de Serviço",
                 JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
+        if(opcao == null)opcao="vazio";
         CriaOsPdf os = new CriaOsPdf();
         Acessorios arquivos = new Acessorios();
-        switch (opcao) {
+        switch (opcao.toString()) {
             case "Todos":
                 String arquivo = "relatorio_OS_" + arquivos.setData();
                 String path = "";
-                os.relatorioOs(arquivo, path, opcao);
+                os.relatorioOs(arquivo, path, opcao.toString());
                 break;
             case "Abertas":
                 JOptionPane.showMessageDialog(null, " Ainda em construção...", "Não implementado ", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource("/imagem/robo.png")));
@@ -428,6 +429,7 @@ public class TelaInvetarioOs extends javax.swing.JInternalFrame {
             case "Fechadas":
                 JOptionPane.showMessageDialog(null, " Ainda em construção...", "Não implementado ", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource("/imagem/robo.png")));
                 break;
+            default:break;
         }
     }//GEN-LAST:event_btnImprimirActionPerformed
 

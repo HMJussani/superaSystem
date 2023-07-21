@@ -84,15 +84,15 @@ public class CriarTxt {
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write("Pedido: " + idOrdServ);
         bw.write("\n");
-        bw.write("Modelo: " + model);
+        bw.write("Tecnico: " + tecnico);
         bw.write("\n");
-        bw.write("Patrimonio: " + patEquip);
+        bw.write("Modelo: " + model);
         bw.write("\n");
         bw.write("Serial: " + nserie);
         bw.write("\n");
-        bw.write("Tecnico: " + tecnico);
+        bw.write("Patrimonio: " + patEquip);
         bw.write("\n");
-        bw.write("Testes padrao de funcionamento referentes ao equipamento : " + patEquip);
+        bw.write("Testes referentes ao equipamento : " + patEquip);
         bw.close();
     }
 
