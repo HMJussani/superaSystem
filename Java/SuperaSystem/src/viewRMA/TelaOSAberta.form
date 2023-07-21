@@ -36,7 +36,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <Component id="jPanel1" pref="792" max="32767" attributes="0"/>
+              <Component id="jPanel1" pref="796" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
@@ -188,7 +188,7 @@
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="26" max="32767" attributes="0"/>
+                          <EmptySpace pref="15" max="32767" attributes="0"/>
                           <Component id="txtCliNome" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                           <Component id="txtEmailCli" min="-2" max="-2" attributes="0"/>
@@ -408,7 +408,7 @@
                   <Table columnCount="5" rowCount="7">
                     <Column editable="false" title="Patrim&#xf4;nio" type="java.lang.Object"/>
                     <Column editable="false" title="N&#xfa;mero de S&#xe9;rie" type="java.lang.Object"/>
-                    <Column editable="false" title="Modelo" type="java.lang.Object"/>
+                    <Column editable="true" title="Modelo" type="java.lang.Object"/>
                     <Column editable="false" title="Garantia" type="java.lang.Object"/>
                     <Column editable="false" title="Estado" type="java.lang.Object"/>
                   </Table>
