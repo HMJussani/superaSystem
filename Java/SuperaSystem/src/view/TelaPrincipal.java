@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import viewRMA.TelaArquivos;
 import viewRMA.TelaInvetarioOs;
 import viewRMA.TelaOSAberta;
+import viewRMA.TelaOrcamento;
 
 /**
  * Tela principal do sistema
@@ -25,7 +26,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         initComponents();
         this.setIconImage(new ImageIcon(getClass().getResource("/imagem/Duke.png")).getImage()); //muda o icone padrao
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -51,6 +51,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         menTecOS = new javax.swing.JMenuItem();
         menTecOSFechada = new javax.swing.JMenuItem();
         menuTecGeraArq = new javax.swing.JMenuItem();
+        MenuTecOrc = new javax.swing.JMenuItem();
         menRel = new javax.swing.JMenu();
         menRelCli = new javax.swing.JMenuItem();
         menRelSer = new javax.swing.JMenuItem();
@@ -185,6 +186,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menuTecnica.add(menuTecGeraArq);
 
+        MenuTecOrc.setText("Orçamentos");
+        MenuTecOrc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuTecOrcActionPerformed(evt);
+            }
+        });
+        menuTecnica.add(MenuTecOrc);
+
         Menu.add(menuTecnica);
 
         menRel.setText("Relatório");
@@ -288,9 +297,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menRelCliActionPerformed
 
     private void menRelSerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menRelSerActionPerformed
-       TelaInvetarioOs invetarioOs = new TelaInvetarioOs();
-       invetarioOs.setVisible(true);
-       desktop.add(invetarioOs);
+        TelaInvetarioOs invetarioOs = new TelaInvetarioOs();
+        invetarioOs.setVisible(true);
+        desktop.add(invetarioOs);
     }//GEN-LAST:event_menRelSerActionPerformed
 
     private void menSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menSairMouseClicked
@@ -337,6 +346,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_menRelEquipActionPerformed
 
+    private void MenuTecOrcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuTecOrcActionPerformed
+        TelaOrcamento orcs = new TelaOrcamento();
+        orcs.setVisible(true);
+        desktop.add(orcs);
+    }//GEN-LAST:event_MenuTecOrcActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -372,6 +387,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar Menu;
+    private javax.swing.JMenuItem MenuTecOrc;
     private javax.swing.JDesktopPane desktop;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
