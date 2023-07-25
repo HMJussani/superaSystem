@@ -25,26 +25,8 @@ public class ModelosBean {
      private String tipo;
     private String processador;
     private String gabinete;
-
-    public ModelosBean(String model, String mem, String mBoard, String expansao, String armazenaTipo, String armazenaModel, String fonteAlimenta, String sParalela, String sSerial, String redeLan, String wifi, String tipo, String processador, String gabinete) {
-        this.model = model;
-        this.mem = mem;
-        this.mBoard = mBoard;
-        this.expansao = expansao;
-        this.armazenaTipo = armazenaTipo;
-        this.armazenaModel = armazenaModel;
-        this.fonteAlimenta = fonteAlimenta;
-        this.sParalela = sParalela;
-        this.sSerial = sSerial;
-        this.redeLan = redeLan;
-        this.wifi = wifi;
-        this.tipo = tipo;
-        this.processador = processador;
-        this.gabinete = gabinete;
-    }
-    
-    
-    
+     private boolean obsoleto = false;
+     
     public ModelosBean() {
     }
 
@@ -158,6 +140,14 @@ public class ModelosBean {
 
     public void setGabinete(String gabinete) {
         this.gabinete = gabinete;
+    }
+
+    public boolean getObsoleto() {
+        return obsoleto;
+    }
+
+    public void setObsoleto(boolean obsoleto) {
+        this.obsoleto = obsoleto;
     }
 
     

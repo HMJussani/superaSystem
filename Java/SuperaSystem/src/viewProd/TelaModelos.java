@@ -28,6 +28,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
      private String tipo;
     private String processador;
     private String gabinete;
+    private boolean obsoleto = false;
     int conta = 0;
 
     public TelaModelos() {
@@ -40,15 +41,23 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         DefaultTableModel model = (DefaultTableModel) tbEquip.getModel();
         model.setRowCount(0);
         ArrayList<ModelosBean> modeloEquip = equipDao.pesquisarModelo();
+        String obsoleto = "Não";
 
         for (int i = 0; i < modeloEquip.size(); i++) {
+            if(modeloEquip.get(i).getObsoleto()){
+                obsoleto = "Sim";
+            }else{
+                obsoleto = "Não";
+            }
+            
             model.addRow(new Object[]{
                 modeloEquip.get(i).getModel(),
                 modeloEquip.get(i).getmBoard(),
                 modeloEquip.get(i).getProcessador(),
                 modeloEquip.get(i).getMem(),
                 modeloEquip.get(i).getArmazenaModel(),
-                modeloEquip.get(i).getFonteAlimenta()
+                modeloEquip.get(i).getFonteAlimenta(),
+                obsoleto
 
             });
         }
@@ -67,6 +76,11 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         gabinete = txtGabinete.getText();
         redeLan = txtRede.getText();
         wifi = txtWifi.getText();
+        if(chekObsoleto.isSelected()) {
+            obsoleto = true;
+        }else{
+            obsoleto =false;
+        }
     }
 
     private void setarCampos(ArrayList<ModelosBean> lista) {
@@ -82,6 +96,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         txtTipo.setText(lista.get(0).getTipo());
         txtCPU.setText(lista.get(0).getProcessador());
         txtGabinete.setText(lista.get(0).getGabinete());
+        chekObsoleto.setSelected(lista.get(0).getObsoleto());
         btnAdicionar.setEnabled(true);
         btnAlterar.setEnabled(true);
         btnRemover.setEnabled(true);
@@ -155,6 +170,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbEquip = new javax.swing.JTable();
         txtExpansao = new javax.swing.JTextField();
+        chekObsoleto = new javax.swing.JCheckBox();
 
         setClosable(true);
         setIconifiable(true);
@@ -232,20 +248,20 @@ public class TelaModelos extends javax.swing.JInternalFrame {
 
         tbEquip.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Modelo", "MotherBoard", "Processador ", "Memória", "Armazenamento", "Alimentação"
+                "Modelo", "MotherBoard", "Processador ", "Memória", "Armazenamento", "Alimentação", "Obsoleto"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -265,7 +281,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(tbEquip);
-        tbEquip.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbEquip.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (tbEquip.getColumnModel().getColumnCount() > 0) {
             tbEquip.getColumnModel().getColumn(0).setResizable(false);
             tbEquip.getColumnModel().getColumn(1).setResizable(false);
@@ -273,9 +289,13 @@ public class TelaModelos extends javax.swing.JInternalFrame {
             tbEquip.getColumnModel().getColumn(3).setResizable(false);
             tbEquip.getColumnModel().getColumn(4).setResizable(false);
             tbEquip.getColumnModel().getColumn(5).setResizable(false);
+            tbEquip.getColumnModel().getColumn(6).setResizable(false);
+            tbEquip.getColumnModel().getColumn(6).setPreferredWidth(5);
         }
 
         txtExpansao.setText("Sem Expansões");
+
+        chekObsoleto.setText("Obsoleto");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -296,49 +316,46 @@ public class TelaModelos extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtModel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(chekObsoleto))
                                     .addComponent(txtExpansao)
                                     .addComponent(txtRede)
-                                    .addComponent(txtMotherBoard)
+                                    .addComponent(txtArmazenamento)
                                     .addComponent(txtCPU)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtModel, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(txtArmazenamento))
-                                .addGap(56, 56, 56)
+                                    .addComponent(txtMotherBoard, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGap(73, 73, 73)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGap(10, 10, 10)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(txtWifi, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtAlimentacao, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtMemoria, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtGabinete, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtTipo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel9)
                                         .addGap(10, 10, 10)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtWifi)
-                                            .addComponent(txtGabinete)
-                                            .addComponent(txtTipo)
-                                            .addComponent(txtAlimentacao, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel9)
-                                                .addGap(10, 10, 10)
-                                                .addComponent(txtSerial, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(16, 16, 16)
-                                                .addComponent(jLabel10)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(txtParalela, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(0, 0, Short.MAX_VALUE))))
-                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtSerial, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(16, 16, 16)
+                                        .addComponent(jLabel10)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtMemoria, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))))
+                                        .addComponent(txtParalela, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(143, 143, 143)
                                 .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(7, 7, 7)
                                 .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(5, 5, 5)
-                                .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 778, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18))
         );
@@ -352,8 +369,9 @@ public class TelaModelos extends javax.swing.JInternalFrame {
                     .addComponent(txtModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11)
                     .addComponent(jLabel12)
-                    .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
+                    .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chekObsoleto))
+                .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel7)
                     .addComponent(txtMotherBoard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -401,7 +419,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         getDados();
         ModelosDAO computador = new ModelosDAO();
-        if (computador.adicionarModelo(model, mem, mBoard, expansao, armazenaTipo, armazenaModel, fonteAlimenta, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete)) {
+        if (computador.adicionarModelo(model, mem, mBoard, expansao, armazenaTipo, armazenaModel, fonteAlimenta, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete, obsoleto)) {
             JOptionPane.showMessageDialog(null, "Produto inserido com sucesso.");
             setarTabela();
         }
@@ -410,7 +428,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         getDados();
         ModelosDAO computador = new ModelosDAO();
-        if (computador.editarModelo(model, mem, mBoard, expansao, armazenaTipo, armazenaModel, fonteAlimenta, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete)) {
+        if (computador.editarModelo(model, mem, mBoard, expansao, armazenaTipo, armazenaModel, fonteAlimenta, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete, obsoleto)) {
             JOptionPane.showMessageDialog(null, "Produto alterado com sucesso");
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
@@ -445,6 +463,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnRemover;
+    private javax.swing.JCheckBox chekObsoleto;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

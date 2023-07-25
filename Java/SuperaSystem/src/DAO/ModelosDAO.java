@@ -29,9 +29,9 @@ public class ModelosDAO {
     ResultSet rs = null;
     Connection conexao = ConexaoDb.getConection();
 
-    public boolean adicionarModelo(String model, String mem, String mBoard, String expansao, String armazenaTipo, String armazenaModel, String fonteAlimenta, String sParalela, String sSerial, String redeLan, String wifi, String tipo, String processador, String gabinete) {
+    public boolean adicionarModelo(String model, String mem, String mBoard, String expansao, String armazenaTipo, String armazenaModel, String fonteAlimenta, String sParalela, String sSerial, String redeLan, String wifi, String tipo, String processador, String gabinete, Boolean obsoleto) {
         boolean sucesso = false;
-        String sql = "insert into tbmodelo(model, mem, mBoard,expansao, armazenaTipo, armazenaModel,fonteAlimenta, sParalela, sSerial , redeLan, wifi, tipo, processador,gabinete) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+        String sql = "insert into tbmodelo(model, mem, mBoard,expansao, armazenaTipo, armazenaModel,fonteAlimenta, sParalela, sSerial , redeLan, wifi, tipo, processador,gabinete, obsoleto) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
         try {
             conexao = ConexaoDb.getConection();
@@ -50,6 +50,7 @@ public class ModelosDAO {
             pst.setString(12, tipo);
             pst.setString(13, processador);
             pst.setString(14, gabinete);
+            pst.setBoolean(15, obsoleto);
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {
                 sucesso = true;
@@ -87,6 +88,7 @@ public class ModelosDAO {
                 produto.setTipo(rs.getString("tipo"));
                 produto.setProcessador(rs.getString("processador"));
                 produto.setGabinete(rs.getString("gabinete"));
+                produto.setObsoleto(rs.getBoolean("obsoleto"));
                 listaModelos.add(produto);
             }
             conexao.close();
@@ -119,6 +121,7 @@ public class ModelosDAO {
                 produto.setTipo(rs.getString("tipo"));
                 produto.setProcessador(rs.getString("processador"));
                 produto.setGabinete(rs.getString("gabinete"));
+                 produto.setObsoleto(rs.getBoolean("obsoleto"));
                 listaModelos.add(produto);
             }
             conexao.close();
@@ -128,11 +131,11 @@ public class ModelosDAO {
         return listaModelos;
     }
 
-    public boolean editarModelo(String model, String mem, String mBoard, String expansao, String armazenaTipo, String armazenaModel, String fonteAlimenta, String sParalela, String sSerial, String redeLan, String wifi, String tipo, String processador, String gabinete) {
+    public boolean editarModelo(String model, String mem, String mBoard, String expansao, String armazenaTipo, String armazenaModel, String fonteAlimenta, String sParalela, String sSerial, String redeLan, String wifi, String tipo, String processador, String gabinete, Boolean obsoleto) {
         boolean sucesso = false;
         int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            String sql = "update tbmodelo set mem=?, mBoard=?,expansao=?, armazenaTipo=?, armazenaModel=?,fonteAlimenta=?, sParalela=?, sSerial=? , redeLan=?, wifi=?, tipo=?, processador=?,gabinete=? where model=?";
+            String sql = "update tbmodelo set mem=?, mBoard=?,expansao=?, armazenaTipo=?, armazenaModel=?,fonteAlimenta=?, sParalela=?, sSerial=? , redeLan=?, wifi=?, tipo=?, processador=?,gabinete=?, obsoleto=? where model=?";
             try {
                 conexao = ConexaoDb.getConection();
                 pst = conexao.prepareStatement(sql);
@@ -149,7 +152,8 @@ public class ModelosDAO {
                 pst.setString(11, tipo);
                 pst.setString(12, processador);
                 pst.setString(13, gabinete);
-                pst.setString(14, model);
+                pst.setBoolean(14, obsoleto);
+                pst.setString(15, model);
                 int editado = pst.executeUpdate();
                 if (editado > 0) {
                     sucesso = true;

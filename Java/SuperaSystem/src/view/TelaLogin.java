@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import Bean.UsuariosBean;
 import DAO.UsuariosDAO;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 
 /**
@@ -30,10 +32,12 @@ public class TelaLogin extends javax.swing.JFrame {
     PreparedStatement pst;
     ResultSet rs;
     boolean sucesso = false;
+    
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     private boolean conectado() {
        
-     JOptionPane.showMessageDialog(null, "Conectando ao Banco de Dados.");     
+     JOptionPane.showMessageDialog(null, "Supera Sistema \n" + "Resolução: " + screenSize.height + "X"+screenSize.width);     
         try {
             conexao = ConexaoDb.getConection();
 

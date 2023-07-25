@@ -27,6 +27,7 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
     private java.sql.Date dataAbertura = null;
     private Boolean garantia = false;
     private Boolean fechada = false;
+    private Boolean obsoleto = false;
     private String defeito = null;
     private String tecnico = null;
     private String valor = null;
@@ -64,9 +65,8 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
 
     }
     
-    private void getDados(String ordServ, int i) {
-        EquipOsDAO equipDao = new EquipOsDAO();
-      //  tecnico = cbTecnico.getSelectedItem().toString();
+    private void getDadosOs(String ordServ, int i) {
+        EquipOsDAO equipDao = new EquipOsDAO();     
         model = equipDao.pesquisarProdutoBy("idOrdServ", ordServ).get(i).getModel();
         nserie = equipDao.pesquisarProdutoBy("idOrdServ", ordServ).get(i).getNserie();
         idOrdServ = ordServ;
@@ -161,7 +161,7 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
                 if (arquivo.criaDir(dir)) {
                     for (int i = 0; i < nDir; i++) {
                         String path = (dir + "\\" + equipList.get(i).getNserie());
-                        getDados(idOrdServ,i);
+                        getDadosOs(idOrdServ,i);
                         txtburn.criarBurnTxt(path, idOrdServ, model, patEquip, nserie, tecnico);
                     }
                     JOptionPane.showMessageDialog(null, "Arquivos criados com sucesso.");
@@ -285,6 +285,11 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
 
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
 
+        txtNumOS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNumOSActionPerformed(evt);
+            }
+        });
         txtNumOS.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtNumOSKeyReleased(evt);
@@ -652,10 +657,7 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
             OrdServDAO ordemServico = new OrdServDAO();
             ArrayList<OrdServBean> ordenList = ordemServico.pesquisarOsbyIdOs(txtNumOS.getText());
             if (!ordenList.isEmpty()) {
-                setarTabela(ordenList.get(0).getIdOrdServ());
-               
-               
-               
+                setarTabela(ordenList.get(0).getIdOrdServ()); 
                 conta = 0;
             } else {
                 
@@ -676,6 +678,10 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
     private void chekParActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chekParActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_chekParActionPerformed
+
+    private void txtNumOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumOSActionPerformed
+        
+    }//GEN-LAST:event_txtNumOSActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOsAdicionar;

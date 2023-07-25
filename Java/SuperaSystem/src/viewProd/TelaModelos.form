@@ -35,7 +35,7 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="2" attributes="0">
                           <Component id="jLabel11" alignment="2" min="-2" pref="53" max="-2" attributes="0"/>
                           <Component id="jLabel7" alignment="2" min="-2" max="-2" attributes="0"/>
@@ -48,17 +48,18 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="txtModel" max="32767" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="chekObsoleto" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                                   <Component id="txtExpansao" alignment="0" max="32767" attributes="0"/>
                                   <Component id="txtRede" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="txtMotherBoard" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtArmazenamento" alignment="0" max="32767" attributes="0"/>
                                   <Component id="txtCPU" alignment="0" max="32767" attributes="0"/>
-                                  <Group type="102" attributes="0">
-                                      <Component id="txtModel" min="-2" pref="267" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Component id="txtArmazenamento" max="32767" attributes="0"/>
+                                  <Component id="txtMotherBoard" alignment="1" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel12" alignment="1" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel15" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -66,44 +67,38 @@
                                   <Component id="jLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel14" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="txtWifi" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="txtGabinete" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="txtTipo" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="txtAlimentacao" alignment="1" max="32767" attributes="0"/>
-                                          <Group type="102" attributes="0">
-                                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                                              <Component id="txtSerial" min="-2" pref="43" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                                              <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                              <Component id="txtParalela" min="-2" pref="43" max="-2" attributes="0"/>
-                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="txtWifi" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txtAlimentacao" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txtMemoria" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txtGabinete" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txtTipo" alignment="0" min="-2" pref="315" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                                      <Component id="txtSerial" min="-2" pref="43" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                                      <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="txtMemoria" min="-2" pref="305" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      <Component id="txtParalela" min="-2" pref="43" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <EmptySpace min="-2" pref="143" max="-2" attributes="0"/>
                               <Component id="btnAdicionar" min="-2" pref="97" max="-2" attributes="0"/>
                               <EmptySpace min="7" pref="7" max="-2" attributes="0"/>
                               <Component id="btnAlterar" min="-2" pref="97" max="-2" attributes="0"/>
                               <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
                               <Component id="btnRemover" min="-2" pref="97" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <Component id="jScrollPane1" alignment="0" min="-2" pref="778" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="778" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
           </Group>
@@ -120,8 +115,9 @@
                   <Component id="jLabel11" alignment="2" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel12" alignment="2" min="-2" max="-2" attributes="0"/>
                   <Component id="txtTipo" alignment="2" min="-2" max="-2" attributes="0"/>
+                  <Component id="chekObsoleto" alignment="2" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+              <EmptySpace min="8" pref="8" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="2" attributes="0">
                   <Component id="jLabel7" alignment="2" min="-2" max="-2" attributes="0"/>
                   <Component id="txtMotherBoard" alignment="2" min="-2" max="-2" attributes="0"/>
@@ -341,17 +337,18 @@
         <Component class="javax.swing.JTable" name="tbEquip">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="6" rowCount="7">
+              <Table columnCount="7" rowCount="7">
                 <Column editable="false" title="Modelo" type="java.lang.Object"/>
                 <Column editable="false" title="MotherBoard" type="java.lang.Object"/>
                 <Column editable="false" title="Processador " type="java.lang.Object"/>
                 <Column editable="false" title="Mem&#xf3;ria" type="java.lang.Object"/>
                 <Column editable="false" title="Armazenamento" type="java.lang.Object"/>
                 <Column editable="false" title="Alimenta&#xe7;&#xe3;o" type="java.lang.Object"/>
+                <Column editable="false" title="Obsoleto" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-              <TableColumnModel selectionModel="1">
+              <TableColumnModel selectionModel="2">
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                   <Title/>
                   <Editor/>
@@ -378,6 +375,11 @@
                   <Renderer/>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="5" resizable="false">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -399,6 +401,11 @@
     <Component class="javax.swing.JTextField" name="txtExpansao">
       <Properties>
         <Property name="text" type="java.lang.String" value="Sem Expans&#xf5;es"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="chekObsoleto">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Obsoleto"/>
       </Properties>
     </Component>
   </SubComponents>

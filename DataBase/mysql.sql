@@ -44,8 +44,11 @@ redeLan varchar(50) default "onBoard",
 wifi varchar(50) default "nao",
 tipo varchar(50) default "ThinClient",
 processador VARCHAR(50) not null,
-gabinete varchar(50) not null
+gabinete varchar(50) not null,
+obsoleto  boolean default false
 );
+
+alter table tbmodelo add obsoleto boolean default false;
 
 create table tbOrdServ(
 idOrdServ VARCHAR(10) PRIMARY KEY,
