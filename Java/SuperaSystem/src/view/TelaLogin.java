@@ -37,7 +37,7 @@ public class TelaLogin extends javax.swing.JFrame {
 
     private boolean conectado() {
        
-     JOptionPane.showMessageDialog(null, "Supera Sistema \n" + "Resolução: " + screenSize.height + "X"+screenSize.width);     
+     JOptionPane.showMessageDialog(null, "Supera Sistema \n" + "Sua resolução atual: " +screenSize.width + "X"+screenSize.height);     
         try {
             conexao = ConexaoDb.getConection();
 

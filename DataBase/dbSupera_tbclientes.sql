@@ -16,32 +16,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tbclientes`
---
-
-DROP TABLE IF EXISTS `tbclientes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tbclientes` (
-  `idcli` varchar(20) NOT NULL,
-  `nomecli` varchar(100) NOT NULL,
-  `contatocli` varchar(50) NOT NULL,
-  `endcli` varchar(100) NOT NULL,
-  `telcli` varchar(20) DEFAULT NULL,
-  `emailCli` varchar(50) NOT NULL DEFAULT 'contato@contato.com',
-  `cidadeCli` varchar(50) NOT NULL DEFAULT 'Maringá',
-  `estadoCli` varchar(2) NOT NULL DEFAULT 'PR',
-  PRIMARY KEY (`idcli`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `tbclientes`
 --
 
 LOCK TABLES `tbclientes` WRITE;
 /*!40000 ALTER TABLE `tbclientes` DISABLE KEYS */;
-INSERT INTO `tbclientes` VALUES ('1','Descarte','Descarte','Rua do descarte, 123','4430304455','descarte@descarte.com','Maringá','PR'),('435742','Coamo','Rose','Campo Mourão','4435998000','rsabotto@coamo.com.br','Campo Mourão','PR'),('86.445.822/0005-25','COPOBRAS S/A. IND COM EMBALAGENS','SIDNEI','ROD BR 376 KM 198 CONTORNO SUL','44 32328080','sidnei@copobras.com.br','Marialva','PR');
+INSERT INTO `tbclientes` VALUES ('1','Descarte','Descarte','Rua do descarte, 123','4430304455','descarte@descarte.com','Maringá','PR'),('435742','Coamo','Rose','Campo Mourão','4435998000','rsabotto@coamo.com.br','Campo Mourão','PR'),('5048','Tomasoni Industria de Máquinas LTDA.','Ulisses Janses','Rua Wanda dos Santos Mullmann, 1604','41 3667-2063','','Pinhais','PR'),('86.445.822/0005-25','COPOBRAS S/A. IND COM EMBALAGENS','SIDNEI','ROD BR 376 KM 198 CONTORNO SUL','44 32328080','sidnei@copobras.com.br','Marialva','PR');
 /*!40000 ALTER TABLE `tbclientes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +34,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-14 17:14:03
+-- Dump completed on 2023-07-25 12:06:20

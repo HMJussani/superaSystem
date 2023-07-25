@@ -16,25 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tbusuarios`
---
-
-DROP TABLE IF EXISTS `tbusuarios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tbusuarios` (
-  `iduser` int NOT NULL AUTO_INCREMENT,
-  `usuario` varchar(50) NOT NULL,
-  `login` varchar(50) NOT NULL,
-  `senha` varchar(50) NOT NULL,
-  `perfil` varchar(10) DEFAULT 'Tecnico',
-  `email` varchar(50) NOT NULL DEFAULT 'contato@contato.com',
-  PRIMARY KEY (`iduser`),
-  UNIQUE KEY `login` (`login`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `tbusuarios`
 --
 
@@ -53,4 +34,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-14 17:14:03
+-- Dump completed on 2023-07-25 12:06:20
