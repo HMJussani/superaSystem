@@ -9,8 +9,6 @@ import conectaBancoDados.ConexaoDb;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import Bean.UsuariosBean;
@@ -28,16 +26,16 @@ public class TelaLogin extends javax.swing.JFrame {
     /**
      * Creates new form TelaLogin
      */
-    Connection conexao = null;
-    PreparedStatement pst;
-    ResultSet rs;
-    boolean sucesso = false;
     
+   
+    boolean sucesso = false;
+    UsuariosBean usuario = new UsuariosBean();
+
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     private boolean conectado() {
-       
-     JOptionPane.showMessageDialog(null, "Supera Sistema \n" + "Resolução: " + screenSize.height + "X"+screenSize.width);     
+        Connection conexao = null;
+        JOptionPane.showMessageDialog(null, "Supera Sistema \n" + "Resolução: " + screenSize.height + "X" + screenSize.width);
         try {
             conexao = ConexaoDb.getConection();
 
@@ -58,8 +56,8 @@ public class TelaLogin extends javax.swing.JFrame {
     private void conecta(boolean sucesso) {
         if (sucesso) {
             UsuariosDAO userDao = new UsuariosDAO();
-            UsuariosBean usuario = new UsuariosBean();
-            String pass = new String(txtSenha.getPassword());
+            
+            String pass = String.valueOf(txtSenha.getPassword());
             String user = txtUser.getText();
             try {
                 if (userDao.checaUser(user, pass)) {
@@ -94,31 +92,25 @@ public class TelaLogin extends javax.swing.JFrame {
     }
 
     private void checaPerfil(String login) {
-        String sql = "select * from tbusuarios where login =?";
-        try {
-            conexao = ConexaoDb.getConection();
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, login);
-            rs = pst.executeQuery();
-            if (rs.next()) {
-                String perfil = rs.getString(3);
-                if (perfil.equals("admin")) {
-                    TelaPrincipal principal = new TelaPrincipal();
-                    principal.setVisible(true);
-                    TelaPrincipal.menRel.setEnabled(true);
-                    TelaPrincipal.menCadUsu.setEnabled(true);
-                    TelaPrincipal.lblUsuario.setText(rs.getString(2));
-                    TelaPrincipal.lblUsuario.setForeground(Color.red);
-                    this.dispose();
-                } else {
-                    TelaPrincipal principal = new TelaPrincipal();
-                    principal.setVisible(true);
-                    TelaPrincipal.lblUsuario.setText(rs.getString(2));
-                    this.dispose();
-                }
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex);
+        UsuariosDAO userDao = new UsuariosDAO();        
+        String perfil = userDao.pesquisarUser(login).get(0).getPerfil();
+        if (perfil.equals("admin")) {
+            TelaPrincipal principal = new TelaPrincipal();
+            principal.setVisible(true);
+            TelaPrincipal.menRel.setEnabled(true);
+            TelaPrincipal.menCadUsu.setEnabled(true);
+            TelaPrincipal.lblUsuario.setText(userDao.pesquisarUser(login).get(0).getUser());
+            TelaPrincipal.lblLogado.setText(perfil);
+            TelaPrincipal.lblUsuario.setForeground(Color.red);
+            
+            this.dispose();
+        } else {
+            TelaPrincipal principal = new TelaPrincipal();
+            principal.setVisible(true);
+            TelaPrincipal.lblUsuario.setText(userDao.pesquisarUser(login).get(0).getUser());
+            TelaPrincipal.menRel.setEnabled(true);
+            TelaPrincipal.menCadUsu.setEnabled(true);
+            this.dispose();
         }
     }
 
@@ -230,16 +222,28 @@ public class TelaLogin extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }
+                
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLogin.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+} catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(TelaLogin.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+} catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(TelaLogin.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(TelaLogin.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

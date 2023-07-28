@@ -37,7 +37,7 @@ public class UsuariosDAO {
             rs = stmt.executeQuery();
             if (rs.next()) {
                 sucesso = true;
-                 conexao.close();
+                conexao.close();
             }
 
         } catch (SQLException e) {
@@ -58,8 +58,8 @@ public class UsuariosDAO {
                 if (execute > 0) {
                     sucesso = true;
                     conexao.close();
-                }else{
-                     JOptionPane.showMessageDialog(null, "Erro deletando usuários: " + login);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Erro deletando usuários: " + login);
                 }
 
             } catch (SQLException e) {
@@ -91,13 +91,13 @@ public class UsuariosDAO {
         }
         return usuario;
     }
-    
-        public ArrayList<UsuariosBean> pesquisarUser(String login) {
+
+    public ArrayList<UsuariosBean> pesquisarUser(String login) {
         String sql = "select * from tbusuarios where login=?";
         try {
             conexao = ConexaoDb.getConection();
             stmt = conexao.prepareStatement(sql);
-             stmt.setString(1, login);
+            stmt.setString(1, login);
             rs = stmt.executeQuery();
             while (rs.next()) {
                 UsuariosBean user = new UsuariosBean();
@@ -116,7 +116,7 @@ public class UsuariosDAO {
         return usuario;
     }
 
-    public boolean editaUser(String user, String pass) throws SQLException {
+    public boolean editaUser(String user, String pass){
         String sql = "update tbusuarios set senha=? where login =?;";
         boolean sucesso = false;
         try {
