@@ -374,7 +374,7 @@ public class TelaInvetarioEquip extends javax.swing.JInternalFrame {
 
         jLabel1.getAccessibleContext().setAccessibleName("");
 
-        setBounds(0, 0, 822, 695);
+        setBounds(0, 0, 1124, 683);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtIdCliKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdCliKeyReleased

@@ -226,7 +226,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
                 .addContainerGap(374, Short.MAX_VALUE))
         );
 
-        setBounds(0, 0, 822, 695);
+        setBounds(0, 0, 1124, 683);
     }// </editor-fold>//GEN-END:initComponents
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened

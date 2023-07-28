@@ -26,21 +26,16 @@ public class TelaLogin extends javax.swing.JFrame {
     /**
      * Creates new form TelaLogin
      */
-    
-   
     boolean sucesso = false;
     UsuariosBean usuario = new UsuariosBean();
 
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     private boolean conectado() {
-<<<<<<< HEAD
+
         Connection conexao = null;
-        JOptionPane.showMessageDialog(null, "Supera Sistema \n" + "Resolução: " + screenSize.height + "X" + screenSize.width);
-=======
-       
-     JOptionPane.showMessageDialog(null, "Supera Sistema \n" + "Sua resolução atual: " +screenSize.width + "X"+screenSize.height);     
->>>>>>> 2ae16ea11e2b22522307202a788a622447fdea7a
+        JOptionPane.showMessageDialog(null, "Supera Sistema \n" + "Sua resolução atual: " + screenSize.width + "X" + screenSize.height);
+
         try {
             conexao = ConexaoDb.getConection();
 
@@ -61,7 +56,7 @@ public class TelaLogin extends javax.swing.JFrame {
     private void conecta(boolean sucesso) {
         if (sucesso) {
             UsuariosDAO userDao = new UsuariosDAO();
-            
+
             String pass = String.valueOf(txtSenha.getPassword());
             String user = txtUser.getText();
             try {
@@ -97,22 +92,22 @@ public class TelaLogin extends javax.swing.JFrame {
     }
 
     private void checaPerfil(String login) {
-        UsuariosDAO userDao = new UsuariosDAO();        
-        String perfil = userDao.pesquisarUser(login).get(0).getPerfil();
+        UsuariosDAO userDao = new UsuariosDAO();
+        String perfil = userDao.pesquisarUser("login",login).get(0).getPerfil();
         if (perfil.equals("admin")) {
             TelaPrincipal principal = new TelaPrincipal();
             principal.setVisible(true);
             TelaPrincipal.menRel.setEnabled(true);
             TelaPrincipal.menCadUsu.setEnabled(true);
-            TelaPrincipal.lblUsuario.setText(userDao.pesquisarUser(login).get(0).getUser());
+            TelaPrincipal.lblUsuario.setText(userDao.pesquisarUser("login",login).get(0).getNome());
             TelaPrincipal.lblLogado.setText(perfil);
             TelaPrincipal.lblUsuario.setForeground(Color.red);
-            
+
             this.dispose();
         } else {
             TelaPrincipal principal = new TelaPrincipal();
             principal.setVisible(true);
-            TelaPrincipal.lblUsuario.setText(userDao.pesquisarUser(login).get(0).getUser());
+            TelaPrincipal.lblUsuario.setText(userDao.pesquisarUser("login",login).get(0).getNome());
             TelaPrincipal.menRel.setEnabled(true);
             TelaPrincipal.menCadUsu.setEnabled(true);
             this.dispose();
@@ -121,7 +116,7 @@ public class TelaLogin extends javax.swing.JFrame {
 
     public TelaLogin() {
         initComponents();
-       this.setIconImage(new ImageIcon(getClass().getResource("/imagem/Duke.png")).getImage()); //muda o icone padrao
+        this.setIconImage(new ImageIcon(getClass().getResource("/imagem/Duke.png")).getImage()); //muda o icone padrao
         if (conectado()) {
             lblBanco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/dbConectou.png")));
 
@@ -227,28 +222,24 @@ public class TelaLogin extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                
 
-}
+                }
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(TelaLogin.class
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-} catch (InstantiationException ex) {
+        } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(TelaLogin.class
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-} catch (IllegalAccessException ex) {
+        } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(TelaLogin.class
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelaLogin.class
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

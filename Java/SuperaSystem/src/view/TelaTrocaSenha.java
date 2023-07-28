@@ -5,13 +5,10 @@
  */
 package view;
 
-
 import conectaBancoDados.ConexaoDb;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
-import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import Bean.UsuariosBean;
 import DAO.UsuariosDAO;
 
 /**
@@ -23,22 +20,34 @@ public class TelaTrocaSenha extends javax.swing.JDialog {
     /**
      * Creates new form TelaTrocaSenha
      */
-    private boolean trocaSenha() throws SQLException {
-        boolean sucesso =false;
+    private String user;
+    private String pass;
+    private String dbPass;
+    private String newPass;
+
+    private boolean trocaSenha() {
+        boolean sucesso = false;
         UsuariosDAO userDao = new UsuariosDAO();
-        UsuariosBean usuario = new UsuariosBean();
-        String pass = new String(txtAntigaSenha.getPassword());
-        String newPass = new String(txtNovaSenha.getPassword());
-        String user = txtUser.getText();
-
-        if ((pass.equals(usuario.getPass())) && (user.equals(usuario.getUser())) && (!newPass.isEmpty())) {
-
+        if (getDados()) {
             if (userDao.editaUser(user, newPass)) {
                 JOptionPane.showMessageDialog(null, "Senha alterada com sucesso!");
                 sucesso = true;
             }
         } else {
             JOptionPane.showMessageDialog(null, "Dados de verificação ou nova senha inválidos.");
+        }
+        return sucesso;
+    }
+
+    private Boolean getDados() {
+        Boolean sucesso = false;
+        user = txtUser.getText();
+        UsuariosDAO userDao = new UsuariosDAO();
+        pass = new String(txtAntigaSenha.getPassword());
+        dbPass = userDao.pesquisarUser("login", user).get(0).getPass();
+        newPass = new String(txtNovaSenha.getPassword());
+        if ((pass.equals(dbPass)) && (!newPass.isEmpty()) && (!user.isEmpty())) {
+            sucesso = true;
         }
         return sucesso;
     }
@@ -57,9 +66,11 @@ public class TelaTrocaSenha extends javax.swing.JDialog {
     public TelaTrocaSenha(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        btnSalvar.setEnabled(false);
         if (conectado()) {
             lblBanco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/dbConectou.png")));
         }
+
     }
 
     /**
@@ -75,7 +86,7 @@ public class TelaTrocaSenha extends javax.swing.JDialog {
         txtUser = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtAntigaSenha = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
         lblBanco = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtNovaSenha = new javax.swing.JPasswordField();
@@ -94,15 +105,15 @@ public class TelaTrocaSenha extends javax.swing.JDialog {
             }
         });
 
-        jButton1.setText("Salvar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSalvarActionPerformed(evt);
             }
         });
-        jButton1.addKeyListener(new java.awt.event.KeyAdapter() {
+        btnSalvar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jButton1KeyReleased(evt);
+                btnSalvarKeyReleased(evt);
             }
         });
 
@@ -138,7 +149,7 @@ public class TelaTrocaSenha extends javax.swing.JDialog {
                             .addComponent(txtNovaSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(140, 140, 140)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(35, 35, 35))
         );
         layout.setVerticalGroup(
@@ -162,7 +173,7 @@ public class TelaTrocaSenha extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtNovaSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(btnSalvar)
                 .addContainerGap(61, Short.MAX_VALUE))
         );
 
@@ -171,39 +182,32 @@ public class TelaTrocaSenha extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtAntigaSenhaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAntigaSenhaKeyReleased
-        int tecla = evt.getKeyCode();
-        if (tecla == KeyEvent.VK_ENTER) {
-            try {
-               if(trocaSenha())this.dispose();
-                
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Erro ao alterar senha: " + ex);
-            }
+        if (evt.getKeyCode() > 3) {
+            btnSalvar.setEnabled(getDados());
         }
 
     }//GEN-LAST:event_txtAntigaSenhaKeyReleased
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            if(trocaSenha())this.dispose();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao alterar senha: " + ex);
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        if (trocaSenha()) {
+            this.dispose();
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton1KeyReleased
-        int tecla = evt.getKeyCode();
-        if (tecla == KeyEvent.VK_ENTER) {
-            try {
-                if(trocaSenha())this.dispose();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Erro ao alterar senha: " + ex);
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnSalvarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalvarKeyReleased
+       int tecla = evt.getKeyCode();
+        if ((tecla == KeyEvent.VK_ENTER)&&(tecla>=3)) {
+            if (trocaSenha()) {
+                this.dispose();
             }
         }
-    }//GEN-LAST:event_jButton1KeyReleased
+    }//GEN-LAST:event_btnSalvarKeyReleased
 
     private void txtNovaSenhaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNovaSenhaKeyReleased
-        // TODO add your handling code here:
+      if (evt.getKeyCode() > 3) {
+            btnSalvar.setEnabled(getDados());
+        }
     }//GEN-LAST:event_txtNovaSenhaKeyReleased
 
     /**
@@ -249,7 +253,7 @@ public class TelaTrocaSenha extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -143,9 +143,7 @@ public class OrdServDAO {
     public boolean editarOs(String idOrdServ, Date dataFechamento, boolean aberta, String valor) {
         boolean sucesso = false;
         String sql = "update tbOrdServ set dataFechamento=?, aberta=?, valor=? where idOrdServ=?";
-        try {
-            conexao = ConexaoDb.getConection();
-            pst = conexao.prepareStatement(sql);
+        try {            
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setDate(1, (java.sql.Date) dataFechamento);

@@ -2,6 +2,7 @@ package view;
 
 import Bean.UsuariosBean;
 import DAO.UsuariosDAO;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -13,37 +14,50 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TelaUsuario extends javax.swing.JInternalFrame {
 
-    private String iduser = null;
+    private int iduser = 0;
     private String login = TelaPrincipal.lblUsuario.getText();
     private String pass = null;
     private String perfil = null;
     private String nome = null;
     private String email = null;
     private String logado = null;
+    int tecla = 0;
 
     public TelaUsuario() {
         initComponents();
         logado = getPerfil();
         setarTabela(acesso(logado), login);
-        setaBtn(acesso(logado));
+        setaTxt(acesso(logado));
+        btnUsuCreate.setEnabled(acesso(logado));
+        btnUsuDelete.setEnabled(false);
+        btnUsuUpdate.setEnabled(!acesso(logado));
+        if (!acesso(logado)) {
+            tbUser.setRowSelectionInterval(0, 0);
+            setarCampos();
+        }
     }
 
-    private void getDados() {
-        logado = getPerfil();
+    private boolean getDados() {
+        boolean sucesso = true;
         login = txtUser.getText();
         pass = new String(txtPass.getPassword());
         perfil = cboUserPerfil.getSelectedItem().toString();
         nome = txtUsuNome.getText();
         email = txtUserEmail.getText();
-
+        if (login.isEmpty() || pass.isEmpty() || nome.isEmpty()) {
+            sucesso = false;
+        }
+        return sucesso;
     }
 
-    private void setaBtn(Boolean acesso) {
+    private void setaTxt(Boolean acesso) {
         btnUsuDelete.setEnabled(acesso);
         btnUsuCreate.setEnabled(acesso);
-        txtUsuNome.setEditable(acesso);
-        cboUserPerfil.setEditable(acesso);
-       
+        txtUsuNome.setEnabled(acesso);
+        txtUserEmail.setEnabled(acesso);
+        txtUser.setEnabled(acesso);
+        cboUserPerfil.setEnabled(acesso);
+
     }
 
     private void setarTabela(Boolean acesso, String login) {
@@ -53,7 +67,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         if (acesso) {
             ArrayList<UsuariosBean> usuarios = userDao.pesquisarUser();
             for (int i = 0; i < usuarios.size(); i++) {
-                model.addRow(new Object[]{                    
+                model.addRow(new Object[]{
                     usuarios.get(i).getNome(),
                     usuarios.get(i).getUser(),
                     usuarios.get(i).getPerfil(),
@@ -61,9 +75,9 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                 });
             }
         } else {
-            ArrayList<UsuariosBean> usuarios = userDao.pesquisarUser(login);
+            ArrayList<UsuariosBean> usuarios = userDao.pesquisarUser("usuario", login);
             for (int i = 0; i < usuarios.size(); i++) {
-                model.addRow(new Object[]{                  
+                model.addRow(new Object[]{
                     usuarios.get(i).getNome(),
                     usuarios.get(i).getUser(),
                     usuarios.get(i).getPerfil(),
@@ -79,11 +93,15 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         txtUser.setText(tbUser.getModel().getValueAt(setar, 1).toString());
         txtUserEmail.setText(tbUser.getModel().getValueAt(setar, 3).toString());
         cboUserPerfil.setSelectedItem(tbUser.getModel().getValueAt(setar, 2));
+        btnUsuCreate.setEnabled(false);
+        btnUsuDelete.setEnabled(acesso(logado));
+        btnUsuUpdate.setEnabled(true);
     }
 
     private String getPerfil() {
-        String estePerfil = "vazio";
-        estePerfil = TelaPrincipal.lblLogado.getText();
+        UsuariosDAO userDao = new UsuariosDAO();
+        String estePerfil = "user";
+        estePerfil = userDao.pesquisarUser("usuario", login).get(0).getPerfil();
         return estePerfil;
     }
 
@@ -102,6 +120,30 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         txtUserEmail.setText(null);
         txtUserEmail.setEnabled(true);
         cboUserPerfil.setSelectedItem(0);
+    }
+
+    private Boolean editaUsuer() {
+        Boolean sucesso = false;
+        UsuariosDAO userDao = new UsuariosDAO();
+        if (getDados()) {
+            if (acesso(logado)) {
+                String procurado = tbUser.getModel().getValueAt(tbUser.getSelectedRow(), 1).toString();
+                iduser = Integer.parseInt(userDao.pesquisarUser("login", procurado).get(0).getIduser());
+                if (userDao.editaUser(iduser, nome, login, "senha123", perfil, email)) {
+                    JOptionPane.showMessageDialog(null, "Dados do usuário alterados com sucesso.");
+                    setarTabela(acesso(logado), login);
+                    sucesso = true;
+                }
+            } else {
+                if (userDao.editaUser(login, pass)) {
+                    JOptionPane.showMessageDialog(null, "Senha alterada com sucesso.");
+                    sucesso = true;
+                }
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Campos obrigatórios vazios. Verifique.");
+        }
+        return sucesso;
     }
 
     /**
@@ -163,6 +205,12 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
 
         jLabel6.setText("* Perfil");
 
+        txtUsuNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtUsuNomeKeyReleased(evt);
+            }
+        });
+
         cboUserPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "admin", "user", "Tecnico", "Vendedor", "Comprador" }));
         cboUserPerfil.setSelectedIndex(2);
         cboUserPerfil.setToolTipText("");
@@ -175,6 +223,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         btnUsuUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/update.png"))); // NOI18N
         btnUsuUpdate.setToolTipText("Alterar");
         btnUsuUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnUsuUpdate.setEnabled(false);
         btnUsuUpdate.setPreferredSize(new java.awt.Dimension(80, 80));
         btnUsuUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -243,6 +292,12 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             tbUser.getColumnModel().getColumn(2).setPreferredWidth(10);
             tbUser.getColumnModel().getColumn(3).setResizable(false);
         }
+
+        txtPass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPassKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -324,7 +379,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        setBounds(0, 0, 995, 580);
+        setBounds(0, 0, 1124, 683);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUsuCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuCreateActionPerformed
@@ -333,16 +388,12 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         if (userDao.criaUser(nome, login, pass, perfil, email)) {
             JOptionPane.showMessageDialog(null, "Usuário criado com sucesso.");
             setarTabela(acesso(logado), login);
+            limpar();
         }
     }//GEN-LAST:event_btnUsuCreateActionPerformed
 
     private void btnUsuUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuUpdateActionPerformed
-        UsuariosDAO userDao = new UsuariosDAO();
-        getDados();
-        if (userDao.editaUser(login, pass)) {
-            JOptionPane.showMessageDialog(null, "Senha alterada com sucesso.");
-            setarTabela(acesso(logado), login);
-        }
+        editaUsuer();
 
     }//GEN-LAST:event_btnUsuUpdateActionPerformed
 
@@ -352,6 +403,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         if (userDao.excluiUser(login)) {
             JOptionPane.showMessageDialog(null, "Usuário deletado com sucesso.");
             setarTabela(acesso(logado), login);
+            limpar();
         }
     }//GEN-LAST:event_btnUsuDeleteActionPerformed
 
@@ -370,6 +422,25 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     private void tbUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUserMouseClicked
         setarCampos();
     }//GEN-LAST:event_tbUserMouseClicked
+
+    private void txtPassKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPassKeyReleased
+        tecla++;
+        if ((evt.getKeyCode() == KeyEvent.VK_ENTER) && (tecla >= 3)) {
+            if (editaUsuer()) {
+                txtPass.setText(null);
+                tecla = 0;
+            }
+        }
+    }//GEN-LAST:event_txtPassKeyReleased
+
+    private void txtUsuNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsuNomeKeyReleased
+        int tecla = evt.getKeyCode();
+        if (tecla >= 3) {
+            btnUsuCreate.setEnabled(true);
+            btnUsuDelete.setEnabled(false);
+            btnUsuUpdate.setEnabled(false);
+        }
+    }//GEN-LAST:event_txtUsuNomeKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnUsuCreate;

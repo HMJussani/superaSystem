@@ -7,6 +7,7 @@ package DAO;
 
 import Bean.UsuariosBean;
 import conectaBancoDados.ConexaoDb;
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -92,12 +93,12 @@ public class UsuariosDAO {
         return usuario;
     }
 
-    public ArrayList<UsuariosBean> pesquisarUser(String login) {
-        String sql = "select * from tbusuarios where login=?";
+    public ArrayList<UsuariosBean> pesquisarUser(String arg, String value) {
+        String sql = "select * from tbusuarios where " + arg + "=?";
         try {
             conexao = ConexaoDb.getConection();
             stmt = conexao.prepareStatement(sql);
-            stmt.setString(1, login);
+            stmt.setString(1, value);
             rs = stmt.executeQuery();
             while (rs.next()) {
                 UsuariosBean user = new UsuariosBean();
@@ -116,20 +117,51 @@ public class UsuariosDAO {
         return usuario;
     }
 
-    public boolean editaUser(String user, String pass){
+    public boolean editaUser(String user, String pass) {
         String sql = "update tbusuarios set senha=? where login =?;";
         boolean sucesso = false;
         try {
+            conexao = ConexaoDb.getConection();
             stmt = conexao.prepareStatement(sql);
             stmt.setString(1, pass);
             stmt.setString(2, user);
             int executou = stmt.executeUpdate();
-            if (executou > 0) {
+             if (executou > 0) {
                 sucesso = true;
                 conexao.close();
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao editar nova senha: " + e);
+        } catch (HeadlessException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao editar usuário:\n" +e);
+        }
+        
+        return sucesso;
+    }
+
+    public boolean editaUser(int iduser, String nome, String login, String senha, String perfil, String email) {
+        String sql = "update tbusuarios set usuario=?, senha=?, perfil=?, email=? where iduser=?;";
+        boolean sucesso = false;
+        try {
+            conexao = ConexaoDb.getConection();
+            stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, nome);
+            //stmt.setString(2, login);
+            stmt.setString(2, senha);
+            stmt.setString(3, perfil);
+            stmt.setString(4, email);
+            stmt.setInt(5, iduser);
+            int executou = stmt.executeUpdate();
+            if (executou > 0) {
+                sucesso = true;
+               // conexao.close();
+            }
+        } catch (HeadlessException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao editar usuário: " + e);
+        } finally {
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null,"Erro ao editar usuário: " + ex);
+            }
         }
         return sucesso;
     }
@@ -151,7 +183,7 @@ public class UsuariosDAO {
             }
         } catch (SQLIntegrityConstraintViolationException e1) {
             JOptionPane.showMessageDialog(null, "Login em uso.\nEscolha outro login.");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao criar novo usuário: " + e);
 
         }
