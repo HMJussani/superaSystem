@@ -14,7 +14,7 @@ email varchar(50)not null default 'contato@contato.com'
 #alter table tbusuarios add email varchar(50)not null default 'contato@contato.com';
 
 
-insert into tbusuarios (iduser ,usuario ,login ,senha ,perfil)values(1,'Administrador', 'admin', 'admin', 'admin');
+#insert into tbusuarios (iduser ,usuario ,login ,senha ,perfil)values(1,'Administrador', 'admin', 'admin', 'admin');
 #insert into tbusuarios (iduser ,usuario ,login ,senha ,perfil)values(2,'Henrique Marega Jussani', 'hmjussani', '123', 'user');
 
 create table tbclientes(
@@ -48,7 +48,7 @@ gabinete varchar(50) not null,
 obsoleto  boolean default false
 );
 
-alter table tbmodelo add obsoleto boolean default false;
+#alter table tbmodelo add obsoleto boolean default false;
 
 create table tbOrdServ(
 idOrdServ VARCHAR(10) PRIMARY KEY,
@@ -77,10 +77,10 @@ foreign key (idOrdServ) references tbOrdServ(idOrdServ),
 foreign key (idcli) references tbclientes(idcli)
 );
 
-alter table tbEquip add analizado bool default false;
+#alter table tbEquip add analizado bool default false;
 
-update tbEquip set analizado = false;
-select * from tbEquip;
+#update tbEquip set analizado = false;
+#select * from tbEquip;
 
 create table tbdefsol(
 idDefeito int primary key auto_increment,
@@ -107,10 +107,10 @@ foreign key (nserie) references tbEquip(nserie)
 
 #update tbdefsol set defeito="teste", solucao="teste2" where nserie="30909";
 
-select * from tbEquip where nserie="17763";
-update tbEquip set idOrdServ = "27905" where nserie = "8823";
+#select * from tbEquip where nserie="17763";
+#update tbEquip set idOrdServ = "27905" where nserie = "8823";
 
-insert into tbdefsol (nserie, defeito, solucao)values("30909","Defeito","Solucao");
+#insert into tbdefsol (nserie, defeito, solucao)values("30909","Defeito","Solucao");
 
 #drop table tbdefsol;
 #describe tbpedido;
@@ -118,6 +118,6 @@ insert into tbdefsol (nserie, defeito, solucao)values("30909","Defeito","Solucao
 #describe tbclientes;
 #describe tbcomponentes;
 #describe tbEquip;
-select * from tbEquip;
+#select * from tbEquip;
 #delete from tbEquip where nserie=?;
 #select * from tbmodelo;

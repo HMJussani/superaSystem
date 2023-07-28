@@ -34,8 +34,13 @@ public class TelaLogin extends javax.swing.JFrame {
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     private boolean conectado() {
+<<<<<<< HEAD
         Connection conexao = null;
         JOptionPane.showMessageDialog(null, "Supera Sistema \n" + "Resolução: " + screenSize.height + "X" + screenSize.width);
+=======
+       
+     JOptionPane.showMessageDialog(null, "Supera Sistema \n" + "Sua resolução atual: " +screenSize.width + "X"+screenSize.height);     
+>>>>>>> 2ae16ea11e2b22522307202a788a622447fdea7a
         try {
             conexao = ConexaoDb.getConection();
 
