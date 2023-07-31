@@ -1,7 +1,7 @@
 package viewRMA;
 
 import Acessorios.Acessorios;
-import Acessorios.CriarTxt;
+import Acessorios.CriarBurnTest;
 import Bean.DefSolBean;
 import Bean.EquipOSBean;
 import Bean.ModelosBean;
@@ -150,7 +150,7 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
     }
 
     private void burnTestTxt(String idOrdServ) {
-        CriarTxt txtburn = new CriarTxt();
+        CriarBurnTest txtburn = new CriarBurnTest();
         String dir = arquivo.getPath() + "\\" + idOrdServ;
         EquipOsDAO equipOs = new EquipOsDAO();
         ArrayList<EquipOSBean> equipList = equipOs.pesquisarProdutoBy("idOrdServ", idOrdServ);

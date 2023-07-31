@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  *
  * @author RMA
  */
-public class CriarTxt {
+public class CriarBurnTest {
 
     public void criarTxt(String path, String arquivo) {
         if (criaDir(path)) {
