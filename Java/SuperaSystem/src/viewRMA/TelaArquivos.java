@@ -2,6 +2,8 @@ package viewRMA;
 
 import Acessorios.Acessorios;
 import Acessorios.CriarBurnTest;
+import Acessorios.CriarSevenTxt;
+import Acessorios.SevenArq;
 import Bean.EquipOSBean;
 import Bean.OrdServBean;
 import DAO.EquipOsDAO;
@@ -34,7 +36,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
         OrdServDAO ordemServico = new OrdServDAO();
         ArrayList<OrdServBean> osList = ordemServico.pesquisarOsbyIdOs(ordSErv);
         if (!osList.isEmpty()) {
-            os = osList.get(0).getTecnico();            
+            os = osList.get(0).getTecnico();
         }
         return os;
     }
@@ -82,10 +84,10 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
         btnTxtSeven = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtSeven = new javax.swing.JTextArea();
+        areaSeven = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        txtBurnTest = new javax.swing.JTextArea();
+        areaBurnTest = new javax.swing.JTextArea();
 
         setClosable(true);
         setIconifiable(true);
@@ -167,7 +169,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, Short.MAX_VALUE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -216,9 +218,10 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
                 .addContainerGap(51, Short.MAX_VALUE))
         );
 
-        txtSeven.setColumns(20);
-        txtSeven.setRows(5);
-        jScrollPane1.setViewportView(txtSeven);
+        areaSeven.setColumns(20);
+        areaSeven.setRows(5);
+        areaSeven.setBorder(javax.swing.BorderFactory.createTitledBorder("Seven Format"));
+        jScrollPane1.setViewportView(areaSeven);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -237,9 +240,10 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        txtBurnTest.setColumns(20);
-        txtBurnTest.setRows(5);
-        jScrollPane2.setViewportView(txtBurnTest);
+        areaBurnTest.setColumns(20);
+        areaBurnTest.setRows(5);
+        areaBurnTest.setBorder(javax.swing.BorderFactory.createTitledBorder("BurnTest Format"));
+        jScrollPane2.setViewportView(areaBurnTest);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -327,10 +331,10 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
             if (!osList.isEmpty()) {
                 txtArqFormatado.setText(osList.get(0).getIdOrdServ() + " - " + acessorios.setData());
                 conta = 0;
-            }else{
+            } else {
                 txtArqFormatado.setText(txtLocalArquivo.getText() + " - " + acessorios.setData());
             }
-            
+
         }
 
     }//GEN-LAST:event_txtOrdServKeyReleased
@@ -341,25 +345,44 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
 
     private void btnTxtBurnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTxtBurnActionPerformed
 
-        CriarBurnTest txtSeven = new CriarBurnTest();
+        CriarBurnTest txtBurn = new CriarBurnTest();
         String dir = txtLocalArquivo.getText() + txtArqFormatado.getText();
         int nDir = getEquip(txtOrdServ.getText()).size();
         if (!dir.isEmpty()) {
             if (nDir > 1) {
                 JOptionPane.showMessageDialog(null, "Serão criados " + nDir + " sub diretórios.");
                 if (acessorios.criaDir(dir)) {
+                    String acumula = "\n";
                     for (int i = 0; i < nDir; i++) {
                         String path = (dir + "\\" + getEquip(txtOrdServ.getText()).get(i));
-                        getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(i),i);
-                        txtSeven.criarBurnTxt(path, idOrdServ, model, pat, nserie, tecnico);
+                        getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(i), i);
+                        txtBurn.criarBurnTxt(path, idOrdServ, model, pat, nserie, tecnico);
+                        acumula += pat + "\n";
+                        acumula += ("Pedido: " + idOrdServ + "\n");
+                        acumula += ("Tecnico: " + tecnico + "\n");
+                        acumula += ("Modelo: " + model + "\n");
+                        acumula += ("Serial: " + nserie + "\n");
+                        acumula += ("Patrimonio: " + pat + "\n");
+                        acumula += "Testes referentes ao equipamento : " + pat + "\n";
+                        areaBurnTest.setText(acumula);
+
                     }
                     JOptionPane.showMessageDialog(null, "Arquivos criados com sucesso.");
                 }
             } else {
                 if (acessorios.criaDir(dir)) {
+                    
                     String path = (dir + "\\" + getEquip(txtOrdServ.getText()).get(0));
-                        getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(0),0);
-                        txtSeven.criarBurnTxt(path, idOrdServ, model, pat, nserie, tecnico);
+                    getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(0), 0);
+                    txtBurn.criarBurnTxt(path, idOrdServ, model, pat, nserie, tecnico);
+                    String acumula = pat + "\n";
+                    acumula += ("Pedido: " + idOrdServ + "\n");
+                    acumula += ("Tecnico: " + tecnico + "\n");
+                    acumula += ("Modelo: " + model + "\n");
+                    acumula += ("Serial: " + nserie + "\n");
+                    acumula += ("Patrimonio: " + pat + "\n");
+                    acumula += "Testes referentes ao equipamento : " + pat + "\n";
+                    areaBurnTest.setText(acumula);
                     JOptionPane.showMessageDialog(null, "Arquivo criado com sucesso.");
                 }
             }
@@ -371,11 +394,48 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnTxtBurnActionPerformed
 
     private void btnTxtSevenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTxtSevenActionPerformed
-        // TODO add your handling code here:
+        CriarSevenTxt txtSeven = new CriarSevenTxt();
+        String dir = txtLocalArquivo.getText() + txtArqFormatado.getText();
+        int nDir = getEquip(txtOrdServ.getText()).size();
+        if (!dir.isEmpty()) {
+            if (nDir > 1) {
+                JOptionPane.showMessageDialog(null, "Serão criados " + nDir + " sub diretórios.");
+                if (acessorios.criaDir(dir)) {
+                    String acumula = "\n";
+                    for (int i = 0; i < nDir; i++) {
+                        String path = (dir + "\\" + getEquip(txtOrdServ.getText()).get(i));
+                        getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(i), i);
+                        txtSeven.criarTxt(path, pat, model);
+                        SevenArq seventext = new SevenArq();
+                        acumula += pat + "\n";
+                        acumula += seventext.arqSevenPeca(model) + "\n";
+                        areaSeven.setText(acumula);
+                    }
+                    JOptionPane.showMessageDialog(null, "Arquivos criados com sucesso.");
+                }
+            } else {
+                if (acessorios.criaDir(dir)) {
+                    String path = (dir + "\\" + getEquip(txtOrdServ.getText()).get(0));
+                    getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(0), 0);
+                    txtSeven.criarTxt(path, pat, model);
+                    SevenArq seventext = new SevenArq();
+                        String acumula = pat + "\n";
+                        acumula += seventext.arqSevenPeca(model) + "\n";
+                        areaSeven.setText(acumula);
+                    JOptionPane.showMessageDialog(null, "Arquivo criado com sucesso.");
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Arquivo não criado.");
+        }
+
+
     }//GEN-LAST:event_btnTxtSevenActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea areaBurnTest;
+    private javax.swing.JTextArea areaSeven;
     private javax.swing.JButton btnCriaDir;
     private javax.swing.JButton btnLocalizar;
     private javax.swing.JButton btnTxtBurn;
@@ -389,9 +449,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField txtArqFormatado;
-    private javax.swing.JTextArea txtBurnTest;
     private javax.swing.JTextField txtLocalArquivo;
     private javax.swing.JTextField txtOrdServ;
-    private javax.swing.JTextArea txtSeven;
     // End of variables declaration//GEN-END:variables
 }

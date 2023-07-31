@@ -18,7 +18,7 @@ public class CriarBurnTest {
 
     public void criarTxt(String path, String arquivo) {
         if (criaDir(path)) {
-            File arq = new File(path + "\\" + arquivo + ".txt");
+            File arq = new File(path + "\\" + arquivo + "_Burn.txt");
             try {
                 if ((arq.exists())) {
                     int existe = JOptionPane.showConfirmDialog(null, "O Arquivo já existe. Sobrescrever?",

@@ -35,7 +35,7 @@ model varchar(50) PRIMARY KEY  ,
 mem VARCHAR(50) not null,
 mBoard VARCHAR(50) not null,
 expansao varchar(50) default "Sem expansões",
-armazenaTipo varchar(10)default "USB Flash",
+armazenaTipo varchar(20)default "USB Flash",
 armazenaModel varchar(50) not null,
 fonteAlimenta VARCHAR(50)  not null,
 sParalela varchar(5) default "0",
@@ -45,10 +45,15 @@ wifi varchar(50) default "nao",
 tipo varchar(50) default "ThinClient",
 processador VARCHAR(50) not null,
 gabinete varchar(50) not null,
-obsoleto  boolean default false
+obsoleto  boolean default false,
+painel varchar(50),
+memtipo varchar(20),
+so varchar(50)
 );
 
-#alter table tbmodelo add obsoleto boolean default false;
+select * from tbmodelo;
+
+#alter table tbmodelo add so varchar(50);
 
 create table tbOrdServ(
 idOrdServ VARCHAR(10) PRIMARY KEY,

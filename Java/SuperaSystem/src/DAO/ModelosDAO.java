@@ -29,9 +29,9 @@ public class ModelosDAO {
     ResultSet rs = null;
     Connection conexao = ConexaoDb.getConection();
 
-    public boolean adicionarModelo(String model, String mem, String mBoard, String expansao, String armazenaTipo, String armazenaModel, String fonteAlimenta, String sParalela, String sSerial, String redeLan, String wifi, String tipo, String processador, String gabinete, Boolean obsoleto) {
+    public boolean adicionarModelo(String model, String mem, String mBoard, String expansao, String armazenaTipo, String armazenaModel, String fonteAlimenta, String sParalela, String sSerial, String redeLan, String wifi, String tipo, String processador, String gabinete, Boolean obsoleto, String painel, String memtipo, String so) {
         boolean sucesso = false;
-        String sql = "insert into tbmodelo(model, mem, mBoard,expansao, armazenaTipo, armazenaModel,fonteAlimenta, sParalela, sSerial , redeLan, wifi, tipo, processador,gabinete, obsoleto) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+        String sql = "insert into tbmodelo(model, mem, mBoard,expansao, armazenaTipo, armazenaModel,fonteAlimenta, sParalela, sSerial , redeLan, wifi, tipo, processador,gabinete, obsoleto, painel, memtipo, so) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
         try {
             conexao = ConexaoDb.getConection();
@@ -51,6 +51,9 @@ public class ModelosDAO {
             pst.setString(13, processador);
             pst.setString(14, gabinete);
             pst.setBoolean(15, obsoleto);
+            pst.setString(16, painel);
+            pst.setString(17, memtipo);
+            pst.setString(18, so);
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {
                 sucesso = true;
@@ -64,13 +67,13 @@ public class ModelosDAO {
         return sucesso;
     }
 
-    public ArrayList<ModelosBean> pesquisarModelo(String model) {
+    public ArrayList<ModelosBean> pesquisarModelo(String arg, String value) {
         ArrayList<ModelosBean> listaModelos = new ArrayList<>();
-        String sql = "select * from tbmodelo where model=?";
+        String sql = "select  * from tbmodelo where " + arg + "=?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
-            pst.setString(1, model);
+            pst.setString(1, value);
             rs = pst.executeQuery();
             while (rs.next()) {
                 ModelosBean produto = new ModelosBean();
@@ -89,6 +92,9 @@ public class ModelosDAO {
                 produto.setProcessador(rs.getString("processador"));
                 produto.setGabinete(rs.getString("gabinete"));
                 produto.setObsoleto(rs.getBoolean("obsoleto"));
+                produto.setPainel(rs.getString("painel"));
+                produto.setMemTipo(rs.getString("memtipo"));
+                produto.setSo(rs.getString("so"));
                 listaModelos.add(produto);
             }
             conexao.close();
@@ -100,7 +106,7 @@ public class ModelosDAO {
 
     public ArrayList<ModelosBean> pesquisarModelo() {
         ArrayList<ModelosBean> listaModelos = new ArrayList<>();
-        String sql = "select * from tbmodelo";
+        String sql = "select  * from tbmodelo order by model";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -121,7 +127,10 @@ public class ModelosDAO {
                 produto.setTipo(rs.getString("tipo"));
                 produto.setProcessador(rs.getString("processador"));
                 produto.setGabinete(rs.getString("gabinete"));
-                 produto.setObsoleto(rs.getBoolean("obsoleto"));
+                produto.setObsoleto(rs.getBoolean("obsoleto"));
+                produto.setPainel(rs.getString("painel"));
+                produto.setMemTipo(rs.getString("memtipo"));
+                 produto.setSo(rs.getString("so"));
                 listaModelos.add(produto);
             }
             conexao.close();
@@ -131,11 +140,11 @@ public class ModelosDAO {
         return listaModelos;
     }
 
-    public boolean editarModelo(String model, String mem, String mBoard, String expansao, String armazenaTipo, String armazenaModel, String fonteAlimenta, String sParalela, String sSerial, String redeLan, String wifi, String tipo, String processador, String gabinete, Boolean obsoleto) {
+    public boolean editarModelo(String model, String mem, String mBoard, String expansao, String armazenaTipo, String armazenaModel, String fonteAlimenta, String sParalela, String sSerial, String redeLan, String wifi, String tipo, String processador, String gabinete, Boolean obsoleto, String painel, String memtipo, String so ) {
         boolean sucesso = false;
         int confirma = JOptionPane.showConfirmDialog(null, "Confima as alterações nos dados deste produto?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
-            String sql = "update tbmodelo set mem=?, mBoard=?,expansao=?, armazenaTipo=?, armazenaModel=?,fonteAlimenta=?, sParalela=?, sSerial=? , redeLan=?, wifi=?, tipo=?, processador=?,gabinete=?, obsoleto=? where model=?";
+            String sql = "update tbmodelo set mem=?, mBoard=?,expansao=?, armazenaTipo=?, armazenaModel=?,fonteAlimenta=?, sParalela=?, sSerial=? , redeLan=?, wifi=?, tipo=?, processador=?,gabinete=?, obsoleto=?, painel=?, memtipo=?, so=? where model=?";
             try {
                 conexao = ConexaoDb.getConection();
                 pst = conexao.prepareStatement(sql);
@@ -153,7 +162,11 @@ public class ModelosDAO {
                 pst.setString(12, processador);
                 pst.setString(13, gabinete);
                 pst.setBoolean(14, obsoleto);
-                pst.setString(15, model);
+                pst.setString(15, painel);
+                pst.setString(16, memtipo);
+                pst.setString(17, so);
+                pst.setString(18, model);
+                
                 int editado = pst.executeUpdate();
                 if (editado > 0) {
                     sucesso = true;

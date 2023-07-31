@@ -15,11 +15,11 @@ import javax.swing.JOptionPane;
  * @author RMA
  */
 public class CriarSevenTxt{  
-    SevenArq seven = new SevenArq();
+    
 
-    public void criarTxt(String path, String arquivo) {
+    public void criarTxt(String path, String arquivo, String model) {
         if (criaDir(path)) {
-            File arq = new File(path + "\\" + arquivo + ".txt");
+            File arq = new File(path + "\\" + arquivo + "_Seven.txt");
             try {
                 if ((arq.exists())) {
                     int existe = JOptionPane.showConfirmDialog(null, "O Arquivo já existe. Sobrescrever?",
@@ -31,7 +31,7 @@ public class CriarSevenTxt{
                     }
                 } else {
                     arq.createNewFile();
-                    escreverq(path, arq);
+                    escreverqPeca(arq, model);
                     JOptionPane.showMessageDialog(null, "Arquivo criado com sucesso!");
 
                 }
@@ -42,32 +42,7 @@ public class CriarSevenTxt{
 
     }
 
-    public Boolean criarBurnTxt(String path, String idOrdServ, String model, String patEquip, String nserie, String tecnico) {
-        Boolean sucesso = false;
-        if (criaDir(path)) {
-            File arq = new File(path + "\\" + patEquip + ".txt");
-            try {
-                if ((arq.exists())) {
-                    int existe = JOptionPane.showConfirmDialog(null, "O Arquivo já existe. Sobrescrever?",
-                            "Arquivo existente", JOptionPane.YES_NO_OPTION);
-                    if (existe == JOptionPane.YES_OPTION) {
-                        arq.delete();
-                        arq.createNewFile();
-                       // escreverq(arq, idOrdServ, model, patEquip, nserie, tecnico);
-                        sucesso = true;
-                    }
-                    return false;
-                } else {
-                    arq.createNewFile();
-                    //escreverq(arq, idOrdServ, model, patEquip, nserie, tecnico);
-                    sucesso = true;
-                }
-            } catch (IOException e) {
-                System.out.println("Erro ao criar TXT: " + e);
-            }
-        }
-        return sucesso;
-    }
+
 
     private boolean criaDir(String dir) {
         boolean sucesso = false;
@@ -80,18 +55,13 @@ public class CriarSevenTxt{
         return sucesso;
     }
 
-    private void escreverqPeca(File file,String placaMae, String processador, String memoria, String pico, String armazenamento, String so, String expansao ) throws IOException {
+    private void escreverqPeca(File file, String model) throws IOException {
+        SevenArq seven = new SevenArq();
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(seven.arqSevenPeca(placaMae, processador, memoria, pico, armazenamento, so, expansao));
+        bw.write(seven.arqSevenPeca(model));
         bw.close();
     }
 
-    private void escreverq(String arq, File file) throws IOException {
-        FileWriter fw = new FileWriter(file.getAbsoluteFile());
-        BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(arq);
-        bw.close();
-    }
-
+ 
 }

@@ -5,13 +5,50 @@
  */
 package Acessorios;
 
+import Bean.ModelosBean;
+import DAO.ModelosDAO;
+import java.util.ArrayList;
+
 /**
  *
  * @author hmjussani
  */
 public class SevenArq {
 
-    public String arqSevenPeca(String placaMae, String processador, String memoria, String pico, String armazenamento, String so, String expansao) {
+    private String model;
+    private String memoria;
+    private String so;
+    private String placaMae;
+    private String expansao;    
+    private String armazenamento;
+    private String pico;
+    private String sParalela;
+    private String sSerial;
+    private String redeLan;
+    private String wifi;
+    private String tipo;
+    private String processador;
+    private String gabinete;
+    private String painel;
+
+    private void getDadosOs(String model) {
+        ModelosDAO modeloDao = new ModelosDAO();
+        ArrayList<ModelosBean> modelList = modeloDao.pesquisarModelo("model", model);
+        placaMae = (modelList.get(0).getmBoard());
+        pico = (modelList.get(0).getFonteAlimenta());
+        armazenamento = (modelList.get(0).getArmazenaModel());
+        gabinete = (modelList.get(0).getGabinete());
+        redeLan = (modelList.get(0).getRedeLan());
+        memoria = (modelList.get(0).getMem());
+        painel = (modelList.get(0).getPainel());
+        processador = (modelList.get(0).getProcessador());
+        wifi = (modelList.get(0).getWifi());
+        expansao = modelList.get(0).getExpansao();
+        so = modelList.get(0).getSo();
+    }
+
+    public String arqSevenPeca(String model) {
+        getDadosOs(model);
         String texto;
         texto = "1.DESCRIÇÕES DAS PEÇAS INTERNAS" + "\n";
         texto += "- PLACA MÃE: " + placaMae + "\n";

@@ -9,24 +9,27 @@ package Bean;
  *
  * @author Rick
  */
-public class ModelosBean {    
-   
+public class ModelosBean {
+
     private String model;
-    private String mem; 
+    private String mem;
     private String mBoard;
     private String expansao;
     private String armazenaTipo;
-     private String armazenaModel;
+    private String armazenaModel;
     private String fonteAlimenta;
     private String sParalela;
-    private String sSerial; 
+    private String sSerial;
     private String redeLan;
-    private String wifi; 
-     private String tipo;
+    private String wifi;
+    private String tipo;
     private String processador;
     private String gabinete;
-     private boolean obsoleto = false;
-     
+    private String painel;
+    private String memTipo;
+   private String so;
+    private boolean obsoleto;
+
     public ModelosBean() {
     }
 
@@ -150,6 +153,28 @@ public class ModelosBean {
         this.obsoleto = obsoleto;
     }
 
-    
-    
+    public String getPainel() {
+        return painel;
+    }
+
+    public void setPainel(String painel) {
+        this.painel = painel;
+    }
+
+    public String getMemTipo() {
+        return memTipo;
+    }
+
+    public void setMemTipo(String memTipo) {
+        this.memTipo = memTipo;
+    }
+
+    public String getSo() {
+        return so;
+    }
+
+    public void setSo(String so) {
+        this.so = so;
+    }
+
 }

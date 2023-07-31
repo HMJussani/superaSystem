@@ -13,21 +13,23 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TelaModelos extends javax.swing.JInternalFrame {
 
-    
     private String model;
-    private String mem; 
+    private String mem;
+    private String memTipo;
     private String mBoard;
     private String expansao;
     private String armazenaTipo;
-     private String armazenaModel;
+    private String armazenaModel;
     private String fonteAlimenta;
     private String sParalela;
-    private String sSerial; 
+    private String sSerial;
     private String redeLan;
-    private String wifi; 
-     private String tipo;
+    private String wifi;
+    private String tipo;
     private String processador;
     private String gabinete;
+    private String painel;
+    private String so;
     private boolean obsoleto = false;
     int conta = 0;
 
@@ -44,12 +46,12 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         String obsoleto = "Não";
 
         for (int i = 0; i < modeloEquip.size(); i++) {
-            if(modeloEquip.get(i).getObsoleto()){
+            if (modeloEquip.get(i).getObsoleto()) {
                 obsoleto = "Sim";
-            }else{
+            } else {
                 obsoleto = "Não";
             }
-            
+
             model.addRow(new Object[]{
                 modeloEquip.get(i).getModel(),
                 modeloEquip.get(i).getmBoard(),
@@ -66,6 +68,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private void getDados() {
         model = txtModel.getText();
         mem = txtMemoria.getText();
+        memTipo = txtMemTipo.getText();
         mBoard = txtMotherBoard.getText();
         processador = txtCPU.getText();
         tipo = txtTipo.getText();
@@ -76,16 +79,22 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         gabinete = txtGabinete.getText();
         redeLan = txtRede.getText();
         wifi = txtWifi.getText();
-        if(chekObsoleto.isSelected()) {
+        painel = txtPainel.getText();
+        armazenaTipo = txtArmtipo.getText();
+        expansao = txtExpansao.getText();
+        so = txtSistemaOperacional.getText();
+        if (chekObsoleto.isSelected()) {
             obsoleto = true;
-        }else{
-            obsoleto =false;
+        } else {
+            obsoleto = false;
         }
     }
 
     private void setarCampos(ArrayList<ModelosBean> lista) {
         txtModel.setText(lista.get(0).getModel());
         txtMemoria.setText(lista.get(0).getMem());
+        txtMemTipo.setText(lista.get(0).getMemTipo());
+        txtArmtipo.setText(lista.get(0).getArmazenaTipo());
         txtMotherBoard.setText(lista.get(0).getmBoard());
         txtAlimentacao.setText(lista.get(0).getFonteAlimenta());
         txtArmazenamento.setText(lista.get(0).getArmazenaModel());
@@ -95,7 +104,9 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         txtWifi.setText(lista.get(0).getWifi());
         txtTipo.setText(lista.get(0).getTipo());
         txtCPU.setText(lista.get(0).getProcessador());
+        txtPainel.setText(lista.get(0).getPainel());
         txtGabinete.setText(lista.get(0).getGabinete());
+        txtSistemaOperacional.setText(lista.get(0).getSo());
         chekObsoleto.setSelected(lista.get(0).getObsoleto());
         btnAdicionar.setEnabled(true);
         btnAlterar.setEnabled(true);
@@ -106,7 +117,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         int setar = tbEquip.getSelectedRow();
         ModelosDAO computador = new ModelosDAO();
         String modelo = tbEquip.getValueAt(setar, 0).toString();
-        ArrayList<ModelosBean> equipamento = computador.pesquisarModelo(modelo);
+        ArrayList<ModelosBean> equipamento = computador.pesquisarModelo("model", modelo);
         if (!equipamento.isEmpty()) {
             setarCampos(equipamento);
         }
@@ -114,7 +125,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
 
     private void limpar() {
         txtModel.setText(null);
-        txtGabinete.setText(null);
+        txtPainel.setText(null);
         txtTipo.setText(null);
         txtMemoria.setText(null);
         txtMotherBoard.setText(null);
@@ -125,6 +136,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         txtSerial.setText(null);
         txtRede.setText(null);
         txtWifi.setText(null);
+        txtSistemaOperacional.setText(null);
         btnAdicionar.setEnabled(true);
         btnAlterar.setEnabled(false);
         btnRemover.setEnabled(false);
@@ -166,11 +178,17 @@ public class TelaModelos extends javax.swing.JInternalFrame {
         jLabel14 = new javax.swing.JLabel();
         txtWifi = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        txtGabinete = new javax.swing.JTextField();
+        txtPainel = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbEquip = new javax.swing.JTable();
         txtExpansao = new javax.swing.JTextField();
         chekObsoleto = new javax.swing.JCheckBox();
+        txtGabinete = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        txtArmtipo = new javax.swing.JTextField();
+        txtMemTipo = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        txtSistemaOperacional = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -180,7 +198,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Processador");
 
-        jLabel3.setText("Memória");
+        jLabel3.setText("Gabinete");
 
         jLabel4.setText("Armazenamento");
 
@@ -244,7 +262,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
 
         txtWifi.setText("não");
 
-        jLabel15.setText("Gabinete");
+        jLabel15.setText("Painel");
 
         tbEquip.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -297,118 +315,159 @@ public class TelaModelos extends javax.swing.JInternalFrame {
 
         chekObsoleto.setText("Obsoleto");
 
+        jLabel16.setText("Memória");
+
+        txtArmtipo.setText("SSD 2.5");
+
+        txtMemTipo.setText("DDR2");
+
+        jLabel17.setText("Sistema Operacional");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel8))
-                        .addGap(4, 4, 4)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtModel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(chekObsoleto))
-                            .addComponent(txtExpansao)
-                            .addComponent(txtRede)
-                            .addComponent(txtArmazenamento)
-                            .addComponent(txtCPU)
-                            .addComponent(txtMotherBoard, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(73, 73, 73)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtWifi, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtAlimentacao, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtMemoria, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtGabinete, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtTipo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addGap(10, 10, 10)
-                                .addComponent(txtSerial, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(16, 16, 16)
-                                .addComponent(jLabel10)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtParalela, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(18, 18, 18))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
-                .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
-                .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(288, 288, 288))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                    .addComponent(jLabel17)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(6, 6, 6)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtMotherBoard, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtCPU, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(txtArmtipo, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtArmazenamento))
+                                        .addComponent(txtExpansao, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel9)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtSerial, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(16, 16, 16)
+                                            .addComponent(jLabel10)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(txtParalela, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addComponent(txtModel)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(chekObsoleto)))
+                                    .addComponent(txtSistemaOperacional, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(100, 100, 100)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtWifi, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel13)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtRede))
+                                    .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPainel)
+                                    .addComponent(txtAlimentacao)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtMemTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtMemoria))
+                                    .addComponent(txtGabinete))
+                                .addGap(82, 82, 82))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1079, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(466, 466, 466)
+                        .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)
+                        .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(251, 251, 251))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtAlimentacao, txtGabinete, txtPainel, txtTipo});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(txtModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel12)
-                    .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chekObsoleto))
-                .addGap(8, 8, 8)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel7)
-                    .addComponent(txtMotherBoard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15)
-                    .addComponent(txtGabinete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(txtModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel11)
+                        .addComponent(jLabel12)
+                        .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(chekObsoleto, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(txtMotherBoard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel16)
+                            .addComponent(txtMemoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtMemTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(txtCPU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
-                    .addComponent(txtMemoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtGabinete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel4)
                     .addComponent(txtArmazenamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
-                    .addComponent(txtAlimentacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtAlimentacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtArmtipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel13)
                     .addComponent(txtRede, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
-                    .addComponent(txtWifi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtWifi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel17)
+                        .addComponent(txtSistemaOperacional, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel8)
                         .addComponent(txtExpansao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                        .addComponent(jLabel9)
-                        .addComponent(txtSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel10)
-                        .addComponent(txtParalela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel15)
+                        .addComponent(txtPainel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel9)
+                    .addComponent(txtSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10)
+                    .addComponent(txtParalela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(83, 83, 83))
+                .addContainerGap(104, Short.MAX_VALUE))
         );
 
         setBounds(0, 0, 1124, 683);
@@ -417,7 +476,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         getDados();
         ModelosDAO computador = new ModelosDAO();
-        if (computador.adicionarModelo(model, mem, mBoard, expansao, armazenaTipo, armazenaModel, fonteAlimenta, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete, obsoleto)) {
+        if (computador.adicionarModelo(model, mem, mBoard, expansao, armazenaTipo, armazenaModel, fonteAlimenta, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete, obsoleto, painel, memTipo, so)){
             JOptionPane.showMessageDialog(null, "Produto inserido com sucesso.");
             setarTabela();
         }
@@ -426,7 +485,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         getDados();
         ModelosDAO computador = new ModelosDAO();
-        if (computador.editarModelo(model, mem, mBoard, expansao, armazenaTipo, armazenaModel, fonteAlimenta, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete, obsoleto)) {
+        if (computador.editarModelo(model, mem, mBoard, expansao, armazenaTipo, armazenaModel, fonteAlimenta, sParalela, sSerial, redeLan, wifi, tipo, processador, gabinete, obsoleto, painel, memTipo,so)) {
             JOptionPane.showMessageDialog(null, "Produto alterado com sucesso");
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
@@ -453,7 +512,7 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tbEquipMouseClicked
 
     private void tbEquipKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbEquipKeyReleased
-       setarCampos();
+        setarCampos();
     }//GEN-LAST:event_tbEquipKeyReleased
 
 
@@ -468,6 +527,8 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -479,15 +540,19 @@ public class TelaModelos extends javax.swing.JInternalFrame {
     private javax.swing.JTable tbEquip;
     private javax.swing.JTextField txtAlimentacao;
     private javax.swing.JTextField txtArmazenamento;
+    private javax.swing.JTextField txtArmtipo;
     private javax.swing.JTextField txtCPU;
     private javax.swing.JTextField txtExpansao;
     private javax.swing.JTextField txtGabinete;
+    private javax.swing.JTextField txtMemTipo;
     private javax.swing.JTextField txtMemoria;
     private javax.swing.JTextField txtModel;
     private javax.swing.JTextField txtMotherBoard;
+    private javax.swing.JTextField txtPainel;
     private javax.swing.JTextField txtParalela;
     private javax.swing.JTextField txtRede;
     private javax.swing.JTextField txtSerial;
+    private javax.swing.JTextField txtSistemaOperacional;
     private javax.swing.JTextField txtTipo;
     private javax.swing.JTextField txtWifi;
     // End of variables declaration//GEN-END:variables
