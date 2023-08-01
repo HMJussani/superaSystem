@@ -15,11 +15,10 @@ public class DefSolBean {
     private String defeito;
     private String solucao;
 
+
     public DefSolBean() {
     }
 
-    
-    
     public int getIdDefeito() {
         return idDefeito;
     }
@@ -51,7 +50,5 @@ public class DefSolBean {
     public void setSolucao(String solucao) {
         this.solucao = solucao;
     }
-    
-    
-    
+
 }

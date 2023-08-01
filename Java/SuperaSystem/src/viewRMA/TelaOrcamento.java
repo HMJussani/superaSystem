@@ -1,6 +1,5 @@
 package viewRMA;
 
-import Acessorios.Acessorios;
 import Acessorios.SevenArq;
 import Bean.DefSolBean;
 import Bean.EquipOSBean;
@@ -10,8 +9,12 @@ import DAO.DefSolDAO;
 import DAO.EquipOsDAO;
 import DAO.ModelosDAO;
 import DAO.OrdServDAO;
+import java.awt.Dimension;
+import static java.awt.Frame.MAXIMIZED_BOTH;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -34,12 +37,11 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
     private String gabinete;
     private String painel;
 
-    private int conta = 0;
+    private int conta = 0;   
 
     public TelaOrcamento() {
         initComponents();
         getHardware();
-
     }
 
     private void getHardware() {

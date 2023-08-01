@@ -21,12 +21,12 @@ import viewRMA.TelaOrcamento;
  */
 public class TelaPrincipal extends javax.swing.JFrame {
 
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private int[] resolucao = {1152,864}; 
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();   
 
     public TelaPrincipal() {
         initComponents();
         this.setIconImage(new ImageIcon(getClass().getResource("/imagem/Duke.png")).getImage()); //muda o icone padrao
+        if((screenSize.width>= 1280)&&(screenSize.height>=960))setExtendedState(MAXIMIZED_BOTH);
     }
 
     /**
@@ -298,12 +298,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void menCadUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menCadUsuActionPerformed
         TelaUsuario usuario = new TelaUsuario();
         usuario.setVisible(true);
+        usuario.setSize(desktop.getSize()); 
         desktop.add(usuario);
     }//GEN-LAST:event_menCadUsuActionPerformed
 
     private void menCadCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menCadCliActionPerformed
         TelaCliente cliente = new TelaCliente();
         cliente.setVisible(true);
+        cliente.setSize(desktop.getSize()); 
         desktop.add(cliente);
     }//GEN-LAST:event_menCadCliActionPerformed
 
@@ -314,6 +316,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void menRelSerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menRelSerActionPerformed
         TelaInvetarioOs invetarioOs = new TelaInvetarioOs();
         invetarioOs.setVisible(true);
+        invetarioOs.setSize(desktop.getSize()); 
         desktop.add(invetarioOs);
     }//GEN-LAST:event_menRelSerActionPerformed
 
@@ -332,24 +335,28 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void menCompsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menCompsActionPerformed
         TelaModelos comps = new TelaModelos();
         comps.setVisible(true);
+        comps.setSize(desktop.getSize()); 
         desktop.add(comps);
     }//GEN-LAST:event_menCompsActionPerformed
 
     private void menTecOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menTecOSActionPerformed
         TelaOSAberta os = new TelaOSAberta();
         os.setVisible(true);
+        os.setSize(desktop.getSize()); 
         desktop.add(os);
     }//GEN-LAST:event_menTecOSActionPerformed
 
     private void menTecOSFechadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menTecOSFechadaActionPerformed
         TelaOSFechada os = new TelaOSFechada();
         os.setVisible(true);
+        os.setSize(desktop.getSize()); 
         desktop.add(os);
     }//GEN-LAST:event_menTecOSFechadaActionPerformed
 
     private void menuTecGeraArqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuTecGeraArqActionPerformed
         TelaArquivos tela = new TelaArquivos();
         tela.setVisible(true);
+        tela.setSize(desktop.getSize()); 
         desktop.add(tela);
 
     }//GEN-LAST:event_menuTecGeraArqActionPerformed
@@ -357,6 +364,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void menRelEquipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menRelEquipActionPerformed
         TelaInvetarioEquip prods = new TelaInvetarioEquip();
         prods.setVisible(true);
+        prods.setSize(desktop.getSize()); 
         desktop.add(prods);
 
     }//GEN-LAST:event_menRelEquipActionPerformed
@@ -364,6 +372,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void MenuTecOrcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuTecOrcActionPerformed
         TelaOrcamento orcs = new TelaOrcamento();
         orcs.setVisible(true);
+        orcs.setSize(desktop.getSize());       
         desktop.add(orcs);
     }//GEN-LAST:event_MenuTecOrcActionPerformed
 

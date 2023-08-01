@@ -29,7 +29,7 @@ public class TelaLogin extends javax.swing.JFrame {
     boolean sucesso = false;
     UsuariosBean usuario = new UsuariosBean();
 
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();    
 
     private boolean conectado() {
 
