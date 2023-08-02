@@ -53,7 +53,7 @@ so varchar(50)
 
 select * from tbmodelo;
 
-#alter table tbmodelo add so varchar(50);
+alter table tbmodelo add memtipo varchar(20);
 
 create table tbOrdServ(
 idOrdServ VARCHAR(10) PRIMARY KEY,
@@ -94,6 +94,24 @@ defeito VARCHAR(100)DEFAULT "Verificar.",
 solucao VARCHAR(100)DEFAULT "Verificar.",
 foreign key (nserie) references tbEquip(nserie)
 );
+
+create table tbequipDef(
+nserie varchar(20) ,
+placaMaeDef VARCHAR(100),
+picoDef VARCHAR(100),
+armazenamentoDef VARCHAR(100),
+memoriaDef VARCHAR(100),
+processadorDef VARCHAR(100),
+expansaoDef VARCHAR(100),
+soDef VARCHAR(100),
+fonteDef VARCHAR(100),
+redeDef VARCHAR(100),
+wifiDef VARCHAR(100),
+testeDef VARCHAR(100),
+foreign key (nserie) references tbEquip(nserie)
+);
+
+
 
 #alter table tbEquip add garantia bool DEFAULT FALSE;
 

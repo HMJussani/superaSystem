@@ -9,9 +9,9 @@ package Bean;
  * @author RMA
  */
 public class DefEquipBean {
-   
+
     private String nserie;
-    private String diagnostico;  
+    private String diagnostico;
     private String placaMaeDef;
     private String picoDef;
     private String armazenamentoDef;
@@ -20,21 +20,23 @@ public class DefEquipBean {
     private String expansaoDef;
     private String soDef;
     private String fonteDef;
-    
+    private String redeDef;
+    private String wifiDef;
+    private String testeDef;
+
     private String expansaoOrc;
     private String caboSerialOrc;
     private String caboParOrc;
     private String kitPainelOrc;
-    private String kitGab; 
+    private String kitGab;
     private String maoObra;
-    
+
     private String placaMaeOrc;
     private String processadorOrc;
-    private String memoriaOrc; 
+    private String memoriaOrc;
     private String picoOrc;
-    private String armazenamentoOrc; 
+    private String armazenamentoOrc;
     private String soOrc;
-    private String TesteDef;
 
     public String getNserie() {
         return nserie;
@@ -213,13 +215,27 @@ public class DefEquipBean {
     }
 
     public String getTesteDef() {
-        return TesteDef;
+        return testeDef;
     }
 
-    public void setTesteDef(String TesteDef) {
-        this.TesteDef = TesteDef;
+    public void setTesteDef(String testeDef) {
+        this.testeDef = testeDef;
     }
 
-    
-    
+    public String getRedeDef() {
+        return redeDef;
+    }
+
+    public void setRedeDef(String redeDef) {
+        this.redeDef = redeDef;
+    }
+
+    public String getWifiDef() {
+        return wifiDef;
+    }
+
+    public void setWifiDef(String wifiDef) {
+        this.wifiDef = wifiDef;
+    }
+
 }

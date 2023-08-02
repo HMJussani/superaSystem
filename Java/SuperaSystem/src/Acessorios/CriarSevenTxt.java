@@ -14,10 +14,10 @@ import javax.swing.JOptionPane;
  *
  * @author RMA
  */
-public class CriarSevenTxt{  
+public class CriarSevenTxt extends SevenArq{  
     
 
-    public void criarTxt(String path, String arquivo, String model) {
+    public void criarTxt(String path, String arquivo, String model, String nSerie) {
         if (criaDir(path)) {
             File arq = new File(path + "\\" + arquivo + "_Seven.txt");
             try {
@@ -31,7 +31,7 @@ public class CriarSevenTxt{
                     }
                 } else {
                     arq.createNewFile();
-                    escreverqPeca(arq, model);
+                    escreverqPeca(arq, model,nSerie);
                     JOptionPane.showMessageDialog(null, "Arquivo criado com sucesso!");
 
                 }
@@ -55,11 +55,12 @@ public class CriarSevenTxt{
         return sucesso;
     }
 
-    private void escreverqPeca(File file, String model) throws IOException {
-        SevenArq seven = new SevenArq();
+    private void escreverqPeca(File file, String model, String nSerie) throws IOException {
+       
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(seven.arqSevenPeca(model));
+        bw.write(arqSevenPeca(model));
+        bw.write(arqSevenTest(nSerie));
         bw.close();
     }
 

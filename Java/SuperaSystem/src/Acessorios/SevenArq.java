@@ -17,8 +17,6 @@ import java.util.ArrayList;
  */
 public class SevenArq {
 
-    private String model;
-    private String nserie;
     private String memoria;
     private String so;
     private String placaMae;
@@ -28,8 +26,7 @@ public class SevenArq {
     private String sParalela;
     private String sSerial;
     private String redeLan;
-    private String wifi;
-    private String tipo;
+    private String wifi;   
     private String processador;
     private String gabinete;
     private String painel;
@@ -40,8 +37,10 @@ public class SevenArq {
     private String soDef;
     private String expansaoDef;
     private String processadorDef;
-    private String TesteDef;
+    private String testeDef;
     private String fonteDef;
+    private String redeDef;
+    private String wifiDef;
 
     private void getDadosOs(String model) {
         ModelosDAO modeloDao = new ModelosDAO();
@@ -61,15 +60,19 @@ public class SevenArq {
 
     private void getDadosDef(String nSerie) {
 
-        DefEquipDAO defEquip= new DefEquipDAO();
-        ArrayList<DefEquipBean> defList = defEquip.pesquisaDef("nserie", nserie);
-        placaMaeDef = defList.get(0).getmBoard();
-        picoDef = defList.get(0).getFonteAlimenta();
-        armazenamentoDef = defList.get(0).getArmazenaModel();
-        memoriaDef = defList.get(0).getMem();
-        processadorDef = defList.get(0).getProcessador();
-        expansaoDef =defList.get(0).getExpansao();
-        soDef =defList.get(0).getSo();
+        DefEquipDAO defEquip = new DefEquipDAO();
+        ArrayList<DefEquipBean> defList = defEquip.listaDefEquip(nSerie);
+        placaMaeDef = defList.get(0).getPlacaMaeDef();
+        picoDef = defList.get(0).getPicoDef();
+        armazenamentoDef = defList.get(0).getArmazenamentoDef();
+        memoriaDef = defList.get(0).getMemoriaDef();
+        processadorDef = defList.get(0).getProcessadorDef();
+        expansaoDef = defList.get(0).getExpansaoDef();
+        soDef = defList.get(0).getSoDef();
+        testeDef = defList.get(0).getTesteDef();
+        fonteDef = defList.get(0).getFonteDef();
+        redeDef = defList.get(0).getRedeDef();
+        wifiDef = defList.get(0).getWifiDef();
     }
 
     public String arqSevenPeca(String model) {
@@ -89,17 +92,21 @@ public class SevenArq {
     public String arqSevenTest(String nSerie) {
         getDadosDef(nSerie);
         String texto;
-        texto = "2.TESTE " + TesteDef + "\n";
-        texto += "- BURN IN TESTE: " + placaMaeDef + "\n";
+        texto = "2.TESTE\n";
+        texto += "- BURN IN TESTE: " +  testeDef + "\n";
+        texto += "- PLACA MÃE: " + placaMaeDef + "\n";
+        texto += "- PROCESSADOR: " + processadorDef + "\n";
         texto += "- CARREGAMENTO S.O: " + soDef + "\n";
-        texto += "- FONTE ALIMENTAÇÂO: " + picoDef + "\n";
+        texto += "- FONTE ALIMENTAÇÂO: " + fonteDef + "\n";
         texto += "- HD/SSD: " + armazenamentoDef + "\n";
         texto += "- MEMORIA RAM: " + memoriaDef + "\n";
-        texto += "- REDE: " + expansaoDef + "\n";
+        texto += "- REDE: " + redeDef + "\n";
+        texto += "- WiFi: " + wifiDef + "\n";
+        texto += "- EXPANSÕES: " + expansaoDef + "\n";
         return texto;
     }
 
-    public String arqSevenOrc(String placaMaeOrc, String processadorOrc, String memoriaOrc, String picoOrc,String fonteDef, String armazenamentoOrc, String soOrc) {
+    public String arqSevenOrc(String placaMaeOrc, String processadorOrc, String memoriaOrc, String picoOrc, String fonteDef, String armazenamentoOrc, String soOrc, String redeOrc, String wifiOrc) {
         String texto = "3.ORÇAMENTO" + "\n";
         texto += "- PLACA MÃE: " + placaMaeOrc + "\n";
         texto += "- PROCESSADOR: " + processadorOrc + "\n";
@@ -108,6 +115,8 @@ public class SevenArq {
         texto += "- FONTE ALIMENTAÇÃO: " + fonteDef + "\n";
         texto += "- ARMAZENAMENTO: " + armazenamentoOrc + "\n";
         texto += "- S.O: " + soOrc + "\n";
+        texto += "- REDE: " + redeOrc + "\n";
+        texto += "- WiFi: " + wifiOrc + "\n";
         return texto;
     }
 

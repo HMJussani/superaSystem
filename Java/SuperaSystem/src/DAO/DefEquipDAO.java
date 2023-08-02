@@ -19,20 +19,26 @@ import javax.swing.JOptionPane;
  * @author RMA
  */
 public class DefEquipDAO {
-    
+
     PreparedStatement pst = null;
     ResultSet rs = null;
     Connection conexao = ConexaoDb.getConection();
 
-    public boolean novoDefEquip(String nserie, String defeito, String solucao) {
+    public boolean novoDefEquip(String nserie, String placaMaeDef, String processadorDef, String memoriaDef, String picoDef, String fonteDef, String armazenamentoDef, String soDef,String testeDef) {
         boolean sucesso = false;
-        String sql = "insert into tbdefsol (nserie, defeito, solucao)values(?,?,?)";
+        String sql = "insert into tbequipDef (nserie, placaMaeDef, processadorDef, memoriaDef, picoDef, fonteDef, armazenamentoDef, soDef)values(?,?,?,?,?,?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             pst.setString(1, nserie);
-            pst.setString(2, defeito);
-            pst.setString(3, solucao);
+            pst.setString(2, placaMaeDef);
+            pst.setString(3, processadorDef);
+            pst.setString(4, memoriaDef);
+            pst.setString(5, picoDef);
+            pst.setString(6, fonteDef);
+            pst.setString(7, armazenamentoDef);
+            pst.setString(8, soDef);
+            pst.setString(9, testeDef);
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {
                 sucesso = true;
@@ -45,20 +51,26 @@ public class DefEquipDAO {
         return sucesso;
     }
 
-    public boolean editDefEquip(String nserie, String defeito, String solucao) {
+    public boolean editDefEquip(String nserie, String placaMaeDef, String processadorDef, String memoriaDef, String picoDef, String fonteDef, String armazenamentoDef, String soDef, String testeDef ) {
         boolean sucesso = false;
-        String sql = "update tbdefsol set defeito=?, solucao=? where nserie=?";
+        String sql = "update tbequipDef set placaMaeDef=?, processadorDef=?, memoriaDef=?, picoDef=?, fonteDef=?, armazenamentoDef=?, soDef=? where nserie=?";
         try {
             conexao = ConexaoDb.getConection();
-            pst = conexao.prepareStatement(sql);           
-            pst.setString(1, defeito);
-            pst.setString(2, solucao);
-             pst.setString(3, nserie);
+            pst = conexao.prepareStatement(sql);            
+            pst.setString(1, placaMaeDef);
+            pst.setString(2, processadorDef);
+            pst.setString(3, memoriaDef);
+            pst.setString(4, picoDef);
+            pst.setString(5, fonteDef);
+            pst.setString(6, armazenamentoDef);
+            pst.setString(7, soDef);
+            pst.setString(8, testeDef);
+            pst.setString(8, nserie);
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {
                 sucesso = true;
                 conexao.close();
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Erro ao editar Defeito/Solução: ");
             }
         } catch (HeadlessException | SQLException e) {
@@ -70,16 +82,22 @@ public class DefEquipDAO {
 
     public ArrayList<DefEquipBean> listaDefEquip() {
         ArrayList<DefEquipBean> listaDefeito = new ArrayList<>();
-        String sql = "select * from tbdefsol";
+        String sql = "select * from tbequipDef";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
             rs = pst.executeQuery();
             while (rs.next()) {
                 DefEquipBean defeito = new DefEquipBean();
-               // defeito.setDefeito(rs.getString("defeito"));
-              //  defeito.setSolucao(rs.getString("solucao"));
-                defeito.setNserie(rs.getString("nserie"));
+                defeito.setArmazenamentoDef(rs.getString("armazenamentoDef"));
+                defeito.setExpansaoDef(rs.getString("expansaoDef"));
+                defeito.setMemoriaDef(rs.getString("memoriaDef"));
+                defeito.setPicoDef(rs.getString("picoDef"));
+                defeito.setPlacaMaeDef(rs.getString("placaMaeDef"));
+                defeito.setProcessadorDef(rs.getString("processadorDef"));
+                defeito.setSoDef(rs.getString("soDef"));
+                defeito.setFonteDef(rs.getString("fonteDef"));
+                defeito.setTesteDef(rs.getString("testeDef"));
                 listaDefeito.add(defeito);
             }
 
@@ -91,7 +109,7 @@ public class DefEquipDAO {
 
     public ArrayList<DefEquipBean> listaDefEquip(String nserie) {
         ArrayList<DefEquipBean> listaDefeito = new ArrayList<>();
-        String sql = "select * from tbdefsol where nserie =?";
+        String sql = "select * from tbequipDef where nserie =?";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -99,10 +117,14 @@ public class DefEquipDAO {
             rs = pst.executeQuery();
             while (rs.next()) {
                 DefEquipBean defeito = new DefEquipBean();
-               // defeito.setDefeito(rs.getString("defeito"));
-             //   defeito.setSolucao(rs.getString("solucao"));
-                defeito.setNserie(rs.getString("nserie"));
-                listaDefeito.add(defeito);
+                defeito.setArmazenamentoDef(rs.getString("armazenamentoDef"));
+                defeito.setExpansaoDef(rs.getString("expansaoDef"));
+                defeito.setMemoriaDef(rs.getString("memoriaDef"));
+                defeito.setPicoDef(rs.getString("picoDef"));
+                defeito.setPlacaMaeDef(rs.getString("placaMaeDef"));
+                defeito.setProcessadorDef(rs.getString("processadorDef"));
+                defeito.setSoDef(rs.getString("soDef"));
+                defeito.setFonteDef(rs.getString("fonteDef"));
             }
 
         } catch (SQLException e) {
@@ -110,5 +132,5 @@ public class DefEquipDAO {
         }
         return listaDefeito;
     }
-    
+
 }

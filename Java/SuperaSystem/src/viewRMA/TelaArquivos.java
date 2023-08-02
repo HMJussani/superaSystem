@@ -405,7 +405,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
                     for (int i = 0; i < nDir; i++) {
                         String path = (dir + "\\" + getEquip(txtOrdServ.getText()).get(i));
                         getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(i), i);
-                        txtSeven.criarTxt(path, pat, model);
+                        txtSeven.criarTxt(path, pat, model, nserie);
                         SevenArq seventext = new SevenArq();
                         acumula += pat + "\n";
                         acumula += seventext.arqSevenPeca(model) + "\n";
@@ -417,7 +417,7 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
                 if (acessorios.criaDir(dir)) {
                     String path = (dir + "\\" + getEquip(txtOrdServ.getText()).get(0));
                     getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(0), 0);
-                    txtSeven.criarTxt(path, pat, model);
+                    txtSeven.criarTxt(path, pat, model,nserie);
                     SevenArq seventext = new SevenArq();
                         String acumula = pat + "\n";
                         acumula += seventext.arqSevenPeca(model) + "\n";
