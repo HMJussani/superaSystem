@@ -85,7 +85,7 @@ foreign key (idcli) references tbclientes(idcli)
 #alter table tbEquip add analizado bool default false;
 
 #update tbEquip set analizado = false;
-#select * from tbEquip;
+select * from tbEquip;
 
 create table tbdefsol(
 idDefeito int primary key auto_increment,

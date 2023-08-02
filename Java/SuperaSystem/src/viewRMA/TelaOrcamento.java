@@ -9,16 +9,13 @@ import DAO.DefSolDAO;
 import DAO.EquipOsDAO;
 import DAO.ModelosDAO;
 import DAO.OrdServDAO;
-import java.awt.Dimension;
-import static java.awt.Frame.MAXIMIZED_BOTH;
-import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import regrasNegocio.RegrasNegocio;
 
-public class TelaOrcamento extends javax.swing.JInternalFrame {
+public class TelaOrcamento extends javax.swing.JInternalFrame{
 
     private String model;
     private String memoria;
@@ -39,10 +36,21 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
 
     private int conta = 0;   
 
-    public TelaOrcamento() {
-        initComponents();
-        getHardware();
+
+    private void getChekEqip(String model){
+    ModelosDAO modeloDao = new ModelosDAO();
+        ArrayList<ModelosBean> modelList = modeloDao.pesquisarModelo("model", model);
+        if(chekMother.isSelected())placaMae = modelList.get(0).getmBoard();
+        if(checkFonte.isSelected())pico = modelList.get(0).getFonteAlimenta();
+        if(chekArm.isSelected())armazenaTipo = modelList.get(0).getArmazenaTipo();
+        if(chekGab.isSelected())gabinete = modelList.get(0).getGabinete();
+        if(chekLan.isSelected())redeLan = modelList.get(0).getRedeLan();
+        if(chekMem.isSelected())memTipo = modelList.get(0).getMemTipo();
+        if(chekPainel.isSelected())painel = modelList.get(0).getPainel();
+        if(chekProc.isSelected()) processador = modelList.get(0).getProcessador();
+        if(chekwifi.isSelected())wifi = modelList.get(0).getWifi();  
     }
+    
 
     private void getHardware() {
         ModelosDAO modeloDao = new ModelosDAO();
@@ -50,10 +58,10 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
         for (int i = 0; i < modelList.size(); i++) {
             cbMother.addItem(modelList.get(i).getmBoard());
             cbAlim.addItem(modelList.get(i).getFonteAlimenta());
-            cbArm.addItem(modelList.get(i).getArmazenaModel());
+            cbArm.addItem(modelList.get(i).getArmazenaTipo());
             cbGab.addItem(modelList.get(i).getGabinete());
             cbLan.addItem(modelList.get(i).getRedeLan());
-            cbMem.addItem(modelList.get(i).getMem());
+            cbMem.addItem(modelList.get(i).getMemTipo());
             cbPainel.addItem(modelList.get(i).getPainel());
             cbProc.addItem(modelList.get(i).getProcessador());
             cbWifi.addItem(modelList.get(i).getWifi());
@@ -66,10 +74,10 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
         ArrayList<ModelosBean> modelList = modeloDao.pesquisarModelo("model", model);
         cbMother.setSelectedItem(modelList.get(0).getmBoard());
         cbAlim.setSelectedItem(modelList.get(0).getFonteAlimenta());
-        cbArm.setSelectedItem(modelList.get(0).getArmazenaModel());
+        cbArm.setSelectedItem(modelList.get(0).getArmazenaTipo());
         cbGab.setSelectedItem(modelList.get(0).getGabinete());
         cbLan.setSelectedItem(modelList.get(0).getRedeLan());
-        cbMem.setSelectedItem(modelList.get(0).getMem());
+        cbMem.setSelectedItem(modelList.get(0).getMemTipo());
         cbPainel.setSelectedItem(modelList.get(0).getPainel());
         cbProc.setSelectedItem(modelList.get(0).getProcessador());
         cbWifi.setSelectedItem(modelList.get(0).getWifi());
@@ -110,23 +118,7 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
         model.setRowCount(0);
     }
 
-    private String getOS(String idcli) {
-        String ordemDeServico = "";
-        OrdServDAO ordemSErv = new OrdServDAO();
-        ArrayList<OrdServBean> os = ordemSErv.pesquisarOsBy("idcli", idcli);
-        int conta = 0;
-        for (int i = 0; i < os.size(); i++) {
-            if (os.get(i).getAberta()) {
-                ordemDeServico += os.get(i).getIdOrdServ();
-                ordemDeServico += "\n";
-                conta++;
-            }
-        }
-        if (conta == 0) {
-            ordemDeServico = "zero";
-        }
-        return ordemDeServico;
-    }
+
 
     private void imprimirOs() {
         String[] itens = {"Seven", "PDF"};
@@ -149,22 +141,24 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
                 break;
         }
     }
+    
+      
+    private void novoOrc(){
+        
+        //getEquip();
+        //getTeste();
+        //getChekEqip();
+         
+     }
+    
 
-    private void setarOs(int linha) {
+    private void setarDef(int linha) {
         DefSolDAO defSolDAO = new DefSolDAO();
         ArrayList<DefSolBean> defSolBean = defSolDAO.listaDefeitos(tbEquip.getValueAt(linha, 1).toString());
         if (!defSolBean.isEmpty()) {
-
-        } else {
-
-        }
-
-        if (tbEquip.getValueAt(linha, 4).equals("Resolvido")) {
-
-        } else {
-
-        }
-
+           
+        areaDiag.setText(defSolBean.get(0).getDefeito());
+        } 
     }
 
     private String getModel(int linha) {
@@ -185,6 +179,12 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
+    
+        public TelaOrcamento() {
+        initComponents();
+        
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -278,6 +278,11 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
         btnOsAdicionar.setToolTipText("Emitir OS");
         btnOsAdicionar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnOsAdicionar.setPreferredSize(new java.awt.Dimension(80, 80));
+        btnOsAdicionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOsAdicionarActionPerformed(evt);
+            }
+        });
 
         btnOsImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagem/print.png"))); // NOI18N
         btnOsImprimir.setToolTipText("Imprimir OS");
@@ -436,7 +441,7 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
                             .addComponent(cbPainel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cbWifi, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cbLan, javax.swing.GroupLayout.Alignment.TRAILING, 0, 160, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(chekLan)
                             .addComponent(chekwifi)
@@ -694,7 +699,7 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 758, Short.MAX_VALUE)
                             .addComponent(jScrollPane4))
                         .addGap(10, 10, 10)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -742,8 +747,13 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void tbEquipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbEquipMouseClicked
-        setarOs(tbEquip.getSelectedRow());
+       RegrasNegocio regras = new RegrasNegocio();
+        setarDef(tbEquip.getSelectedRow());
+        getHardware();
+        regras.getDadosPecas(tbEquip.getValueAt(tbEquip.getSelectedRow(), 2).toString());
         setHardware(getModel(tbEquip.getSelectedRow()));
+        getChekEqip(getModel(tbEquip.getSelectedRow()));
+        
     }//GEN-LAST:event_tbEquipMouseClicked
 
     private void txtNumOSKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumOSKeyReleased
@@ -761,7 +771,7 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtNumOSKeyReleased
 
     private void tbEquipKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbEquipKeyReleased
-        setarOs(tbEquip.getSelectedRow());
+        setarDef(tbEquip.getSelectedRow());
         setHardware(getModel(tbEquip.getSelectedRow()));
 
     }//GEN-LAST:event_tbEquipKeyReleased
@@ -789,6 +799,10 @@ public class TelaOrcamento extends javax.swing.JInternalFrame {
     private void cbLanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLanActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbLanActionPerformed
+
+    private void btnOsAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAdicionarActionPerformed
+        novoOrc();
+    }//GEN-LAST:event_btnOsAdicionarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaDiag;

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import view.TelaPrincipal;
 
 public class TelaOSAberta extends javax.swing.JInternalFrame {
 
@@ -28,11 +29,11 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private String idcli = null;
     private java.sql.Date dataAbertura = null;
     private Boolean garantia = false;
-    private Boolean fechada = false;
     private String defeito = null;
     private String tecnico = null;
     private String valor = null;
     private String solucao = null;
+    private String perfil = TelaPrincipal.lblLogado.getText();
     Acessorios arquivo = new Acessorios();
     private int conta = 0;
 
@@ -41,7 +42,6 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         txtDataAbertura.setText(arquivo.setData());
         setTecnico();
         setModelo();
-        //btnOsAdicionar.setEnabled(false);
     }
 
     private void setTecnico() {
@@ -50,6 +50,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         for (int i = 0; i < tecList.size(); i++) {
             String tec = tecList.get(i).getNome();
             cbTecnico.addItem(tec);
+
         }
     }
 
@@ -80,7 +81,28 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         }
 
     }
-    
+
+    private void setBtn(String ordServ) {
+        OrdServDAO ordemServico = new OrdServDAO();
+        ArrayList<OrdServBean> ordenList = ordemServico.pesquisarOsbyIdOs(ordServ);
+        if (!ordenList.isEmpty()) {
+            cbTecnico.setSelectedItem(ordenList.get(0).getTecnico());
+            txtOsValor.setText(ordenList.get(0).getValor());
+            getClientes(ordenList.get(0).getIdcli());
+            btnOsAdicionar.setEnabled(false);
+            btnAdicionaEquip.setEnabled(ordenList.get(0).getAberta());
+            btnEditarEquip.setEnabled(ordenList.get(0).getAberta());
+            btnOsAlterar.setEnabled(ordenList.get(0).getAberta());
+            btnOsFinaliza.setEnabled(ordenList.get(0).getAberta());
+            cbModel.setEnabled(ordenList.get(0).getAberta());
+            txtPat.setEnabled(ordenList.get(0).getAberta());
+            txtSerialNumber.setEnabled(ordenList.get(0).getAberta());
+            boxGarantia.setEnabled(ordenList.get(0).getAberta());
+            cbTecnico.setEnabled(ordenList.get(0).getAberta());
+            txtOsValor.setEnabled(ordenList.get(0).getAberta());
+        }
+    }
+
     private void getDados(String ordServ, int i) {
         EquipOsDAO equipDao = new EquipOsDAO();
         tecnico = cbTecnico.getSelectedItem().toString();
@@ -88,6 +110,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         nserie = equipDao.pesquisarProdutoBy("idOrdServ", ordServ).get(i).getNserie();
         idOrdServ = ordServ;
         patEquip = equipDao.pesquisarProdutoBy("idOrdServ", ordServ).get(i).getPatEquip();
+
     }
 
     private java.sql.Date getData() {
@@ -198,7 +221,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 if (arquivo.criaDir(dir)) {
                     for (int i = 0; i < nDir; i++) {
                         String path = (dir + "\\" + equipList.get(i).getNserie());
-                        getDados(idOrdServ,i);
+                        getDados(idOrdServ, i);
                         txtburn.criarBurnTxt(path, idOrdServ, model, patEquip, nserie, tecnico);
                     }
                     JOptionPane.showMessageDialog(null, "Arquivos criados com sucesso.");
@@ -214,7 +237,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Arquivo não criado.");
         }
-          
+
     }
 
     private void setarOs(int linha) {
@@ -732,21 +755,84 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         getDados();
         DefSolDAO defeitos = new DefSolDAO();
         int linha = tbEquip.getSelectedRow();
-        String serial = tbEquip.getModel().getValueAt(linha, 1).toString();
-        if (defeitos.editaDefeito(serial, defeito, solucao)) {
-            JOptionPane.showMessageDialog(null, "Ordem se Serviço alterada com sucesso");
-            //limpar();
+        
+
+        String[] itens = {"Equipamento", "Ordem Serviço"};
+        Object opcao = (String) JOptionPane.showInputDialog(null, "Oque deseja fazer?", "Ordens de Serviço",
+                JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
+
+        if (opcao == null) {
+            opcao = "vazio";
         }
+        switch (opcao.toString()) {
+            case "Equipamento":
+                String serial = tbEquip.getModel().getValueAt(linha, 1).toString();
+                if (defeitos.editaDefeito(serial, defeito, solucao)) {
+                    JOptionPane.showMessageDialog(null, "Equipamento alterado com sucesso");
+                    //limpar();
+                }
+                break;
+
+            case "Ordem Serviço":
+                OrdServDAO ordemServico = new OrdServDAO();
+                getDados();
+                if (ordemServico.editarOs(idOrdServ, dataAbertura, true, valor)) {
+                    JOptionPane.showMessageDialog(null, "Ordem de serviços alterada com sucesso");
+                }
+                break;
+
+            default:                
+                opcao= "Equipamento";
+                break;
+        }
+
+
     }//GEN-LAST:event_btnOsAlterarActionPerformed
 
     private void btnOsFinalizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsFinalizaActionPerformed
         getDados();
         OrdServDAO ordemServico = new OrdServDAO();
-        if (ordemServico.editarOs(idOrdServ, getData(), false, valor)) {
-            limpar();
-            txtNumOS.setText("");
-            JOptionPane.showMessageDialog(null, "Ordem de serviços finalizada com sucesso");
+        if (perfil.equals("admin")) {
+            String[] itens = {"Finalizar", "Excluir"};
+            Object opcao = (String) JOptionPane.showInputDialog(null, "Oque deseja fazer?", "Ordens de Serviço",
+                    JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
+
+            if (opcao == null) {
+                opcao = "vazio";
+            }
+            switch (opcao.toString()) {
+                case "Finalizar":
+                    if (ordemServico.editarOs(idOrdServ, getData(), false, valor)) {
+                        limpar();
+                        txtNumOS.setText("");
+                        JOptionPane.showMessageDialog(null, "Ordem de serviços finalizada com sucesso");
+                    }
+                    break;
+
+                case "Excluir":
+                    if (ordemServico.excluirOs(true, idOrdServ)) {
+                        limpar();
+                        txtNumOS.setText("");
+                        JOptionPane.showMessageDialog(null, "Ordem de serviços excluída com sucesso");
+                    }
+                    break;
+
+                default:
+                    if (ordemServico.editarOs(idOrdServ, getData(), false, valor)) {
+                        limpar();
+                        txtNumOS.setText("");
+                        JOptionPane.showMessageDialog(null, "Ordem de serviços finalizada com sucesso");
+                    }
+                    break;
+            }
+        } else {
+            if (ordemServico.editarOs(idOrdServ, getData(), false, valor)) {
+                limpar();
+                txtNumOS.setText("");
+                JOptionPane.showMessageDialog(null, "Ordem de serviços finalizada com sucesso");
+            }
         }
+
     }//GEN-LAST:event_btnOsFinalizaActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
@@ -810,6 +896,18 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 txtOsValor.setText(ordenList.get(0).getValor());
                 getClientes(ordenList.get(0).getIdcli());
                 btnOsAdicionar.setEnabled(false);
+                btnAdicionaEquip.setEnabled(ordenList.get(0).getAberta());
+                btnEditarEquip.setEnabled(ordenList.get(0).getAberta());
+                btnOsAlterar.setEnabled(ordenList.get(0).getAberta());
+                if (!perfil.equals("admin")) {
+                    btnOsFinaliza.setEnabled(ordenList.get(0).getAberta());
+                }
+                cbModel.setEnabled(ordenList.get(0).getAberta());
+                txtPat.setEnabled(ordenList.get(0).getAberta());
+                txtSerialNumber.setEnabled(ordenList.get(0).getAberta());
+                boxGarantia.setEnabled(ordenList.get(0).getAberta());
+                cbTecnico.setEnabled(ordenList.get(0).getAberta());
+                txtOsValor.setEnabled(ordenList.get(0).getAberta());
                 conta = 0;
             } else {
                 btnOsAdicionar.setEnabled(true);

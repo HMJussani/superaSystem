@@ -46,7 +46,7 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jPanel2" max="32767" attributes="0"/>
+                          <Component id="jPanel2" pref="758" max="32767" attributes="0"/>
                           <Component id="jScrollPane4" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
@@ -113,6 +113,9 @@
           <Dimension value="[80, 80]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOsAdicionarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnOsImprimir">
       <Properties>
@@ -224,7 +227,7 @@
                               <Component id="cbWifi" alignment="1" max="32767" attributes="0"/>
                               <Component id="cbLan" alignment="1" pref="160" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="18" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="chekLan" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="chekwifi" alignment="0" min="-2" max="-2" attributes="0"/>
