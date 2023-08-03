@@ -77,6 +77,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         if (txtDefeito.getText().isEmpty() || txtSolucao.getText().isEmpty()) {
             defeito = "Verificar";
             solucao = "verificar";
+        }else{
+           defeito = txtDefeito.getText();
+            solucao = txtSolucao.getText();  
         }
         if (boxGarantia.isSelected()) {
             garantia = true;

@@ -70,7 +70,7 @@ foreign key (idcli) references tbclientes(idcli)
 
 #alter table tbOrdServ drop garantia;
 
-alter table tbOrdServ add defeito VARCHAR(256)DEFAULT "Verificar.";
+#alter table tbOrdServ add solucao VARCHAR(256)DEFAULT "Verificar.";
 
 select * from tbOrdServ;
 
