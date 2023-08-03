@@ -15,11 +15,13 @@ public class OrdServBean {
     private String idOrdServ;
     private String idcli;
     private Date dataAbertura;
-    private Date dataFechamento; 
+    private Date dataFechamento;
     private Boolean aberta;
     private String tecnico;
     private String valor;
     private String nomeCli;
+    private String defeito;
+    private String solucao;
 
     public OrdServBean() {
 
@@ -87,6 +89,22 @@ public class OrdServBean {
 
     public void setNomeCli(String nomeCli) {
         this.nomeCli = nomeCli;
+    }
+
+    public String getDefeito() {
+        return defeito;
+    }
+
+    public void setDefeito(String defeito) {
+        this.defeito = defeito;
+    }
+
+    public String getSolucao() {
+        return solucao;
+    }
+
+    public void setSolucao(String solucao) {
+        this.solucao = solucao;
     }
 
 }

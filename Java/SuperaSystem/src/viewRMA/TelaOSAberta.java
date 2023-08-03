@@ -33,9 +33,11 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private String tecnico = null;
     private String valor = null;
     private String solucao = null;
-    private String perfil = TelaPrincipal.lblLogado.getText();
+    private final String perfil = TelaPrincipal.lblLogado.getText();
     Acessorios arquivo = new Acessorios();
     private int conta = 0;
+    private Boolean finalizada = false;
+    private Boolean pendente = false;
 
     public TelaOSAberta() {
         initComponents();
@@ -72,8 +74,10 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         dataAbertura = getData();
         tecnico = cbTecnico.getSelectedItem().toString();
         valor = txtOsValor.getText();
-        defeito = txtDefeito.getText();
-        solucao = txtServico.getText();
+        if (txtDefeito.getText().isEmpty() || txtSolucao.getText().isEmpty()) {
+            defeito = "Verificar";
+            solucao = "verificar";
+        }
         if (boxGarantia.isSelected()) {
             garantia = true;
         } else {
@@ -134,6 +138,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 estado = "Resolvido";
             } else {
                 estado = "Analizando";
+                pendente = true;
             }
             model.addRow(new Object[]{
                 equipList.get(i).getPatEquip(),
@@ -245,18 +250,30 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         ArrayList<DefSolBean> defSolBean = defSolDAO.listaDefeitos(tbEquip.getValueAt(linha, 1).toString());
         if (!defSolBean.isEmpty()) {
             txtDefeito.setText(defSolBean.get(0).getDefeito());
-            txtServico.setText(defSolBean.get(0).getSolucao());
+            txtSolucao.setText(defSolBean.get(0).getSolucao());
         } else {
             txtDefeito.setText("");
-            txtServico.setText("");
+            txtSolucao.setText("");
         }
+        if (!finalizada) {
+            if (tbEquip.getValueAt(linha, 4).equals("Resolvido")) {
+                btnEditarEquip.setEnabled(false);
+            } else {
+                btnEditarEquip.setEnabled(true);
+            }
+        }
+    }
 
-        if (tbEquip.getValueAt(linha, 4).equals("Resolvido")) {
-            btnEditarEquip.setEnabled(false);
+    private void setarOs(String idOrdServ) {
+        OrdServDAO ordServ = new OrdServDAO();
+        ArrayList<OrdServBean> defSolBean = ordServ.pesquisarOsbyIdOs(idOrdServ);
+        if (!defSolBean.isEmpty()) {
+            txtDefeito.setText(defSolBean.get(0).getDefeito());
+            txtSolucao.setText(defSolBean.get(0).getSolucao());
         } else {
-            btnEditarEquip.setEnabled(true);
+            txtDefeito.setText("");
+            txtSolucao.setText("");
         }
-
     }
 
     private void limpar() {
@@ -265,7 +282,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         txtEmailCli.setText(null);
         txtIDcli.setText(null);
         txtDefeito.setText("");
-        txtServico.setText("");
+        txtSolucao.setText("");
         cbTecnico.setSelectedIndex(0);
         txtOsValor.setText(null);
     }
@@ -319,7 +336,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtDefeito = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtServico = new javax.swing.JTextArea();
+        txtSolucao = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
         tbEquip = new javax.swing.JTable();
         btnAdicionaEquip = new javax.swing.JButton();
@@ -436,9 +453,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         txtDefeito.setRows(5);
         jScrollPane2.setViewportView(txtDefeito);
 
-        txtServico.setColumns(20);
-        txtServico.setRows(5);
-        jScrollPane1.setViewportView(txtServico);
+        txtSolucao.setColumns(20);
+        txtSolucao.setRows(5);
+        jScrollPane1.setViewportView(txtSolucao);
 
         tbEquip.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -612,7 +629,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                             .addComponent(jLabel14))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                         .addComponent(txtCliNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(20, 20, 20)
                         .addComponent(txtEmailCli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -744,9 +761,11 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private void btnOsAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsAdicionarActionPerformed
         getDados();
         OrdServDAO ordemServico = new OrdServDAO();
-        if (ordemServico.novaOs(idOrdServ, idcli, dataAbertura, tecnico, valor)) {
+        if (ordemServico.novaOs(idOrdServ, idcli, dataAbertura, defeito, solucao, tecnico, valor)) {
             JOptionPane.showMessageDialog(null, "Ordem de Serviço criada com sucesso");
             btnOsAdicionar.setEnabled(false);
+            getDados();
+            setBtn(idOrdServ);
         }
 
     }//GEN-LAST:event_btnOsAdicionarActionPerformed
@@ -755,10 +774,8 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         getDados();
         DefSolDAO defeitos = new DefSolDAO();
         int linha = tbEquip.getSelectedRow();
-        
-
         String[] itens = {"Equipamento", "Ordem Serviço"};
-        Object opcao = (String) JOptionPane.showInputDialog(null, "Oque deseja fazer?", "Ordens de Serviço",
+        Object opcao = (String) JOptionPane.showInputDialog(null, "Oque deseja alterar?", "Ordens de Serviço",
                 JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
 
         if (opcao == null) {
@@ -776,13 +793,13 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             case "Ordem Serviço":
                 OrdServDAO ordemServico = new OrdServDAO();
                 getDados();
-                if (ordemServico.editarOs(idOrdServ, dataAbertura, true, valor)) {
+                if (ordemServico.editarOs(idOrdServ, defeito, solucao, valor)) {
                     JOptionPane.showMessageDialog(null, "Ordem de serviços alterada com sucesso");
                 }
                 break;
 
-            default:                
-                opcao= "Equipamento";
+            default:
+                opcao = "Equipamento";
                 break;
         }
 
@@ -791,6 +808,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
     private void btnOsFinalizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOsFinalizaActionPerformed
         getDados();
+        setarTabela(idcli);
         OrdServDAO ordemServico = new OrdServDAO();
         if (perfil.equals("admin")) {
             String[] itens = {"Finalizar", "Excluir"};
@@ -802,10 +820,14 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             }
             switch (opcao.toString()) {
                 case "Finalizar":
-                    if (ordemServico.editarOs(idOrdServ, getData(), false, valor)) {
-                        limpar();
-                        txtNumOS.setText("");
-                        JOptionPane.showMessageDialog(null, "Ordem de serviços finalizada com sucesso");
+                    if (pendente) {
+                        JOptionPane.showMessageDialog(null, "Equipamento com pendência. Verifique.");
+                    } else {
+                        if (ordemServico.finalizarOs(idOrdServ, dataAbertura, true, valor)) {
+                            limpar();
+                            txtNumOS.setText("");
+                            JOptionPane.showMessageDialog(null, "Ordem de serviços finalizada com sucesso");
+                        }
                     }
                     break;
 
@@ -818,18 +840,18 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                     break;
 
                 default:
-                    if (ordemServico.editarOs(idOrdServ, getData(), false, valor)) {
-                        limpar();
-                        txtNumOS.setText("");
-                        JOptionPane.showMessageDialog(null, "Ordem de serviços finalizada com sucesso");
-                    }
+                    opcao = "Finalizar";
                     break;
             }
         } else {
-            if (ordemServico.editarOs(idOrdServ, getData(), false, valor)) {
-                limpar();
-                txtNumOS.setText("");
-                JOptionPane.showMessageDialog(null, "Ordem de serviços finalizada com sucesso");
+            if (pendente) {
+                JOptionPane.showMessageDialog(null, "Equipamento com pendência. Verifique.");
+            } else {
+                if (ordemServico.finalizarOs(idOrdServ, dataAbertura, true, valor)) {
+                    limpar();
+                    txtNumOS.setText("");
+                    JOptionPane.showMessageDialog(null, "Ordem de serviços finalizada com sucesso");
+                }
             }
         }
 
@@ -908,7 +930,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 boxGarantia.setEnabled(ordenList.get(0).getAberta());
                 cbTecnico.setEnabled(ordenList.get(0).getAberta());
                 txtOsValor.setEnabled(ordenList.get(0).getAberta());
+                setarOs(ordenList.get(0).getIdOrdServ());
                 conta = 0;
+                finalizada = true;
             } else {
                 btnOsAdicionar.setEnabled(true);
                 limpar();
@@ -992,6 +1016,6 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtOsValor;
     private javax.swing.JTextField txtPat;
     private javax.swing.JTextField txtSerialNumber;
-    private javax.swing.JTextArea txtServico;
+    private javax.swing.JTextArea txtSolucao;
     // End of variables declaration//GEN-END:variables
 }

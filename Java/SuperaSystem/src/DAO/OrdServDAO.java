@@ -28,9 +28,9 @@ public class OrdServDAO {
     java.sql.Connection conexao = ConexaoDb.getConection();
     String mensagemErro = "Erro em Ordem de Serviço: ";
 
-    public boolean novaOs(String idOrdServ, String idcli, Date dataAbertura, String tecnico, String valor) {
+    public boolean novaOs(String idOrdServ, String idcli, Date dataAbertura,String defeito, String solucao ,String tecnico, String valor) {
         boolean sucesso = false;
-        String sql = "insert into tbOrdServ (idOrdServ, idcli, dataAbertura,dataFechamento, tecnico, valor)values(?,?,?,?,?,?)";
+        String sql = "insert into tbOrdServ (idOrdServ, idcli, dataAbertura,dataFechamento,defeito, solucao, tecnico, valor)values(?,?,?,?,?,?,?,?)";
         try {
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
@@ -38,9 +38,10 @@ public class OrdServDAO {
             pst.setString(2, idcli);
             pst.setDate(3, (java.sql.Date) dataAbertura);
             pst.setDate(4, (java.sql.Date) dataAbertura);
-            pst.setString(5, tecnico);
-            pst.setString(6, valor);
-
+            pst.setString(5, defeito);
+            pst.setString(6, solucao);
+            pst.setString(7, tecnico);
+            pst.setString(8, valor);
             int adicionado = pst.executeUpdate();
             if (adicionado > 0) {
                 sucesso = true;
@@ -73,6 +74,8 @@ public class OrdServDAO {
                 os.setIdcli(rs.getString("idcli"));
                 os.setAberta(rs.getBoolean("aberta"));
                 os.setNomeCli(rs.getString("nomecli"));
+                os.setDefeito(rs.getString("defeito"));
+                os.setSolucao(rs.getString("solucao"));
                 ordemServico.add(os);
             }
 
@@ -101,7 +104,8 @@ public class OrdServDAO {
                 os.setTecnico(rs.getString("tecnico"));
                 os.setValor(rs.getString("valor"));
                 os.setAberta(rs.getBoolean("aberta"));
-                
+                os.setDefeito(rs.getString("defeito"));
+                os.setSolucao(rs.getString("solucao"));
                 ordemServico.add(os);
             }
 
@@ -131,6 +135,8 @@ public class OrdServDAO {
                 os.setValor(rs.getString("valor"));
                 os.setAberta(rs.getBoolean("aberta"));
                 os.setNomeCli(rs.getString("nomecli"));
+                os.setDefeito(rs.getString("defeito"));
+                os.setSolucao(rs.getString("solucao"));
                 ordemServico.add(os);
             }
 
@@ -140,13 +146,35 @@ public class OrdServDAO {
         return ordemServico;
     }
 
-    public boolean editarOs(String idOrdServ, Date dataFechamento, boolean aberta, String valor) {
+    public boolean editarOs(String idOrdServ, String defeito, String solucao, String valor) {
+        boolean sucesso = false;
+        String sql = "update tbOrdServ set defeito=?, solucao=?, valor=? where idOrdServ=?";
+        try {            
+            conexao = ConexaoDb.getConection();
+            pst = conexao.prepareStatement(sql);           
+             pst.setString(1, defeito);
+            pst.setString(2, solucao);            
+            pst.setString(3, valor);
+            pst.setString(4, idOrdServ);
+            int adicionado = pst.executeUpdate();
+            if (adicionado > 0) {
+                sucesso = true;
+                conexao.close();
+
+            }
+        } catch (HeadlessException | SQLException e) {
+            JOptionPane.showMessageDialog(null, mensagemErro +e);
+        }
+        return sucesso;
+    }
+
+       public boolean finalizarOs(String idOrdServ, Date dataFechamento,boolean aberta, String valor) {
         boolean sucesso = false;
         String sql = "update tbOrdServ set dataFechamento=?, aberta=?, valor=? where idOrdServ=?";
         try {            
             conexao = ConexaoDb.getConection();
             pst = conexao.prepareStatement(sql);
-            pst.setDate(1, (java.sql.Date) dataFechamento);
+            pst.setDate(1, (java.sql.Date) dataFechamento);  
             pst.setBoolean(2, aberta);
             pst.setString(3, valor);
             pst.setString(4, idOrdServ);
@@ -162,12 +190,13 @@ public class OrdServDAO {
         return sucesso;
     }
 
+    
     public boolean excluirOs(boolean finalizado, String idOrdServ) {
-        boolean sucesso = false;
-        conexao = ConexaoDb.getConection();
+        boolean sucesso = false;       
         if (finalizado) {
             int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esta OS?", "Atenção", JOptionPane.YES_NO_OPTION);
             if (confirma == JOptionPane.YES_OPTION) {
+                 conexao = ConexaoDb.getConection();
                 String sql = "delete from tbOrdServ where idOrdServ=?";
                 try {
                     pst = conexao.prepareStatement(sql);
@@ -178,11 +207,9 @@ public class OrdServDAO {
                         conexao.close();
                     }
                 } catch (HeadlessException | SQLException e) {
-                    JOptionPane.showMessageDialog(null, e);
+                    JOptionPane.showMessageDialog(null, "Impossível excluir. Ordem de servico possui equipamentos anexados");
                 }
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Para excluir esta OS é necessário modificar\no status para \"Retirado\"");
         }
         return sucesso;
     }

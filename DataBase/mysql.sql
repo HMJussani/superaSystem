@@ -60,13 +60,20 @@ idOrdServ VARCHAR(10) PRIMARY KEY,
 idcli VARCHAR(20) not null,
 dataAbertura DATE NOT NULL,
 dataFechamento DATE,
-defeito VARCHAR(100)DEFAULT "Verificar.",
-solucao VARCHAR(100)DEFAULT "Verificar.",
+defeito VARCHAR(256)DEFAULT "Verificar.",
+solucao VARCHAR(256)DEFAULT "Verificar.",
 aberta  boolean default true,
 tecnico varchar(30)NOT NULL,
 valor varchar(10),
 foreign key (idcli) references tbclientes(idcli)
 );
+
+#alter table tbOrdServ drop garantia;
+
+alter table tbOrdServ add defeito VARCHAR(256)DEFAULT "Verificar.";
+
+select * from tbOrdServ;
+
 
 #drop table tbEquip;
 create table tbEquip(
