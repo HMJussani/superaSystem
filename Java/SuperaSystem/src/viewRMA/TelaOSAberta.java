@@ -77,9 +77,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         if (txtDefeito.getText().isEmpty() || txtSolucao.getText().isEmpty()) {
             defeito = "Verificar";
             solucao = "verificar";
-        }else{
-           defeito = txtDefeito.getText();
-            solucao = txtSolucao.getText();  
+        } else {
+            defeito = txtDefeito.getText();
+            solucao = txtSolucao.getText();
         }
         if (boxGarantia.isSelected()) {
             garantia = true;
@@ -125,6 +125,20 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         return data;
     }
 
+    private Boolean getPendencia(String idCli) {
+        Boolean pendente = false;
+        DefaultTableModel model = (DefaultTableModel) tbEquip.getModel();
+        model.setRowCount(0);
+        EquipOsDAO equipOs = new EquipOsDAO();
+        ArrayList<EquipOSBean> equipList = equipOs.pesquisarProdutoBy("idOrdServ", idCli);
+        for (int i = 0; i < equipList.size(); i++) {
+            if (equipList.get(i).getAnalizado()) {
+                pendente = true;
+            }
+        }
+        return pendente;
+    }
+
     private void setarTabela(String idCli) {
         DefaultTableModel model = (DefaultTableModel) tbEquip.getModel();
         model.setRowCount(0);
@@ -140,8 +154,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             if (equipList.get(i).getAnalizado()) {
                 estado = "Resolvido";
             } else {
-                estado = "Analizando";
-                pendente = true;
+                estado = "Analizando";               
             }
             model.addRow(new Object[]{
                 equipList.get(i).getPatEquip(),
@@ -632,7 +645,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                             .addComponent(jLabel14))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                         .addComponent(txtCliNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(20, 20, 20)
                         .addComponent(txtEmailCli, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -715,30 +728,30 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(217, 217, 217)
+                        .addComponent(btnOsAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)
+                        .addComponent(btnOsAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(btnOsFinaliza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(btnOsImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(46, 332, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnOsAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnOsAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnOsFinaliza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnOsImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(46, 46, 46))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(btnOsAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(btnOsAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
-                        .addComponent(btnOsFinaliza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
-                        .addComponent(btnOsImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         setBounds(0, 0, 1124, 683);
@@ -756,7 +769,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 }
                 conta = 0;
             } else {
-                limpar();
+                //
             }
         }
     }//GEN-LAST:event_txtCliNomeKeyReleased
@@ -817,13 +830,12 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             String[] itens = {"Finalizar", "Excluir"};
             Object opcao = (String) JOptionPane.showInputDialog(null, "Oque deseja fazer?", "Ordens de Serviço",
                     JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
-
             if (opcao == null) {
                 opcao = "vazio";
             }
             switch (opcao.toString()) {
                 case "Finalizar":
-                    if (pendente) {
+                    if (getPendencia(idcli)) {
                         JOptionPane.showMessageDialog(null, "Equipamento com pendência. Verifique.");
                     } else {
                         if (ordemServico.finalizarOs(idOrdServ, dataAbertura, true, valor)) {
@@ -847,7 +859,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                     break;
             }
         } else {
-            if (pendente) {
+            if (getPendencia(idcli)) {
                 JOptionPane.showMessageDialog(null, "Equipamento com pendência. Verifique.");
             } else {
                 if (ordemServico.finalizarOs(idOrdServ, dataAbertura, true, valor)) {
@@ -938,7 +950,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 finalizada = true;
             } else {
                 btnOsAdicionar.setEnabled(true);
-                limpar();
+                //limpar();
             }
         }
     }//GEN-LAST:event_txtNumOSKeyReleased
