@@ -372,9 +372,9 @@ public class TelaArquivos extends javax.swing.JInternalFrame {
             } else {
                 if (acessorios.criaDir(dir)) {
                     
-                    String path = (dir + "\\" + getEquip(txtOrdServ.getText()).get(0));
+                    //String path = (dir + "\\" + getEquip(txtOrdServ.getText()).get(0));
                     getDados(txtOrdServ.getText(), getEquip(txtOrdServ.getText()).get(0), 0);
-                    txtBurn.criarBurnTxt(path, idOrdServ, model, pat, nserie, tecnico);
+                    txtBurn.criarBurnTxt(dir, idOrdServ, model, pat, nserie, tecnico);
                     String acumula = pat + "\n";
                     acumula += ("Pedido: " + idOrdServ + "\n");
                     acumula += ("Tecnico: " + tecnico + "\n");
