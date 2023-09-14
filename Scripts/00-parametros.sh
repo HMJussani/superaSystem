@@ -160,7 +160,7 @@ FLUSH="FLUSH PRIVILEGES;"
 SELECTUSER="SELECT user,host FROM user;"
 #
 # Variável do Endereço IPv4 acesso remoto Mysql
-IPV4DEV="192.168.100.101" #IP maquina virtual Supera
+IPV4DEV="192.168.100.%" #Qualquer IP na rede Supera
 # Variáveis de configuração e liberação da conexão remota para o usuário Root do MySQL
 CREATEUSER="CREATE USER '$USERMYSQL'@'%' IDENTIFIED BY '$SENHAMYSQL';"
 ALTERUSER="ALTER USER '$USERMYSQL'@'$IPV4DEV' IDENTIFIED WITH mysql_native_password BY '$SENHAMYSQL';"
