@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
+import viewProd.TelaComponentes;
 import viewRMA.TelaArquivos;
 import viewRMA.TelaInvetarioOs;
 import viewRMA.TelaOSAberta;
@@ -21,12 +22,14 @@ import viewRMA.TelaOrcamento;
  */
 public class TelaPrincipal extends javax.swing.JFrame {
 
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();   
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     public TelaPrincipal() {
         initComponents();
         this.setIconImage(new ImageIcon(getClass().getResource("/imagem/Duke.png")).getImage()); //muda o icone padrao
-        if((screenSize.width>= 1280)&&(screenSize.height>=960))setExtendedState(MAXIMIZED_BOTH);
+        if ((screenSize.width >= 1280) && (screenSize.height >= 960)) {
+            setExtendedState(MAXIMIZED_BOTH);
+        }
     }
 
     /**
@@ -48,8 +51,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Menu = new javax.swing.JMenuBar();
         menCad = new javax.swing.JMenu();
         menCadCli = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         menComps = new javax.swing.JMenuItem();
-        menCadUsu = new javax.swing.JMenuItem();
+        menuCadComp = new javax.swing.JMenuItem();
         menuTecnica = new javax.swing.JMenu();
         menTecOS = new javax.swing.JMenuItem();
         menTecOSFechada = new javax.swing.JMenuItem();
@@ -146,7 +150,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         menCad.setText("Cadastros");
 
-        menCadCli.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        menCadCli.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
         menCadCli.setText("Clientes");
         menCadCli.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,7 +159,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menCad.add(menCadCli);
 
-        menComps.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setText("Componentes");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        menCad.add(jMenuItem1);
+
+        menComps.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         menComps.setText("Modelos de Equipamentos");
         menComps.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -164,21 +177,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menCad.add(menComps);
 
-        menCadUsu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        menCadUsu.setText("Usuários");
-        menCadUsu.setEnabled(false);
-        menCadUsu.addActionListener(new java.awt.event.ActionListener() {
+        menuCadComp.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK));
+        menuCadComp.setText("Usuários");
+        menuCadComp.setEnabled(false);
+        menuCadComp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menCadUsuActionPerformed(evt);
+                menuCadCompActionPerformed(evt);
             }
         });
-        menCad.add(menCadUsu);
+        menCad.add(menuCadComp);
 
         Menu.add(menCad);
 
         menuTecnica.setText("Técnica");
 
-        menTecOS.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menTecOS.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         menTecOS.setText("Ordens de Serviço Abertas");
         menTecOS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,7 +200,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menuTecnica.add(menTecOS);
 
-        menTecOSFechada.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menTecOSFechada.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         menTecOSFechada.setText("Ordens de Serviço Fechadas");
         menTecOSFechada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,7 +209,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menuTecnica.add(menTecOSFechada);
 
-        menuTecGeraArq.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menuTecGeraArq.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
         menuTecGeraArq.setText("Gerador de Arquivos");
         menuTecGeraArq.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -217,7 +230,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         menRel.setText("Relatório");
 
-        menRelCli.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        menRelCli.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
         menRelCli.setText("Clientes");
         menRelCli.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,7 +239,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menRel.add(menRelCli);
 
-        menRelSer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        menRelSer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
         menRelSer.setText("Serviços");
         menRelSer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -235,7 +248,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
         menRel.add(menRelSer);
 
-        menRelEquip.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        menRelEquip.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK));
         menRelEquip.setText("Equipamentos");
         menRelEquip.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -271,7 +284,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(desktop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1124, Short.MAX_VALUE)
+                    .addComponent(desktop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1116, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -279,7 +292,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(desktop, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
+                .addComponent(desktop, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -295,17 +308,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
         lblData.setText(formatador.format(data));
     }//GEN-LAST:event_formWindowActivated
 
-    private void menCadUsuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menCadUsuActionPerformed
+    private void menuCadCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadCompActionPerformed
         TelaUsuario usuario = new TelaUsuario();
         usuario.setVisible(true);
-        usuario.setSize(desktop.getSize()); 
+        usuario.setSize(desktop.getSize());
         desktop.add(usuario);
-    }//GEN-LAST:event_menCadUsuActionPerformed
+    }//GEN-LAST:event_menuCadCompActionPerformed
 
     private void menCadCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menCadCliActionPerformed
         TelaCliente cliente = new TelaCliente();
         cliente.setVisible(true);
-        cliente.setSize(desktop.getSize()); 
+        cliente.setSize(desktop.getSize());
         desktop.add(cliente);
     }//GEN-LAST:event_menCadCliActionPerformed
 
@@ -316,7 +329,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void menRelSerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menRelSerActionPerformed
         TelaInvetarioOs invetarioOs = new TelaInvetarioOs();
         invetarioOs.setVisible(true);
-        invetarioOs.setSize(desktop.getSize()); 
+        invetarioOs.setSize(desktop.getSize());
         desktop.add(invetarioOs);
     }//GEN-LAST:event_menRelSerActionPerformed
 
@@ -335,28 +348,28 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void menCompsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menCompsActionPerformed
         TelaModelos comps = new TelaModelos();
         comps.setVisible(true);
-        comps.setSize(desktop.getSize()); 
+        comps.setSize(desktop.getSize());
         desktop.add(comps);
     }//GEN-LAST:event_menCompsActionPerformed
 
     private void menTecOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menTecOSActionPerformed
         TelaOSAberta os = new TelaOSAberta();
         os.setVisible(true);
-        os.setSize(desktop.getSize()); 
+        os.setSize(desktop.getSize());
         desktop.add(os);
     }//GEN-LAST:event_menTecOSActionPerformed
 
     private void menTecOSFechadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menTecOSFechadaActionPerformed
         TelaOSFechada os = new TelaOSFechada();
         os.setVisible(true);
-        os.setSize(desktop.getSize()); 
+        os.setSize(desktop.getSize());
         desktop.add(os);
     }//GEN-LAST:event_menTecOSFechadaActionPerformed
 
     private void menuTecGeraArqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuTecGeraArqActionPerformed
         TelaArquivos tela = new TelaArquivos();
         tela.setVisible(true);
-        tela.setSize(desktop.getSize()); 
+        tela.setSize(desktop.getSize());
         desktop.add(tela);
 
     }//GEN-LAST:event_menuTecGeraArqActionPerformed
@@ -364,7 +377,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void menRelEquipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menRelEquipActionPerformed
         TelaInvetarioEquip prods = new TelaInvetarioEquip();
         prods.setVisible(true);
-        prods.setSize(desktop.getSize()); 
+        prods.setSize(desktop.getSize());
         desktop.add(prods);
 
     }//GEN-LAST:event_menRelEquipActionPerformed
@@ -372,9 +385,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void MenuTecOrcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuTecOrcActionPerformed
         TelaOrcamento orcs = new TelaOrcamento();
         orcs.setVisible(true);
-        orcs.setSize(desktop.getSize());       
+        orcs.setSize(desktop.getSize());
         desktop.add(orcs);
     }//GEN-LAST:event_MenuTecOrcActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        TelaComponentes comp = new TelaComponentes();
+        comp.setVisible(true);
+        comp.setSize(desktop.getSize());
+        desktop.add(comp);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -415,13 +435,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JDesktopPane desktop;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblData;
     public static javax.swing.JLabel lblLogado;
     public static javax.swing.JLabel lblUsuario;
     private javax.swing.JMenu menCad;
     private javax.swing.JMenuItem menCadCli;
-    public static javax.swing.JMenuItem menCadUsu;
     private javax.swing.JMenuItem menComps;
     public static javax.swing.JMenu menRel;
     private javax.swing.JMenuItem menRelCli;
@@ -431,6 +451,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu menSobre;
     private javax.swing.JMenuItem menTecOS;
     private javax.swing.JMenuItem menTecOSFechada;
+    public static javax.swing.JMenuItem menuCadComp;
     private javax.swing.JMenuItem menuTecGeraArq;
     private javax.swing.JMenu menuTecnica;
     // End of variables declaration//GEN-END:variables
