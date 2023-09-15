@@ -51,6 +51,20 @@ memtipo varchar(20),
 so varchar(50)
 );
 
+create table tbcomponentes(
+idComp integer PRIMARY KEY auto_increment,
+tipo VARCHAR(50) not null,
+fabricante varchar(50) not null,
+modelo varchar(50) not null,
+capacidade varchar(50),
+detalhe varchar(500)
+
+);
+
+drop table tbcomponentes;
+
+select * from tbcomponentes;
+
 select * from tbmodelo;
 
 alter table tbmodelo add memtipo varchar(20);
