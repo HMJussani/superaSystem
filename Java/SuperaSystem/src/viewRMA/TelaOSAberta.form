@@ -134,9 +134,9 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="cbTecnico" linkSize="4" max="32767" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jLabel10" min="-2" pref="62" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="txtOsValor" min="-2" pref="107" max="-2" attributes="0"/>
+                          <Component id="jLabel10" min="-2" pref="89" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="txtNEquip" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
@@ -212,9 +212,9 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Component id="jLabel10" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtOsValor" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="cbTecnico" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel9" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtNEquip" alignment="2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               </Group>
@@ -297,12 +297,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Valor Total"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txtOsValor">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="0"/>
+            <Property name="text" type="java.lang.String" value="Equipamentos:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cbModel">
@@ -458,6 +453,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarEquipActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtNEquip">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="00"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNEquipActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

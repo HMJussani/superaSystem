@@ -38,6 +38,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private int conta = 0;
     private Boolean finalizada = false;
     private Boolean pendente = false;
+    
 
     public TelaOSAberta() {
         initComponents();
@@ -73,7 +74,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         idcli = txtIDcli.getText();
         dataAbertura = getData();
         tecnico = cbTecnico.getSelectedItem().toString();
-        valor = txtOsValor.getText();
+        //valor = txtNEquip.getText();
         if (txtDefeito.getText().isEmpty() || txtSolucao.getText().isEmpty()) {
             defeito = "Verificar";
             solucao = "verificar";
@@ -94,7 +95,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         ArrayList<OrdServBean> ordenList = ordemServico.pesquisarOsbyIdOs(ordServ);
         if (!ordenList.isEmpty()) {
             cbTecnico.setSelectedItem(ordenList.get(0).getTecnico());
-            txtOsValor.setText(ordenList.get(0).getValor());
+           // txtNEquip.setText(ordenList.get(0).getValor());
             getClientes(ordenList.get(0).getIdcli());
             btnOsAdicionar.setEnabled(false);
             btnAdicionaEquip.setEnabled(ordenList.get(0).getAberta());
@@ -106,7 +107,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             txtSerialNumber.setEnabled(ordenList.get(0).getAberta());
             boxGarantia.setEnabled(ordenList.get(0).getAberta());
             cbTecnico.setEnabled(ordenList.get(0).getAberta());
-            txtOsValor.setEnabled(ordenList.get(0).getAberta());
+           // txtNEquip.setEnabled(ordenList.get(0).getAberta());
         }
     }
 
@@ -144,7 +145,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         model.setRowCount(0);
         String garantia = "Não", estado = "Analizando";
         EquipOsDAO equipOs = new EquipOsDAO();
-        ArrayList<EquipOSBean> equipList = equipOs.pesquisarProdutoBy("idOrdServ", idCli);
+        ArrayList<EquipOSBean> equipList = equipOs.pesquisarProdutoBy("idOrdServ", idCli); 
         for (int i = 0; i < equipList.size(); i++) {
             if (equipList.get(i).getGarantia()) {
                 garantia = "Sim";
@@ -163,6 +164,8 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 garantia,
                 estado});
         }
+        txtNEquip.setText(""+equipList.size());
+        
     }
 
     private void limpaTabela() {
@@ -300,7 +303,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         txtDefeito.setText("");
         txtSolucao.setText("");
         cbTecnico.setSelectedIndex(0);
-        txtOsValor.setText(null);
+        txtNEquip.setText(null);
     }
 
     private void setarCampos(int linha) {
@@ -340,7 +343,6 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         cbTecnico = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        txtOsValor = new javax.swing.JTextField();
         cbModel = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         txtSerialNumber = new javax.swing.JTextField();
@@ -358,6 +360,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         btnAdicionaEquip = new javax.swing.JButton();
         boxGarantia = new javax.swing.JCheckBox();
         btnEditarEquip = new javax.swing.JButton();
+        txtNEquip = new javax.swing.JTextField();
         btnOsImprimir = new javax.swing.JButton();
         btnOsFinaliza = new javax.swing.JButton();
         btnOsAlterar = new javax.swing.JButton();
@@ -435,9 +438,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
 
         jLabel9.setText("Técnico");
 
-        jLabel10.setText("Valor Total");
-
-        txtOsValor.setText("0");
+        jLabel10.setText("Equipamentos:");
 
         cbModel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Modelo" }));
         cbModel.addActionListener(new java.awt.event.ActionListener() {
@@ -538,6 +539,13 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             }
         });
 
+        txtNEquip.setText("00");
+        txtNEquip.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNEquipActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -589,9 +597,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbTecnico, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtOsValor, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNEquip, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(5, 5, 5)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
@@ -665,9 +673,9 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel10)
-                    .addComponent(txtOsValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbTecnico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
+                    .addComponent(jLabel9)
+                    .addComponent(txtNEquip, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31))
         );
 
@@ -918,7 +926,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
             if (!ordenList.isEmpty()) {
                 setarTabela(ordenList.get(0).getIdOrdServ());
                 cbTecnico.setSelectedItem(ordenList.get(0).getTecnico());
-                txtOsValor.setText(ordenList.get(0).getValor());
+               // txtNEquip.setText(ordenList.get(0).getValor());
                 getClientes(ordenList.get(0).getIdcli());
                 btnOsAdicionar.setEnabled(false);
                 btnAdicionaEquip.setEnabled(ordenList.get(0).getAberta());
@@ -932,7 +940,7 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
                 txtSerialNumber.setEnabled(ordenList.get(0).getAberta());
                 boxGarantia.setEnabled(ordenList.get(0).getAberta());
                 cbTecnico.setEnabled(ordenList.get(0).getAberta());
-                txtOsValor.setEnabled(ordenList.get(0).getAberta());
+                //txtNEquip.setEnabled(ordenList.get(0).getAberta());
                 setarOs(ordenList.get(0).getIdOrdServ());
                 conta = 0;
                 finalizada = true;
@@ -982,6 +990,10 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtIDcliKeyReleased
 
+    private void txtNEquipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNEquipActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNEquipActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox boxGarantia;
     private javax.swing.JButton btnAdicionaEquip;
@@ -1015,8 +1027,8 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
     private javax.swing.JTextArea txtDefeito;
     private javax.swing.JTextField txtEmailCli;
     private javax.swing.JTextField txtIDcli;
+    private javax.swing.JTextField txtNEquip;
     private javax.swing.JTextField txtNumOS;
-    private javax.swing.JTextField txtOsValor;
     private javax.swing.JTextField txtPat;
     private javax.swing.JTextField txtSerialNumber;
     private javax.swing.JTextArea txtSolucao;
