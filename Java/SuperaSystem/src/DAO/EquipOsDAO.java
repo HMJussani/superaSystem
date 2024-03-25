@@ -44,9 +44,13 @@ public class EquipOsDAO {
                 sucesso = true;
                 conexao.close();
             }
-        } catch (HeadlessException | SQLException e) {
-            JOptionPane.showMessageDialog(null, "Adicionando equipamentos:" + e);
+        } catch (SQLIntegrityConstraintViolationException e) {
+            JOptionPane.showMessageDialog(null, "O equipamento está em Garantia? ");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Falha ao adicionar equipamentos: " + e);
+            System.out.println(e);
         }
+
         return sucesso;
     }
 
@@ -72,6 +76,7 @@ public class EquipOsDAO {
             conexao.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Pesquisando equipamentos: " + e);
+
         }
         return equipamentoOS;
     }

@@ -907,10 +907,17 @@ public class TelaOSAberta extends javax.swing.JInternalFrame {
         }
         EquipOsDAO equipOs = new EquipOsDAO();
         DefSolDAO defSol = new DefSolDAO();
-        if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli, garantia) && defSol.novoDefeito(nserie, defeito, solucao)) {
+        if(garantia){
+            if (equipOs.adicionarEquipamento(nserie+="-G", idOrdServ, model, patEquip, idcli, garantia) && defSol.novoDefeito(nserie, defeito, solucao)) {
+            JOptionPane.showMessageDialog(null, "Equipamento adicionando com sucesso");
+            setarTabela(idOrdServ);           
+        }
+        }else{
+                if (equipOs.adicionarEquipamento(nserie, idOrdServ, model, patEquip, idcli, garantia) && defSol.novoDefeito(nserie, defeito, solucao)) {
             JOptionPane.showMessageDialog(null, "Equipamento adicionando com sucesso");
             setarTabela(idOrdServ);
         }
+            }
     }//GEN-LAST:event_btnAdicionaEquipActionPerformed
 
     private void tbEquipMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbEquipMouseClicked
